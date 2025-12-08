@@ -1,241 +1,362 @@
 <template>
-    <div class="admin-settings w-full overflow-hidden">
-        <!-- Brand Settings Section -->
-        <div class="settings-section mb-6">
-            <div class="settings-card">
+    <div class="w-full overflow-hidden">
+        <!-- Main Header -->
+        <div class="bg-gradient-to-r from-red-500 via-pink-500 to-purple-600 rounded-2xl p-6 mb-6 shadow-xl">
+            <div class="flex items-center justify-between flex-col sm:flex-row gap-4">
+                <div class="flex items-center space-x-4">
+                    <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl sm:text-3xl font-bold text-white">Settings</h1>
+                        <p class="text-white/90 text-sm mt-1">Configure all settings</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-3 w-full sm:w-auto">
+                    <button
+                        @click="isEditing = !isEditing"
+                        :disabled="brandSettingsLoading"
+                        class="bg-white text-purple-600 hover:bg-gray-50 px-4 sm:px-5 py-2.5 rounded-xl font-medium transition flex items-center space-x-2 disabled:opacity-50 w-full sm:w-auto justify-center"
+                    >
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                        </svg>
+                        <span>{{ isEditing ? 'Cancel Editing' : 'Edit Settings' }}</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Success/Error Messages -->
+        <div v-if="brandSettingsMessage" :class="brandSettingsMessageType === 'success' ? 'bg-green-50 border-green-200 text-green-800' : 'bg-red-50 border-red-200 text-red-800'" class="border rounded-xl p-4 mb-6">
+            {{ brandSettingsMessage }}
+        </div>
+
+        <!-- Brand Identity Section -->
+        <div class="bg-white rounded-2xl shadow-lg overflow-hidden mb-6">
+            <div class="bg-gradient-to-r from-red-500 via-pink-500 to-purple-600 p-5">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold text-white">Brand Identity</h2>
+                        <p class="text-white/90 text-sm">Brand name, logo, and tagline</p>
+                    </div>
+                </div>
+            </div>
+            <div class="p-6">
                 <form @submit.prevent="saveBrandSettings" class="space-y-6">
                     <!-- Brand Name -->
-                    <div class="form-group">
-                        <label class="form-label">Brand Name</label>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-3">Brand Name</label>
                         <input 
                             type="text" 
                             v-model="brandSettings.brand_name" 
-                            class="form-input" 
-                            placeholder="Enter brand name"
                             :disabled="!isEditing"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent disabled:bg-gray-100"
+                            placeholder="Enter brand name"
                             required
-                        >
-                        <p class="form-hint">This will be displayed in the header and throughout the site</p>
+                        />
+                        <p class="text-xs text-gray-500 mt-2">This will be displayed in the header and throughout the site</p>
                     </div>
 
                     <!-- Tagline -->
-                    <div class="form-group">
-                        <label class="form-label">Tagline</label>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-3">Tagline</label>
                         <input 
                             type="text" 
                             v-model="brandSettings.tagline" 
-                            class="form-input" 
-                            placeholder="Enter tagline"
                             :disabled="!isEditing"
-                        >
-                        <p class="form-hint">A short description or tagline for your brand</p>
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent disabled:bg-gray-100"
+                            placeholder="Enter tagline"
+                        />
+                        <p class="text-xs text-gray-500 mt-2">A short description or tagline for your brand</p>
                     </div>
 
                     <!-- Brand Logo -->
-                    <div class="form-group">
-                        <label class="form-label">Brand Logo</label>
-                        <div class="file-upload-container">
-                            <div class="file-upload-area">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-3">Brand Logo</label>
+                        <div class="flex flex-col sm:flex-row gap-4 items-start">
+                            <div class="flex-1">
                                 <input 
                                     type="file" 
                                     @change="handleLogoUpload"
                                     accept="image/*"
-                                    class="file-input"
-                                    id="logo-upload"
                                     :disabled="!isEditing"
-                                >
+                                    class="hidden"
+                                    id="logo-upload"
+                                />
                                 <label 
                                     for="logo-upload" 
-                                    class="file-upload-label"
-                                    :class="{ 'disabled': !isEditing }"
+                                    :class="['w-full px-4 py-8 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer transition text-center', isEditing ? 'hover:border-purple-500 hover:bg-purple-50' : 'opacity-50 cursor-not-allowed']"
                                 >
-                                    <svg class="upload-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg class="w-8 h-8 mx-auto mb-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                                     </svg>
-                                    <span class="upload-text">Choose Logo</span>
+                                    <span class="text-sm font-medium text-gray-600">Choose Logo</span>
+                                    <p class="text-xs text-gray-500 mt-1">Recommended: 200x50px, Max: 2MB</p>
                                 </label>
-                                <p class="file-hint">Recommended: 200x50px, Max: 2MB</p>
                             </div>
-                            <div v-if="brandSettings.brand_logo_preview || brandSettings.brand_logo_url" class="preview-container">
+                            <div v-if="brandSettings.brand_logo_preview || brandSettings.brand_logo_url" class="flex-shrink-0">
                                 <img 
                                     :src="brandSettings.brand_logo_preview || brandSettings.brand_logo_url" 
                                     alt="Brand Logo" 
-                                    class="preview-image"
-                                >
+                                    class="h-20 w-auto rounded-lg border border-gray-200 shadow-sm"
+                                />
                             </div>
                         </div>
                     </div>
 
                     <!-- Favicon -->
-                    <div class="form-group">
-                        <label class="form-label">Favicon</label>
-                        <div class="file-upload-container">
-                            <div class="file-upload-area">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-3">Favicon</label>
+                        <div class="flex flex-col sm:flex-row gap-4 items-start">
+                            <div class="flex-1">
                                 <input 
                                     type="file" 
                                     @change="handleFaviconUpload"
                                     accept="image/*,.ico"
-                                    class="file-input"
-                                    id="favicon-upload"
                                     :disabled="!isEditing"
-                                >
+                                    class="hidden"
+                                    id="favicon-upload"
+                                />
                                 <label 
                                     for="favicon-upload" 
-                                    class="file-upload-label"
-                                    :class="{ 'disabled': !isEditing }"
+                                    :class="['w-full px-4 py-8 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer transition text-center', isEditing ? 'hover:border-purple-500 hover:bg-purple-50' : 'opacity-50 cursor-not-allowed']"
                                 >
-                                    <svg class="upload-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg class="w-8 h-8 mx-auto mb-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                                     </svg>
-                                    <span class="upload-text">Choose Favicon</span>
+                                    <span class="text-sm font-medium text-gray-600">Choose Favicon</span>
+                                    <p class="text-xs text-gray-500 mt-1">Recommended: 32x32px, Max: 512KB</p>
                                 </label>
-                                <p class="file-hint">Recommended: 32x32px, Max: 512KB</p>
                             </div>
-                            <div v-if="brandSettings.favicon_preview || brandSettings.favicon_url" class="preview-container">
+                            <div v-if="brandSettings.favicon_preview || brandSettings.favicon_url" class="flex-shrink-0">
                                 <img 
                                     :src="brandSettings.favicon_preview || brandSettings.favicon_url" 
                                     alt="Favicon" 
-                                    class="preview-image-small"
-                                >
+                                    class="h-12 w-12 rounded-lg border border-gray-200 shadow-sm"
+                                />
                             </div>
-                        </div>
-                    </div>
-
-                    <!-- Contact Information -->
-                    <div class="form-group">
-                        <label class="form-label">Address</label>
-                        <textarea 
-                            v-model="brandSettings.address" 
-                            rows="3" 
-                            class="form-textarea" 
-                            placeholder="Enter institute address"
-                            :disabled="!isEditing"
-                        ></textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Email Address</label>
-                        <input 
-                            type="email" 
-                            v-model="brandSettings.email" 
-                            class="form-input" 
-                            placeholder="info@skpythonclasses.com"
-                            :disabled="!isEditing"
-                        >
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Phone Number</label>
-                        <input 
-                            type="tel" 
-                            v-model="brandSettings.phone" 
-                            class="form-input" 
-                            placeholder="+91 98765 43210"
-                            :disabled="!isEditing"
-                        >
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">WhatsApp Number</label>
-                        <input 
-                            type="tel" 
-                            v-model="brandSettings.whatsapp" 
-                            class="form-input" 
-                            placeholder="+91 98765 43210"
-                            :disabled="!isEditing"
-                        >
-                    </div>
-
-                    <!-- Social Media Links -->
-                    <div class="form-group">
-                        <label class="form-label">Social Media Links</label>
-                        <div class="social-grid">
-                            <div class="social-field">
-                                <label class="social-label">Instagram</label>
-                                <input 
-                                    type="url" 
-                                    v-model="brandSettings.instagram" 
-                                    class="form-input" 
-                                    placeholder="https://instagram.com/yourpage"
-                                    :disabled="!isEditing"
-                                >
-                            </div>
-                            <div class="social-field">
-                                <label class="social-label">Facebook</label>
-                                <input 
-                                    type="url" 
-                                    v-model="brandSettings.facebook" 
-                                    class="form-input" 
-                                    placeholder="https://facebook.com/yourpage"
-                                    :disabled="!isEditing"
-                                >
-                            </div>
-                            <div class="social-field">
-                                <label class="social-label">YouTube</label>
-                                <input 
-                                    type="url" 
-                                    v-model="brandSettings.youtube" 
-                                    class="form-input" 
-                                    placeholder="https://youtube.com/@yourchannel"
-                                    :disabled="!isEditing"
-                                >
-                            </div>
-                            <div class="social-field">
-                                <label class="social-label">Twitter</label>
-                                <input 
-                                    type="url" 
-                                    v-model="brandSettings.twitter" 
-                                    class="form-input" 
-                                    placeholder="https://twitter.com/yourhandle"
-                                    :disabled="!isEditing"
-                                >
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Success/Error Messages -->
-                    <div v-if="brandSettingsMessage" :class="brandSettingsMessageType === 'success' ? 'alert-success' : 'alert-error'" class="alert">
-                        {{ brandSettingsMessage }}
-                    </div>
-
-                    <!-- Edit/Save Button -->
-                    <div class="form-actions">
-                        <button 
-                            v-if="!isEditing"
-                            type="button"
-                            @click="enableEditing"
-                            class="btn-primary"
-                        >
-                            Edit Settings
-                        </button>
-                        <div v-else class="flex gap-3">
-                            <button 
-                                type="button"
-                                @click="cancelEditing"
-                                class="btn-secondary"
-                            >
-                                Cancel
-                            </button>
-                            <button 
-                                type="submit" 
-                                :disabled="brandSettingsLoading"
-                                class="btn-primary"
-                            >
-                                <span v-if="!brandSettingsLoading">Save Changes</span>
-                                <span v-else class="loading-state">
-                                    <svg class="spinner" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                    </svg>
-                                    Saving...
-                                </span>
-                            </button>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
 
+        <!-- Contact Information Section -->
+        <div class="bg-white rounded-2xl shadow-lg overflow-hidden mb-6">
+            <div class="bg-gradient-to-r from-red-500 via-pink-500 to-purple-600 p-5">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold text-white">Contact Information</h2>
+                        <p class="text-white/90 text-sm">Address, email, and phone details</p>
+                    </div>
+                </div>
+            </div>
+            <div class="p-6">
+                <form @submit.prevent="saveBrandSettings" class="space-y-6">
+                    <!-- Address -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-3">Address</label>
+                        <textarea 
+                            v-model="brandSettings.address" 
+                            rows="3" 
+                            :disabled="!isEditing"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent disabled:bg-gray-100 resize-vertical"
+                            placeholder="Enter institute address"
+                        ></textarea>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Email -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-3">Email Address</label>
+                            <input 
+                                type="email" 
+                                v-model="brandSettings.email" 
+                                :disabled="!isEditing"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent disabled:bg-gray-100"
+                                placeholder="info@skpythonclasses.com"
+                            />
+                        </div>
+
+                        <!-- Phone -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-3">Phone Number</label>
+                            <input 
+                                type="tel" 
+                                v-model="brandSettings.phone" 
+                                :disabled="!isEditing"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent disabled:bg-gray-100"
+                                placeholder="+91 98765 43210"
+                            />
+                        </div>
+                    </div>
+
+                    <!-- WhatsApp -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-3">WhatsApp Number</label>
+                        <input 
+                            type="tel" 
+                            v-model="brandSettings.whatsapp" 
+                            :disabled="!isEditing"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent disabled:bg-gray-100"
+                            placeholder="+91 98765 43210"
+                        />
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Social Media Links Section -->
+        <div class="bg-white rounded-2xl shadow-lg overflow-hidden mb-6">
+            <div class="bg-gradient-to-r from-red-500 via-pink-500 to-purple-600 p-5">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold text-white">Social Media Links</h2>
+                        <p class="text-white/90 text-sm">Connect your social media profiles</p>
+                    </div>
+                </div>
+            </div>
+            <div class="p-6">
+                <form @submit.prevent="saveBrandSettings" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Instagram -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-3 flex items-center space-x-2">
+                                <svg class="w-5 h-5 text-pink-600" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                                </svg>
+                                <span>Instagram</span>
+                            </label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <svg class="w-5 h-5 text-pink-600" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                                    </svg>
+                                </div>
+                                <input 
+                                    type="url" 
+                                    v-model="brandSettings.instagram" 
+                                    :disabled="!isEditing"
+                                    class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent disabled:bg-gray-100"
+                                    placeholder="https://instagram.com/yourpage"
+                                />
+                            </div>
+                        </div>
+
+                        <!-- Facebook -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-3 flex items-center space-x-2">
+                                <svg class="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                                </svg>
+                                <span>Facebook</span>
+                            </label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <svg class="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                                    </svg>
+                                </div>
+                                <input 
+                                    type="url" 
+                                    v-model="brandSettings.facebook" 
+                                    :disabled="!isEditing"
+                                    class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent disabled:bg-gray-100"
+                                    placeholder="https://facebook.com/yourpage"
+                                />
+                            </div>
+                        </div>
+
+                        <!-- YouTube -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-3 flex items-center space-x-2">
+                                <svg class="w-5 h-5 text-red-600" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                                </svg>
+                                <span>YouTube</span>
+                            </label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <svg class="w-5 h-5 text-red-600" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                                    </svg>
+                                </div>
+                                <input 
+                                    type="url" 
+                                    v-model="brandSettings.youtube" 
+                                    :disabled="!isEditing"
+                                    class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent disabled:bg-gray-100"
+                                    placeholder="https://youtube.com/@yourchannel"
+                                />
+                            </div>
+                        </div>
+
+                        <!-- Twitter -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-3 flex items-center space-x-2">
+                                <svg class="w-5 h-5 text-blue-400" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                                </svg>
+                                <span>Twitter</span>
+                            </label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <svg class="w-5 h-5 text-blue-400" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                                    </svg>
+                                </div>
+                                <input 
+                                    type="url" 
+                                    v-model="brandSettings.twitter" 
+                                    :disabled="!isEditing"
+                                    class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent disabled:bg-gray-100"
+                                    placeholder="https://twitter.com/yourhandle"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="px-6 pb-6 flex justify-end space-x-3">
+                <button
+                    @click="cancelEditing"
+                    v-if="isEditing"
+                    class="bg-gray-600 hover:bg-gray-700 text-white px-6 py-2.5 rounded-xl font-medium transition flex items-center space-x-2"
+                >
+                    <span>Cancel</span>
+                </button>
+                <button
+                    @click="saveBrandSettings"
+                    :disabled="brandSettingsLoading || !isEditing"
+                    class="bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700 text-white px-6 py-2.5 rounded-xl font-medium transition flex items-center space-x-2 disabled:opacity-50"
+                >
+                    <svg v-if="!brandSettingsLoading" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span v-if="brandSettingsLoading">Saving...</span>
+                    <span v-else>Save Changes</span>
+                </button>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -269,20 +390,7 @@ export default {
         const brandSettingsMessage = ref('');
         const brandSettingsMessageType = ref('success');
         const isEditing = ref(false);
-        const originalSettings = ref({
-            brand_name: '',
-            tagline: '',
-            brand_logo_url: null,
-            favicon_url: null,
-            address: '',
-            email: '',
-            phone: '',
-            whatsapp: '',
-            instagram: '',
-            facebook: '',
-            youtube: '',
-            twitter: ''
-        });
+        const originalSettings = ref({});
 
         const fetchBrandSettings = async () => {
             try {
@@ -307,47 +415,16 @@ export default {
                         youtube: settings.youtube || '',
                         twitter: settings.twitter || ''
                     };
-                    // Save original values
-                    originalSettings.value = {
-                        brand_name: brandSettings.value.brand_name,
-                        tagline: brandSettings.value.tagline,
-                        brand_logo_url: brandSettings.value.brand_logo_url,
-                        favicon_url: brandSettings.value.favicon_url,
-                        address: brandSettings.value.address,
-                        email: brandSettings.value.email,
-                        phone: brandSettings.value.phone,
-                        whatsapp: brandSettings.value.whatsapp,
-                        instagram: brandSettings.value.instagram,
-                        facebook: brandSettings.value.facebook,
-                        youtube: brandSettings.value.youtube,
-                        twitter: brandSettings.value.twitter
-                    };
+                    originalSettings.value = { ...brandSettings.value };
                 }
             } catch (error) {
                 console.error('Error fetching brand settings:', error);
             }
         };
 
-        const enableEditing = () => {
-            isEditing.value = true;
-            brandSettingsMessage.value = '';
-        };
-
         const cancelEditing = () => {
             isEditing.value = false;
-            // Restore original values
-            brandSettings.value.brand_name = originalSettings.value.brand_name;
-            brandSettings.value.tagline = originalSettings.value.tagline;
-            brandSettings.value.brand_logo_url = originalSettings.value.brand_logo_url;
-            brandSettings.value.favicon_url = originalSettings.value.favicon_url;
-            brandSettings.value.address = originalSettings.value.address;
-            brandSettings.value.email = originalSettings.value.email;
-            brandSettings.value.phone = originalSettings.value.phone;
-            brandSettings.value.whatsapp = originalSettings.value.whatsapp;
-            brandSettings.value.instagram = originalSettings.value.instagram;
-            brandSettings.value.facebook = originalSettings.value.facebook;
-            brandSettings.value.youtube = originalSettings.value.youtube;
-            brandSettings.value.twitter = originalSettings.value.twitter;
+            brandSettings.value = { ...originalSettings.value };
             brandSettings.value.brand_logo_preview = null;
             brandSettings.value.favicon_preview = null;
             brandSettings.value.brand_logo = null;
@@ -380,6 +457,8 @@ export default {
         };
 
         const saveBrandSettings = async () => {
+            if (!isEditing.value) return;
+            
             brandSettingsLoading.value = true;
             brandSettingsMessage.value = '';
 
@@ -423,26 +502,13 @@ export default {
                         brandSettings.value.favicon_preview = null;
                     }
                     
-                    // Update original settings
-                    originalSettings.value = {
-                        brand_name: brandSettings.value.brand_name,
-                        tagline: brandSettings.value.tagline,
-                        brand_logo_url: brandSettings.value.brand_logo_url,
-                        favicon_url: brandSettings.value.favicon_url,
-                        address: brandSettings.value.address,
-                        email: brandSettings.value.email,
-                        phone: brandSettings.value.phone,
-                        whatsapp: brandSettings.value.whatsapp,
-                        instagram: brandSettings.value.instagram,
-                        facebook: brandSettings.value.facebook,
-                        youtube: brandSettings.value.youtube,
-                        twitter: brandSettings.value.twitter
-                    };
-                    
-                    // Disable editing mode
+                    originalSettings.value = { ...brandSettings.value };
                     isEditing.value = false;
-                    
                     updateFavicon();
+                    
+                    setTimeout(() => {
+                        brandSettingsMessage.value = '';
+                    }, 3000);
                 }
             } catch (error) {
                 brandSettingsMessage.value = error.response?.data?.message || 'Error saving brand settings';
@@ -475,7 +541,6 @@ export default {
             handleLogoUpload,
             handleFaviconUpload,
             saveBrandSettings,
-            enableEditing,
             cancelEditing
         };
     }
@@ -483,476 +548,5 @@ export default {
 </script>
 
 <style scoped>
-.admin-settings {
-    max-width: 100%;
-    width: 100%;
-    overflow-x: hidden;
-    box-sizing: border-box;
-}
-
-.settings-section {
-    margin-bottom: 1.5rem;
-}
-
-.section-header {
-    margin-bottom: 1rem;
-}
-
-.section-title {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: #1d1d1f;
-    margin-bottom: 0.25rem;
-    letter-spacing: -0.02em;
-}
-
-.section-description {
-    font-size: 0.875rem;
-    color: #86868b;
-    line-height: 1.5;
-    margin-top: 0.25rem;
-}
-
-@media (min-width: 640px) {
-    .section-title {
-        font-size: 1.75rem;
-    }
-    
-    .section-description {
-        font-size: 0.9375rem;
-    }
-}
-
-.settings-card {
-    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
-    border-radius: 18px;
-    padding: 1rem;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(255, 107, 0, 0.1);
-    border: 1px solid rgba(255, 107, 0, 0.1);
-    transition: all 0.3s ease;
-}
-
-@media (min-width: 640px) {
-    .settings-section {
-        margin-bottom: 2rem;
-    }
-    
-    .section-header {
-        margin-bottom: 1.5rem;
-    }
-    
-    .section-title {
-        font-size: 1.5rem;
-    }
-    
-    .section-description {
-        font-size: 0.9375rem;
-    }
-    
-    .settings-card {
-        padding: 2rem;
-    }
-}
-
-.settings-card:hover {
-    box-shadow: 0 8px 30px rgba(255, 107, 0, 0.15), 0 0 0 1px rgba(255, 107, 0, 0.2);
-    transform: translateY(-2px);
-}
-
-.form-group {
-    margin-bottom: 1.5rem;
-}
-
-.form-label {
-    display: block;
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: #1d1d1f;
-    margin-bottom: 0.5rem;
-    letter-spacing: -0.01em;
-}
-
-.form-input,
-.form-textarea {
-    width: 100%;
-    padding: 0.875rem 1rem;
-    font-size: 1rem;
-    color: #1d1d1f;
-    background: #f5f5f7;
-    border: 1px solid transparent;
-    border-radius: 12px;
-    transition: all 0.2s ease;
-    outline: none;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-}
-
-.form-input:focus,
-.form-textarea:focus {
-    background: #ffffff;
-    border-color: #ff6b00;
-    box-shadow: 0 0 0 4px rgba(255, 107, 0, 0.15);
-}
-
-.form-textarea {
-    resize: vertical;
-    min-height: 100px;
-}
-
-.form-hint {
-    font-size: 0.8125rem;
-    color: #86868b;
-    margin-top: 0.5rem;
-    line-height: 1.4;
-}
-
-.file-upload-container {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    align-items: flex-start;
-}
-
-@media (min-width: 640px) {
-    .file-upload-container {
-        flex-direction: row;
-        gap: 1.5rem;
-    }
-}
-
-.file-upload-area {
-    flex: 1;
-}
-
-.file-input {
-    display: none;
-}
-
-.file-upload-label {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
-    background: #f5f5f7;
-    border: 2px dashed #d2d2d7;
-    border-radius: 12px;
-    cursor: pointer;
-    color: #ff6b00;
-    transition: all 0.2s ease;
-    min-height: 120px;
-}
-
-.file-upload-label:hover {
-    background: linear-gradient(135deg, #fff5f0 0%, #ffe8e0 100%);
-    border-color: #ff6b00;
-}
-
-.upload-icon {
-    width: 2rem;
-    height: 2rem;
-    color: #ff6b00;
-    margin-bottom: 0.5rem;
-}
-
-.upload-text {
-    font-size: 0.9375rem;
-    font-weight: 500;
-    color: #ff6b00;
-    margin-bottom: 0.25rem;
-}
-
-.file-hint {
-    font-size: 0.75rem;
-    color: #86868b;
-    text-align: center;
-}
-
-.preview-container {
-    flex-shrink: 0;
-}
-
-.preview-image {
-    height: 80px;
-    width: auto;
-    border-radius: 10px;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.preview-image-small {
-    height: 48px;
-    width: 48px;
-    border-radius: 10px;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.alert {
-    padding: 1rem 1.25rem;
-    border-radius: 12px;
-    font-size: 0.9375rem;
-    line-height: 1.5;
-}
-
-.alert-success {
-    background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
-    color: #155724;
-    border: 1px solid #28a745;
-    box-shadow: 0 2px 10px rgba(40, 167, 69, 0.2);
-}
-
-.alert-error {
-    background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
-    color: #721c24;
-    border: 1px solid #dc3545;
-    box-shadow: 0 2px 10px rgba(220, 53, 69, 0.2);
-}
-
-.form-actions {
-    display: flex;
-    flex-direction: column-reverse;
-    gap: 0.75rem;
-    margin-top: 1.5rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid rgba(0, 0, 0, 0.05);
-}
-
-@media (min-width: 640px) {
-    .form-actions {
-        flex-direction: row;
-        justify-content: flex-end;
-        gap: 0;
-        margin-top: 2rem;
-    }
-}
-
-.btn-primary {
-    padding: 0.75rem 1.5rem;
-    font-size: 0.9375rem;
-    font-weight: 500;
-    color: #ffffff;
-    background: linear-gradient(135deg, #ff6b00 0%, #ff4757 50%, #ff6348 100%);
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    letter-spacing: -0.01em;
-    box-shadow: 0 4px 15px rgba(255, 107, 0, 0.3);
-    width: 100%;
-}
-
-@media (min-width: 640px) {
-    .btn-primary {
-        padding: 0.75rem 2rem;
-        font-size: 1rem;
-        width: auto;
-    }
-}
-
-.btn-primary:hover:not(:disabled) {
-    background: linear-gradient(135deg, #ff5722 0%, #e63946 50%, #ff4757 100%);
-    box-shadow: 0 6px 20px rgba(255, 107, 0, 0.4);
-    transform: translateY(-2px);
-}
-
-.btn-primary:active:not(:disabled) {
-    transform: translateY(0);
-}
-
-.btn-primary:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-}
-
-.btn-secondary {
-    padding: 0.75rem 1.5rem;
-    font-size: 0.9375rem;
-    font-weight: 500;
-    color: #1d1d1f;
-    background: #f5f5f7;
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    letter-spacing: -0.01em;
-    width: 100%;
-}
-
-@media (min-width: 640px) {
-    .btn-secondary {
-        padding: 0.75rem 2rem;
-        font-size: 1rem;
-        width: auto;
-    }
-}
-
-.btn-secondary:hover {
-    background: #e8e8ed;
-    transform: translateY(-1px);
-}
-
-.btn-secondary:active {
-    transform: translateY(0);
-}
-
-.form-input:disabled,
-.form-textarea:disabled {
-    background: #f5f5f7;
-    color: #86868b;
-    cursor: not-allowed;
-    opacity: 0.7;
-}
-
-.file-upload-label.disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    pointer-events: none;
-}
-
-.loading-state {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.spinner {
-    width: 1rem;
-    height: 1rem;
-    animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-.toggle-group {
-    margin-top: 1rem;
-}
-
-.toggle-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1rem 0;
-}
-
-.toggle-content {
-    flex: 1;
-    margin-right: 1rem;
-}
-
-.toggle-title {
-    font-size: 1rem;
-    font-weight: 500;
-    color: #1d1d1f;
-    margin-bottom: 0.25rem;
-    letter-spacing: -0.01em;
-}
-
-.toggle-description {
-    font-size: 0.875rem;
-    color: #86868b;
-    line-height: 1.4;
-}
-
-.toggle-switch {
-    position: relative;
-    display: inline-block;
-    width: 51px;
-    height: 31px;
-    flex-shrink: 0;
-}
-
-.toggle-input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-
-.toggle-slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #d2d2d7;
-    transition: 0.3s;
-    border-radius: 31px;
-}
-
-.toggle-slider:before {
-    position: absolute;
-    content: "";
-    height: 27px;
-    width: 27px;
-    left: 2px;
-    bottom: 2px;
-    background-color: white;
-    transition: 0.3s;
-    border-radius: 50%;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-.toggle-input:checked + .toggle-slider {
-    background-color: #007aff;
-}
-
-.toggle-input:checked + .toggle-slider:before {
-    transform: translateX(20px);
-}
-
-.toggle-input:focus + .toggle-slider {
-    box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.1);
-}
-
-.divider {
-    height: 1px;
-    background: rgba(0, 0, 0, 0.05);
-    margin: 0.5rem 0;
-}
-
-.social-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1rem;
-}
-
-@media (min-width: 640px) {
-    .social-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-.social-field {
-    display: flex;
-    flex-direction: column;
-}
-
-.social-label {
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: #1d1d1f;
-    margin-bottom: 0.5rem;
-    letter-spacing: -0.01em;
-}
-
-@media (max-width: 768px) {
-    .social-grid {
-        grid-template-columns: 1fr;
-    }
-}
+/* Additional styles if needed */
 </style>

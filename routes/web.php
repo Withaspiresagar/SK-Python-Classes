@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BrandSettingsController;
 use App\Http\Controllers\AdminManagementController;
+use App\Http\Controllers\UISettingsController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -19,6 +20,9 @@ Route::get('/api/user', [AuthController::class, 'user'])->middleware('auth');
 
 Route::get('/api/brand-settings', [BrandSettingsController::class, 'index']);
 Route::post('/api/brand-settings', [BrandSettingsController::class, 'update'])->middleware('auth');
+
+Route::get('/api/ui-settings', [UISettingsController::class, 'index'])->middleware('auth');
+Route::post('/api/ui-settings', [UISettingsController::class, 'update'])->middleware('auth');
 
 // Admin Management Routes
 Route::middleware(['auth', 'admin'])->group(function () {

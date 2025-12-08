@@ -3,6 +3,7 @@ import AdminPanel from '../components/AdminPanel.vue';
 import Dashboard from '../components/admin/Dashboard.vue';
 import AdminManagement from '../components/admin/AdminManagement.vue';
 import AdminSettings from '../components/AdminSettings.vue';
+import UISettings from '../components/admin/UISettings.vue';
 import Students from '../components/admin/Students.vue';
 import Courses from '../components/admin/Courses.vue';
 import LiveClasses from '../components/admin/LiveClasses.vue';
@@ -70,6 +71,12 @@ const routes = [
                 name: 'admin.management',
                 component: AdminManagement,
                 meta: { title: 'Admin Management', subtitle: 'Manage admin users' }
+            },
+            {
+                path: 'ui-settings',
+                name: 'admin.ui-settings',
+                component: UISettings,
+                meta: { title: 'UI Settings', subtitle: 'Customize appearance and theme' }
             },
             {
                 path: 'settings',
