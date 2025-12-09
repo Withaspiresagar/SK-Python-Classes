@@ -15,9 +15,18 @@ Route::get('/login', function () {
     return view('login');
 });
 
+Route::get('/forgot-password', function () {
+    return view('forgot-password');
+});
+
 Route::post('/api/login', [AuthController::class, 'login']);
 Route::post('/api/logout', [AuthController::class, 'logout'])->middleware('auth');
 Route::get('/api/user', [AuthController::class, 'user'])->middleware('auth');
+
+// Password Reset Routes
+Route::post('/api/forgot-password/send-otp', [AuthController::class, 'sendOTP']);
+Route::post('/api/forgot-password/verify-otp', [AuthController::class, 'verifyOTP']);
+Route::post('/api/forgot-password/reset', [AuthController::class, 'resetPassword']);
 
 Route::get('/api/brand-settings', [BrandSettingsController::class, 'index']);
 Route::post('/api/brand-settings', [BrandSettingsController::class, 'update'])->middleware('auth');
@@ -39,6 +48,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/api/students/{id}', [StudentsController::class, 'show']);
     Route::post('/api/students', [StudentsController::class, 'store']);
     Route::put('/api/students/{id}', [StudentsController::class, 'update']);
+    Route::put('/api/students/{id}/toggle-status', [StudentsController::class, 'toggleStatus']);
     Route::delete('/api/students/{id}', [StudentsController::class, 'destroy']);
 });
 

@@ -1,14 +1,182 @@
 <template>
-    <div class="w-full overflow-hidden">
-        <div class="bg-gradient-to-br from-white to-gray-50 rounded-xl shadow-lg p-4 sm:p-6 border border-gray-100 overflow-hidden">
-            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 sm:mb-6 gap-3">
-                <div class="flex-1"></div>
+    <div class="w-full overflow-hidden space-y-6">
+        <!-- Stats Cards Section -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+            <div class="stat-card bg-gradient-to-br from-green-500 to-emerald-500 rounded-2xl shadow-xl p-6 text-white transform hover:scale-105 transition-all duration-300 border border-green-400/20">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <div class="text-3xl sm:text-4xl font-bold mb-1">{{ stats.totalStudents }}</div>
+                        <div class="text-green-100 text-sm sm:text-base font-medium">Total Students</div>
+                    </div>
+                    <div class="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stat-card bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl shadow-xl p-6 text-white transform hover:scale-105 transition-all duration-300 border border-blue-400/20">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <div class="text-3xl sm:text-4xl font-bold mb-1">{{ stats.activeStudents }}</div>
+                        <div class="text-blue-100 text-sm sm:text-base font-medium">Active Students</div>
+                    </div>
+                    <div class="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stat-card bg-gradient-to-br from-gray-500 to-gray-600 rounded-2xl shadow-xl p-6 text-white transform hover:scale-105 transition-all duration-300 border border-gray-400/20">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <div class="text-3xl sm:text-4xl font-bold mb-1">{{ stats.inactiveStudents }}</div>
+                        <div class="text-gray-100 text-sm sm:text-base font-medium">Inactive Students</div>
+                    </div>
+                    <div class="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stat-card bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl shadow-xl p-6 text-white transform hover:scale-105 transition-all duration-300 border border-purple-400/20">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <div class="text-3xl sm:text-4xl font-bold mb-1">{{ stats.newThisMonth }}</div>
+                        <div class="text-purple-100 text-sm sm:text-base font-medium">New This Month</div>
+                    </div>
+                    <div class="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filters and Search Section -->
+        <div class="bg-gradient-to-br from-white to-gray-50 rounded-2xl shadow-xl p-4 sm:p-6 border border-gray-100">
+            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6">
+                <div class="flex-1">
+                    <h2 class="text-xl sm:text-2xl font-bold text-gray-800 mb-2">Students Management</h2>
+                    <p class="text-gray-600 text-sm">Manage and search all student records</p>
+                </div>
                 <button 
                     @click="openAddModal"
-                    class="bg-gradient-to-r from-green-500 to-emerald-500 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-xl hover:from-green-600 hover:to-emerald-600 transition font-medium shadow-lg shadow-green-500/30 transform hover:scale-105 text-sm sm:text-base w-full sm:w-auto whitespace-nowrap"
+                    class="bg-gradient-to-r from-green-500 to-emerald-500 text-white px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl hover:from-green-600 hover:to-emerald-600 transition font-medium shadow-lg shadow-green-500/30 transform hover:scale-105 text-sm sm:text-base whitespace-nowrap flex items-center justify-center"
                 >
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                    </svg>
                     Add New Student
                 </button>
+            </div>
+
+            <!-- Search and Filters -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                <!-- Search Input -->
+                <div class="lg:col-span-2">
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Search Students</label>
+                    <div class="relative">
+                        <input
+                            v-model="filters.search"
+                            type="text"
+                            placeholder="Search by name, email, or phone..."
+                            class="w-full px-4 py-2.5 pl-11 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500/50 focus:border-green-500 outline-none transition-all duration-300 bg-white"
+                        />
+                        <svg class="absolute left-3.5 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Status Filter -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Status</label>
+                    <select
+                        v-model="filters.status"
+                        class="w-full px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500/50 focus:border-green-500 outline-none transition-all duration-300 bg-white"
+                    >
+                        <option value="">All Status</option>
+                        <option value="active">Active</option>
+                        <option value="inactive">Inactive</option>
+                    </select>
+                </div>
+
+                <!-- Sort By -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Sort By</label>
+                    <select
+                        v-model="filters.sortBy"
+                        class="w-full px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500/50 focus:border-green-500 outline-none transition-all duration-300 bg-white"
+                    >
+                        <option value="created_at">Newest First</option>
+                        <option value="name">Name (A-Z)</option>
+                        <option value="email">Email</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Quick Filter Buttons -->
+            <div class="flex flex-wrap gap-2 mb-6">
+                <button
+                    @click="filters.status = ''; filters.search = ''"
+                    :class="filters.status === '' && filters.search === '' 
+                        ? 'bg-gradient-to-r from-green-500 to-emerald-500 text-white' 
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
+                    class="px-4 py-2 rounded-lg text-sm font-medium transition"
+                >
+                    All Students
+                </button>
+                <button
+                    @click="filters.status = 'active'"
+                    :class="filters.status === 'active' 
+                        ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white' 
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
+                    class="px-4 py-2 rounded-lg text-sm font-medium transition"
+                >
+                    Active Only
+                </button>
+                <button
+                    @click="filters.status = 'inactive'"
+                    :class="filters.status === 'inactive' 
+                        ? 'bg-gradient-to-r from-gray-500 to-gray-600 text-white' 
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
+                    class="px-4 py-2 rounded-lg text-sm font-medium transition"
+                >
+                    Inactive Only
+                </button>
+                <button
+                    @click="clearFilters"
+                    class="px-4 py-2 rounded-lg text-sm font-medium transition bg-gray-100 text-gray-700 hover:bg-gray-200"
+                >
+                    Clear Filters
+                </button>
+            </div>
+        </div>
+
+        <!-- Students Table Section -->
+        <div class="bg-gradient-to-br from-white to-gray-50 rounded-2xl shadow-xl p-4 sm:p-6 border border-gray-100 overflow-hidden">
+            <div class="flex items-center justify-between mb-4">
+                <div class="text-sm text-gray-600">
+                    Showing <span class="font-semibold text-gray-900">{{ filteredStudents.length }}</span> of <span class="font-semibold text-gray-900">{{ students.length }}</span> students
+                </div>
+                <div class="flex items-center space-x-2">
+                    <button
+                        @click="exportStudents"
+                        class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-sm font-medium transition"
+                    >
+                        <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        Export
+                    </button>
+                </div>
             </div>
             
             <div class="overflow-x-auto -mx-4 sm:mx-0 lg:mx-0 w-full">
@@ -16,25 +184,36 @@
                     <table class="w-full divide-y divide-gray-200 table-auto">
                         <thead class="bg-gradient-to-r from-green-50 to-emerald-50">
                             <tr>
-                                <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">ID</th>
+                                <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">#</th>
                                 <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">Name</th>
                                 <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">Email</th>
                                 <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">Phone</th>
                                 <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">Date of Birth</th>
+                                <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">Status</th>
                                 <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">Created At</th>
                                 <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">Actions</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-200">
-                            <tr v-for="student in students" :key="student.id" class="hover:bg-gradient-to-r hover:from-green-50/50 hover:to-emerald-50/50 transition">
-                                <td class="px-4 py-3 text-sm font-medium text-gray-900">{{ student.id }}</td>
+                            <tr v-for="(student, index) in filteredStudents" :key="student.id" class="hover:bg-gradient-to-r hover:from-green-50/50 hover:to-emerald-50/50 transition">
+                                <td class="px-4 py-3 text-sm font-medium text-gray-900">{{ getStudentNumber(index) }}</td>
                                 <td class="px-4 py-3 text-sm font-medium text-gray-900">{{ student.name }}</td>
                                 <td class="px-4 py-3 text-sm text-gray-600">{{ student.email }}</td>
                                 <td class="px-4 py-3 text-sm text-gray-600">{{ student.phone || 'N/A' }}</td>
                                 <td class="px-4 py-3 text-sm text-gray-600">{{ formatDate(student.date_of_birth) || 'N/A' }}</td>
+                                <td class="px-4 py-3">
+                                    <span 
+                                        :class="student.status === 'active' 
+                                            ? 'bg-gradient-to-r from-green-400 to-emerald-400 text-white' 
+                                            : 'bg-gradient-to-r from-gray-400 to-gray-500 text-white'"
+                                        class="px-3 py-1 rounded-full text-xs font-medium shadow-sm"
+                                    >
+                                        {{ student.status === 'active' ? 'Active' : 'Inactive' }}
+                                    </span>
+                                </td>
                                 <td class="px-4 py-3 text-sm text-gray-600">{{ formatDate(student.created_at) }}</td>
                                 <td class="px-4 py-3">
-                                    <div class="flex space-x-2">
+                                    <div class="flex flex-wrap gap-2">
                                         <button 
                                             @click="viewStudent(student.id)"
                                             class="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-3 py-1 rounded-lg hover:from-blue-600 hover:to-cyan-600 text-sm font-medium shadow-sm transition"
@@ -48,6 +227,15 @@
                                             Edit
                                         </button>
                                         <button 
+                                            @click="toggleStudentStatus(student.id)"
+                                            :class="student.status === 'active'
+                                                ? 'bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600'
+                                                : 'bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600'"
+                                            class="text-white px-3 py-1 rounded-lg text-sm font-medium shadow-sm transition"
+                                        >
+                                            {{ student.status === 'active' ? 'Deactivate' : 'Activate' }}
+                                        </button>
+                                        <button 
                                             @click="deleteStudent(student.id)"
                                             class="bg-gradient-to-r from-red-500 to-pink-500 text-white px-3 py-1 rounded-lg hover:from-red-600 hover:to-pink-600 text-sm font-medium shadow-sm transition"
                                         >
@@ -56,9 +244,22 @@
                                     </div>
                                 </td>
                             </tr>
-                            <tr v-if="students.length === 0">
-                                <td colspan="7" class="px-4 py-8 text-center text-gray-500">
-                                    No students found. Click "Add New Student" to create one.
+                            <tr v-if="filteredStudents.length === 0">
+                                <td colspan="8" class="px-4 py-12 text-center">
+                                    <div class="flex flex-col items-center">
+                                        <svg class="w-16 h-16 text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                                        </svg>
+                                        <p class="text-gray-500 font-medium text-lg mb-2">No students found</p>
+                                        <p class="text-gray-400 text-sm mb-4">{{ filters.search || filters.status ? 'Try adjusting your filters' : 'Click "Add New Student" to create one' }}</p>
+                                        <button 
+                                            v-if="!filters.search && !filters.status"
+                                            @click="openAddModal"
+                                            class="bg-gradient-to-r from-green-500 to-emerald-500 text-white px-6 py-2 rounded-lg hover:from-green-600 hover:to-emerald-600 transition font-medium"
+                                        >
+                                            Add First Student
+                                        </button>
+                                    </div>
                                 </td>
                             </tr>
                         </tbody>
@@ -68,7 +269,7 @@
         </div>
 
         <!-- Add/Edit Modal -->
-        <div v-if="showModal" class="fixed inset-0 bg-black bg-opacity-60 backdrop-blur-sm flex items-start justify-center z-50 p-3 sm:p-4 overflow-y-auto" @click.self="closeModal" style="min-height: 100vh;">
+        <div v-if="showModal" class="fixed inset-0 bg-black/70 backdrop-blur-md flex items-start justify-center z-50 p-3 sm:p-4 overflow-y-auto" @click.self="closeModal" style="min-height: 100vh;">
             <div class="bg-gradient-to-br from-white via-green-50/30 to-emerald-50/30 rounded-2xl shadow-2xl w-full max-w-lg border border-green-100 transform transition-all my-4 sm:my-8 max-w-[calc(100vw-1.5rem)] flex flex-col max-h-[calc(100vh-2rem)]">
                 <!-- Header -->
                 <div class="relative bg-gradient-to-r from-green-500 via-emerald-500 to-green-500 rounded-t-2xl p-4 sm:p-6 flex-shrink-0">
@@ -272,72 +473,121 @@
         </div>
 
         <!-- View Modal -->
-        <div v-if="showViewModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-3 sm:p-4 overflow-y-auto overflow-x-hidden" @click.self="closeViewModal">
-            <div class="bg-white rounded-xl shadow-2xl p-4 sm:p-6 w-full max-w-md my-4 max-w-[calc(100vw-1.5rem)]">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">Student Details</h3>
-                    <button @click="closeViewModal" class="text-gray-400 hover:text-gray-600">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
+        <div v-if="showViewModal" class="fixed inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center z-50 p-3 sm:p-4 overflow-y-auto" @click.self="closeViewModal">
+            <div class="bg-gradient-to-br from-white via-green-50/30 to-emerald-50/30 rounded-2xl shadow-2xl w-full max-w-lg border border-green-100 transform transition-all my-4 sm:my-8 max-w-[calc(100vw-1.5rem)]">
+                <!-- Header -->
+                <div class="relative bg-gradient-to-r from-green-500 via-emerald-500 to-green-500 rounded-t-2xl p-4 sm:p-6">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-3 flex-1 min-w-0">
+                            <div class="w-12 h-12 sm:w-14 sm:h-14 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center flex-shrink-0">
+                                <svg class="w-6 h-6 sm:w-7 sm:h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                </svg>
+                            </div>
+                            <div class="min-w-0 flex-1">
+                                <h3 class="text-lg sm:text-2xl font-bold text-white truncate">Student Details</h3>
+                                <p class="text-green-100 text-xs sm:text-sm mt-0.5 hidden sm:block">View complete student information</p>
+                            </div>
+                        </div>
+                        <button @click="closeViewModal" class="w-8 h-8 sm:w-10 sm:h-10 bg-white/20 hover:bg-white/30 rounded-lg flex items-center justify-center transition backdrop-blur-sm flex-shrink-0">
+                            <svg class="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
                 </div>
 
-                <div v-if="viewStudentData" class="space-y-4">
-                    <div class="flex items-center space-x-3 p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg">
-                        <div class="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                <!-- Content -->
+                <div v-if="viewStudentData" class="p-4 sm:p-6 space-y-6">
+                    <!-- Profile Section -->
+                    <div class="flex items-center space-x-4 p-5 bg-gradient-to-r from-green-50 via-emerald-50 to-green-50 rounded-xl border border-green-100 shadow-sm">
+                        <div class="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-green-500 to-emerald-500 rounded-full flex items-center justify-center text-white font-bold text-2xl sm:text-3xl shadow-lg">
                             {{ viewStudentData.name.charAt(0).toUpperCase() }}
                         </div>
-                        <div>
-                            <p class="font-semibold text-gray-900">{{ viewStudentData.name }}</p>
-                            <p class="text-sm text-gray-600">{{ viewStudentData.email }}</p>
+                        <div class="flex-1 min-w-0">
+                            <h4 class="text-lg sm:text-xl font-bold text-gray-900 truncate">{{ viewStudentData.name }}</h4>
+                            <p class="text-sm sm:text-base text-gray-600 truncate mt-1">{{ viewStudentData.email }}</p>
+                            <div class="flex items-center gap-2 mt-2">
+                                <span 
+                                    :class="viewStudentData.status === 'active' 
+                                        ? 'bg-gradient-to-r from-green-400 to-emerald-400 text-white' 
+                                        : 'bg-gradient-to-r from-gray-400 to-gray-500 text-white'"
+                                    class="px-3 py-1 rounded-full text-xs font-medium shadow-sm"
+                                >
+                                    {{ viewStudentData.status === 'active' ? 'Active' : 'Inactive' }}
+                                </span>
+                                <span class="bg-gradient-to-r from-blue-400 to-cyan-400 text-white px-3 py-1 rounded-full text-xs font-medium shadow-sm">
+                                    {{ viewStudentData.role }}
+                                </span>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="space-y-3">
-                        <div class="flex justify-between py-2 border-b border-gray-200">
-                            <span class="text-gray-600 font-medium">ID:</span>
-                            <span class="text-gray-900 font-semibold">{{ viewStudentData.id }}</span>
+                    <!-- Details Grid -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="bg-white rounded-xl p-4 border border-gray-200 shadow-sm hover:shadow-md transition">
+                            <div class="flex items-center space-x-2 mb-2">
+                                <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                                </svg>
+                                <span class="text-xs font-semibold text-gray-500 uppercase tracking-wide">ID</span>
+                            </div>
+                            <p class="text-lg font-bold text-gray-900">{{ viewStudentData.id }}</p>
                         </div>
-                        <div class="flex justify-between py-2 border-b border-gray-200">
-                            <span class="text-gray-600 font-medium">Name:</span>
-                            <span class="text-gray-900 font-semibold">{{ viewStudentData.name }}</span>
+
+                        <div class="bg-white rounded-xl p-4 border border-gray-200 shadow-sm hover:shadow-md transition">
+                            <div class="flex items-center space-x-2 mb-2">
+                                <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                                </svg>
+                                <span class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Phone</span>
+                            </div>
+                            <p class="text-lg font-bold text-gray-900">{{ viewStudentData.phone || 'N/A' }}</p>
                         </div>
-                        <div class="flex justify-between py-2 border-b border-gray-200">
-                            <span class="text-gray-600 font-medium">Email:</span>
-                            <span class="text-gray-900 font-semibold">{{ viewStudentData.email }}</span>
+
+                        <div class="bg-white rounded-xl p-4 border border-gray-200 shadow-sm hover:shadow-md transition">
+                            <div class="flex items-center space-x-2 mb-2">
+                                <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                                <span class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Date of Birth</span>
+                            </div>
+                            <p class="text-lg font-bold text-gray-900">{{ formatDate(viewStudentData.date_of_birth) || 'N/A' }}</p>
                         </div>
-                        <div class="flex justify-between py-2 border-b border-gray-200">
-                            <span class="text-gray-600 font-medium">Phone:</span>
-                            <span class="text-gray-900 font-semibold">{{ viewStudentData.phone || 'N/A' }}</span>
+
+                        <div class="bg-white rounded-xl p-4 border border-gray-200 shadow-sm hover:shadow-md transition">
+                            <div class="flex items-center space-x-2 mb-2">
+                                <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                                <span class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Created</span>
+                            </div>
+                            <p class="text-lg font-bold text-gray-900">{{ formatDate(viewStudentData.created_at) }}</p>
                         </div>
-                        <div class="flex justify-between py-2 border-b border-gray-200">
-                            <span class="text-gray-600 font-medium">Date of Birth:</span>
-                            <span class="text-gray-900 font-semibold">{{ formatDate(viewStudentData.date_of_birth) || 'N/A' }}</span>
+                    </div>
+
+                    <!-- Additional Info -->
+                    <div class="bg-white rounded-xl p-4 border border-gray-200 shadow-sm">
+                        <div class="flex items-center space-x-2 mb-3">
+                            <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <span class="text-sm font-semibold text-gray-700">Last Updated</span>
                         </div>
-                        <div class="flex justify-between py-2 border-b border-gray-200">
-                            <span class="text-gray-600 font-medium">Role:</span>
-                            <span class="bg-gradient-to-r from-green-400 to-emerald-400 text-white px-3 py-1 rounded-full text-xs font-medium">
-                                {{ viewStudentData.role }}
-                            </span>
-                        </div>
-                        <div class="flex justify-between py-2 border-b border-gray-200">
-                            <span class="text-gray-600 font-medium">Created At:</span>
-                            <span class="text-gray-900 font-semibold">{{ formatDate(viewStudentData.created_at) }}</span>
-                        </div>
-                        <div class="flex justify-between py-2">
-                            <span class="text-gray-600 font-medium">Last Updated:</span>
-                            <span class="text-gray-900 font-semibold">{{ formatDate(viewStudentData.updated_at) }}</span>
-                        </div>
+                        <p class="text-base text-gray-900">{{ formatDate(viewStudentData.updated_at) }}</p>
                     </div>
                 </div>
 
-                <div class="flex justify-end space-x-3 mt-6">
+                <!-- Footer -->
+                <div class="flex justify-end space-x-3 p-4 sm:p-6 pt-0 border-t border-gray-200">
                     <button 
                         @click="closeViewModal"
-                        class="px-4 py-2 bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-lg hover:from-green-600 hover:to-emerald-600 transition shadow-lg"
+                        class="px-6 py-2.5 bg-gradient-to-r from-green-500 via-emerald-500 to-green-500 text-white rounded-xl hover:from-green-600 hover:via-emerald-600 hover:to-green-600 transition font-medium shadow-lg shadow-green-500/30 transform hover:scale-105 active:scale-95 flex items-center space-x-2"
                     >
-                        Close
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                        <span>Close</span>
                     </button>
                 </div>
             </div>
@@ -346,7 +596,7 @@
 </template>
 
 <script>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import axios from 'axios';
 
 export default {
@@ -362,6 +612,19 @@ export default {
         const currentStudentId = ref(null);
         const viewStudentData = ref(null);
 
+        const filters = ref({
+            search: '',
+            status: '',
+            sortBy: 'created_at'
+        });
+
+        const stats = ref({
+            totalStudents: 0,
+            activeStudents: 0,
+            inactiveStudents: 0,
+            newThisMonth: 0
+        });
+
         const form = ref({
             name: '',
             email: '',
@@ -371,16 +634,96 @@ export default {
             password: ''
         });
 
+        // Computed filtered students
+        const filteredStudents = computed(() => {
+            let filtered = [...students.value];
+
+            // Search filter
+            if (filters.value.search) {
+                const searchTerm = filters.value.search.toLowerCase();
+                filtered = filtered.filter(student => 
+                    student.name.toLowerCase().includes(searchTerm) ||
+                    student.email.toLowerCase().includes(searchTerm) ||
+                    (student.phone && student.phone.includes(searchTerm))
+                );
+            }
+
+            // Status filter
+            if (filters.value.status) {
+                filtered = filtered.filter(student => student.status === filters.value.status);
+            }
+
+            // Sort
+            filtered.sort((a, b) => {
+                if (filters.value.sortBy === 'name') {
+                    return a.name.localeCompare(b.name);
+                } else if (filters.value.sortBy === 'email') {
+                    return a.email.localeCompare(b.email);
+                } else {
+                    return new Date(b.created_at) - new Date(a.created_at);
+                }
+            });
+
+            return filtered;
+        });
+
+        // Update stats
+        const updateStats = () => {
+            stats.value = {
+                totalStudents: students.value.length,
+                activeStudents: students.value.filter(s => s.status === 'active').length,
+                inactiveStudents: students.value.filter(s => s.status === 'inactive').length,
+                newThisMonth: students.value.filter(s => {
+                    const created = new Date(s.created_at);
+                    const now = new Date();
+                    return created.getMonth() === now.getMonth() && created.getFullYear() === now.getFullYear();
+                }).length
+            };
+        };
+
         const fetchStudents = async () => {
             try {
                 const response = await axios.get('/api/students');
                 if (response.data.success) {
                     students.value = response.data.students;
+                    updateStats();
                 }
             } catch (err) {
                 console.error('Error fetching students:', err);
                 error.value = 'Failed to fetch students';
             }
+        };
+
+        const clearFilters = () => {
+            filters.value = {
+                search: '',
+                status: '',
+                sortBy: 'created_at'
+            };
+        };
+
+        const exportStudents = () => {
+            // Simple CSV export
+            const csvContent = [
+                ['ID', 'Name', 'Email', 'Phone', 'Date of Birth', 'Status', 'Created At'],
+                ...filteredStudents.value.map(s => [
+                    s.id,
+                    s.name,
+                    s.email,
+                    s.phone || 'N/A',
+                    s.date_of_birth || 'N/A',
+                    s.status,
+                    s.created_at
+                ])
+            ].map(row => row.join(',')).join('\n');
+
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `students_${new Date().toISOString().split('T')[0]}.csv`;
+            a.click();
+            window.URL.revokeObjectURL(url);
         };
 
         const openAddModal = () => {
@@ -493,6 +836,19 @@ export default {
             }
         };
 
+        const toggleStudentStatus = async (id) => {
+            try {
+                const response = await axios.put(`/api/students/${id}/toggle-status`);
+                if (response.data.success) {
+                    await fetchStudents();
+                } else {
+                    alert(response.data.message || 'Failed to update student status');
+                }
+            } catch (err) {
+                alert(err.response?.data?.message || 'Failed to update student status');
+            }
+        };
+
         const deleteStudent = async (id) => {
             if (!confirm('Are you sure you want to delete this student?')) {
                 return;
@@ -546,12 +902,20 @@ export default {
             });
         };
 
+        const getStudentNumber = (index) => {
+            // Return sequential number starting from 1
+            return index + 1;
+        };
+
         onMounted(() => {
             fetchStudents();
         });
 
         return {
             students,
+            filteredStudents,
+            stats,
+            filters,
             showModal,
             showViewModal,
             modalMode,
@@ -564,11 +928,15 @@ export default {
             editStudent,
             viewStudent,
             saveStudent,
+            toggleStudentStatus,
             deleteStudent,
             onPasswordTypeChange,
             closeModal,
             closeViewModal,
-            formatDate
+            formatDate,
+            clearFilters,
+            exportStudents,
+            getStudentNumber
         };
     }
 };

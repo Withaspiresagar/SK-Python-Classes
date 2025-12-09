@@ -10,6 +10,7 @@ export default defineConfig({
                 'resources/css/app.css', 
                 'resources/js/app.js',
                 'resources/js/login.js',
+                'resources/js/forgot-password.js',
                 'resources/js/admin-panel.js'
             ],
             refresh: true,

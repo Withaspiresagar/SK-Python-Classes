@@ -130,7 +130,7 @@
                                 </label>
                             </div>
                         </div>
-                        <a href="#" class="text-xs sm:text-sm font-semibold text-blue-600 hover:text-blue-700 transition-colors duration-200 hover:underline">
+                        <a href="/forgot-password" class="text-xs sm:text-sm font-semibold text-blue-600 hover:text-blue-700 transition-colors duration-200 hover:underline">
                             Forgot password?
                         </a>
                     </div>

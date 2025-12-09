@@ -17,7 +17,7 @@ class StudentsController extends Controller
     public function index()
     {
         $students = User::where('role', 'student')
-            ->select('id', 'name', 'email', 'phone', 'date_of_birth', 'role', 'created_at')
+            ->select('id', 'name', 'email', 'phone', 'date_of_birth', 'role', 'status', 'created_at')
             ->orderBy('created_at', 'desc')
             ->get();
 
@@ -34,7 +34,7 @@ class StudentsController extends Controller
     {
         $student = User::where('role', 'student')
             ->where('id', $id)
-            ->select('id', 'name', 'email', 'phone', 'date_of_birth', 'role', 'created_at', 'updated_at')
+            ->select('id', 'name', 'email', 'phone', 'date_of_birth', 'role', 'status', 'created_at', 'updated_at')
             ->first();
 
         if (!$student) {
@@ -88,6 +88,7 @@ class StudentsController extends Controller
             'date_of_birth' => $request->date_of_birth,
             'password' => $password,
             'role' => 'student',
+            'status' => 'active',
         ]);
 
         // Send email with password if email type was selected
@@ -119,6 +120,7 @@ class StudentsController extends Controller
                 'phone' => $student->phone,
                 'date_of_birth' => $student->date_of_birth,
                 'role' => $student->role,
+                'status' => $student->status,
                 'created_at' => $student->created_at,
             ]
         ], 201);
@@ -166,7 +168,37 @@ class StudentsController extends Controller
                 'phone' => $student->phone,
                 'date_of_birth' => $student->date_of_birth,
                 'role' => $student->role,
+                'status' => $student->status,
                 'created_at' => $student->created_at,
+            ]
+        ]);
+    }
+
+    /**
+     * Toggle student status (active/inactive)
+     */
+    public function toggleStatus($id)
+    {
+        $student = User::where('role', 'student')->find($id);
+
+        if (!$student) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Student not found'
+            ], 404);
+        }
+
+        $student->status = $student->status === 'active' ? 'inactive' : 'active';
+        $student->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Student status updated successfully',
+            'student' => [
+                'id' => $student->id,
+                'name' => $student->name,
+                'email' => $student->email,
+                'status' => $student->status,
             ]
         ]);
     }
