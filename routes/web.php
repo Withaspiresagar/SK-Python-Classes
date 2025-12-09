@@ -6,6 +6,8 @@ use App\Http\Controllers\BrandSettingsController;
 use App\Http\Controllers\AdminManagementController;
 use App\Http\Controllers\UISettingsController;
 use App\Http\Controllers\StudentsController;
+use App\Http\Controllers\CoursesController;
+use App\Http\Controllers\LiveClassesController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -50,6 +52,22 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::put('/api/students/{id}', [StudentsController::class, 'update']);
     Route::put('/api/students/{id}/toggle-status', [StudentsController::class, 'toggleStatus']);
     Route::delete('/api/students/{id}', [StudentsController::class, 'destroy']);
+    
+    // Courses Management Routes
+    Route::get('/api/courses', [CoursesController::class, 'index']);
+    Route::get('/api/courses/{id}', [CoursesController::class, 'show']);
+    Route::post('/api/courses', [CoursesController::class, 'store']);
+    Route::put('/api/courses/{id}', [CoursesController::class, 'update']);
+    Route::put('/api/courses/{id}/toggle-status', [CoursesController::class, 'toggleStatus']);
+    Route::delete('/api/courses/{id}', [CoursesController::class, 'destroy']);
+    
+    // Live Classes Management Routes
+    Route::get('/api/live-classes', [LiveClassesController::class, 'index']);
+    Route::get('/api/live-classes/{id}', [LiveClassesController::class, 'show']);
+    Route::post('/api/live-classes', [LiveClassesController::class, 'store']);
+    Route::put('/api/live-classes/{id}', [LiveClassesController::class, 'update']);
+    Route::put('/api/live-classes/{id}/status', [LiveClassesController::class, 'updateStatus']);
+    Route::delete('/api/live-classes/{id}', [LiveClassesController::class, 'destroy']);
 });
 
 Route::get('/admin-panel', function () {
