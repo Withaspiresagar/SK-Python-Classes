@@ -2,7 +2,7 @@
     <div class="w-full overflow-hidden">
         <!-- Main Header -->
         <div class="bg-gradient-to-r from-red-500 via-pink-500 to-purple-600 rounded-2xl p-6 mb-6 shadow-xl">
-            <div class="flex items-center justify-between">
+            <div class="flex items-center justify-between flex-col sm:flex-row gap-4">
                 <div class="flex items-center space-x-4">
                     <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
                         <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -10,25 +10,15 @@
                         </svg>
                     </div>
                     <div>
-                        <h1 class="text-3xl font-bold text-white">UI Settings</h1>
+                        <h1 class="text-2xl sm:text-3xl font-bold text-white">UI Settings</h1>
                         <p class="text-white/90 text-sm mt-1">Customize your website's appearance and design</p>
                     </div>
                 </div>
-                <div class="flex items-center space-x-3">
-                    <button
-                        @click="resetToDefault"
-                        :disabled="loading"
-                        class="bg-purple-500/80 hover:bg-purple-600 text-white px-5 py-2.5 rounded-xl font-medium transition flex items-center space-x-2 disabled:opacity-50"
-                    >
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                        </svg>
-                        <span>Reset to Default</span>
-                    </button>
+                <div class="flex items-center space-x-3 w-full sm:w-auto">
                     <button
                         @click="isEditing = !isEditing"
                         :disabled="loading"
-                        class="bg-white text-purple-600 hover:bg-gray-50 px-5 py-2.5 rounded-xl font-medium transition flex items-center space-x-2 disabled:opacity-50"
+                        class="bg-white text-purple-600 hover:bg-gray-50 px-4 sm:px-5 py-2.5 rounded-xl font-medium transition flex items-center space-x-2 disabled:opacity-50 w-full sm:w-auto justify-center"
                     >
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -341,24 +331,22 @@
             </div>
             <div class="px-6 pb-6 flex justify-end space-x-3">
                 <button
-                    @click="resetToDefault"
-                    :disabled="loading || !isEditing"
-                    class="bg-gray-600 hover:bg-gray-700 text-white px-6 py-2.5 rounded-xl font-medium transition flex items-center space-x-2 disabled:opacity-50"
+                    @click="cancelEditing"
+                    v-if="isEditing"
+                    class="bg-gray-600 hover:bg-gray-700 text-white px-6 py-2.5 rounded-xl font-medium transition flex items-center space-x-2"
                 >
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                    </svg>
-                    <span>Reset to Default</span>
+                    <span>Cancel</span>
                 </button>
                 <button
                     @click="saveSettings"
                     :disabled="loading || !isEditing"
                     class="bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700 text-white px-6 py-2.5 rounded-xl font-medium transition flex items-center space-x-2 disabled:opacity-50"
                 >
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                    <svg v-if="!loading" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                     </svg>
-                    <span>Edit UI Settings</span>
+                    <span v-if="loading">Saving...</span>
+                    <span v-else>Save Changes</span>
                 </button>
             </div>
         </div>
@@ -441,6 +429,12 @@ export default {
             }
         };
 
+        const cancelEditing = () => {
+            isEditing.value = false;
+            fetchUISettings();
+            message.value = '';
+        };
+
         const resetToDefault = async () => {
             if (!confirm('Are you sure you want to reset all settings to default values?')) {
                 return;
@@ -482,7 +476,8 @@ export default {
             message,
             messageType,
             saveSettings,
-            resetToDefault
+            resetToDefault,
+            cancelEditing
         };
     }
 };

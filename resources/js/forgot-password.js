@@ -5,3 +5,4 @@ import ForgotPasswordPage from './components/ForgotPasswordPage.vue';
 const app = createApp(ForgotPasswordPage);
 app.mount('#app');
 
+
