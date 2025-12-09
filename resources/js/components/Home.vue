@@ -3,90 +3,180 @@
         <Header />
         
         <!-- Hero Section -->
-        <section id="home" class="hero-section bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-20">
-            <div class="container mx-auto px-4 text-center">
-                <h1 class="text-5xl font-bold mb-4">SK Python Classes</h1>
-                <p class="text-xl mb-8">Master Python Programming with Expert Guidance</p>
-                <div class="flex gap-4 justify-center">
-                    <button class="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition">
-                        Enroll Now
-                    </button>
-                    <button class="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition">
-                        Learn More
-                    </button>
-                </div>
+        <section id="home" class="hero-section relative overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-br from-blue-600 via-indigo-700 to-purple-800"></div>
+            <div class="absolute inset-0 opacity-20">
+                <div class="absolute top-20 left-10 w-72 h-72 bg-blue-400 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
+                <div class="absolute top-40 right-10 w-72 h-72 bg-purple-400 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
+                <div class="absolute -bottom-8 left-1/2 w-72 h-72 bg-pink-400 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
             </div>
-        </section>
-
-        <!-- About Section -->
-        <section id="about" class="about-section py-16 bg-gray-50">
-            <div class="container mx-auto px-4">
-                <div class="text-center mb-12">
-                    <h2 class="text-4xl font-bold text-gray-800 mb-4">About SK Python Classes</h2>
-                    <p class="text-gray-600 max-w-2xl mx-auto">
-                        We are a premier coaching institute dedicated to teaching Python programming 
-                        from basics to advanced levels. Our expert instructors provide hands-on training 
-                        and real-world project experience.
+            <div class="container mx-auto px-4 py-32 md:py-40 relative z-10">
+                <div class="text-center fade-in-up">
+                    <h1 class="text-5xl md:text-7xl font-bold mb-6 text-white leading-tight">
+                        Master Python
+                        <span class="bg-gradient-to-r from-yellow-300 to-pink-300 bg-clip-text text-transparent"> Programming</span>
+                    </h1>
+                    <p class="text-xl md:text-2xl text-gray-200 mb-8 max-w-2xl mx-auto">
+                        Learn from industry experts and build your career in tech with hands-on training
                     </p>
-                </div>
-                <div class="grid md:grid-cols-3 gap-8 mt-12">
-                    <div class="bg-white p-6 rounded-lg shadow-md text-center">
-                        <div class="text-4xl mb-4">📚</div>
-                        <h3 class="text-xl font-semibold mb-2">Expert Instructors</h3>
-                        <p class="text-gray-600">Learn from industry professionals with years of experience</p>
-                    </div>
-                    <div class="bg-white p-6 rounded-lg shadow-md text-center">
-                        <div class="text-4xl mb-4">💻</div>
-                        <h3 class="text-xl font-semibold mb-2">Hands-on Projects</h3>
-                        <p class="text-gray-600">Build real-world applications and enhance your portfolio</p>
-                    </div>
-                    <div class="bg-white p-6 rounded-lg shadow-md text-center">
-                        <div class="text-4xl mb-4">🎯</div>
-                        <h3 class="text-xl font-semibold mb-2">Career Support</h3>
-                        <p class="text-gray-600">Get placement assistance and career guidance</p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                        <router-link 
+                            to="/courses"
+                            class="px-8 py-4 bg-white text-blue-600 rounded-lg font-semibold text-lg hover:bg-gray-100 transform hover:scale-105 transition-all duration-300 shadow-xl"
+                        >
+                            Explore Courses
+                        </router-link>
+                        <router-link 
+                            to="/contact"
+                            class="px-8 py-4 border-2 border-white text-white rounded-lg font-semibold text-lg hover:bg-white hover:text-blue-600 transform hover:scale-105 transition-all duration-300"
+                        >
+                            Get In Touch
+                        </router-link>
                     </div>
                 </div>
             </div>
+            <div class="absolute bottom-0 left-0 right-0">
+                <svg class="w-full h-16 text-white" fill="currentColor" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                    <path d="M0,0 C300,100 600,50 900,70 C1050,80 1150,60 1200,50 L1200,120 L0,120 Z"></path>
+                </svg>
+            </div>
         </section>
 
-        <!-- Courses Section -->
-        <section id="courses" class="courses-section py-16">
+        <!-- Stats Section -->
+        <section class="stats-section py-16 bg-white">
             <div class="container mx-auto px-4">
-                <h2 class="text-4xl font-bold text-center mb-12 text-gray-800">Our Courses</h2>
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
                     <div 
-                        v-for="course in courses" 
-                        :key="course.id"
-                        class="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-lg transition"
+                        v-for="(stat, index) in stats" 
+                        :key="index"
+                        class="stat-card"
+                        :class="index % 2 === 0 ? 'fade-in-left' : 'fade-in-right'"
                     >
-                        <h3 class="text-2xl font-semibold mb-3 text-blue-600">{{ course.name }}</h3>
-                        <p class="text-gray-600 mb-4">{{ course.description }}</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-lg font-bold text-gray-800">₹{{ course.price }}</span>
-                            <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
-                                Enroll
-                            </button>
+                        <div class="text-center p-6 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+                            <div class="text-4xl md:text-5xl font-bold text-blue-600 mb-2">{{ stat.value }}</div>
+                            <div class="text-sm md:text-base text-gray-600 font-semibold">{{ stat.label }}</div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Why Choose Us Section -->
-        <section id="features" class="why-choose-section py-16 bg-blue-50">
+        <!-- About Section -->
+        <section id="about" class="about-section py-20 bg-gradient-to-b from-white to-gray-50">
             <div class="container mx-auto px-4">
-                <h2 class="text-4xl font-bold text-center mb-12 text-gray-800">Why Choose SK Python Classes?</h2>
-                <div class="grid md:grid-cols-2 gap-8">
+                <div class="text-center mb-16 fade-in-up">
+                    <h2 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
+                        About <span class="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">SK Python Classes</span>
+                    </h2>
+                    <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+                        We are a premier coaching institute dedicated to teaching Python programming 
+                        from basics to advanced levels. Our expert instructors provide hands-on training 
+                        and real-world project experience.
+                    </p>
+                </div>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div 
+                        v-for="(feature, index) in aboutFeatures" 
+                        :key="index"
+                        class="feature-card"
+                        :class="index % 3 === 0 ? 'fade-in-left' : index % 3 === 1 ? 'fade-in-up' : 'fade-in-right'"
+                    >
+                        <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100">
+                            <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center mb-6 mx-auto">
+                                <div class="text-3xl">{{ feature.icon }}</div>
+                            </div>
+                            <h3 class="text-xl font-bold mb-3 text-center text-gray-800">{{ feature.title }}</h3>
+                            <p class="text-gray-600 text-center">{{ feature.description }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Courses Section -->
+        <section id="courses" class="courses-section py-20 bg-white">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-16 fade-in-up">
+                    <h2 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
+                        Our <span class="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">Courses</span>
+                    </h2>
+                    <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                        Choose from our comprehensive range of Python courses designed for all skill levels
+                    </p>
+                </div>
+                <div v-if="loading" class="text-center py-12">
+                    <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+                </div>
+                <div v-else class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div 
+                        v-for="(course, index) in courses" 
+                        :key="course.id"
+                        class="course-card"
+                        :class="index % 3 === 0 ? 'fade-in-left' : index % 3 === 1 ? 'fade-in-up' : 'fade-in-right'"
+                    >
+                        <div class="bg-white border-2 border-gray-100 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 group">
+                            <div class="h-48 bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center relative overflow-hidden">
+                                <div class="absolute inset-0 bg-black opacity-0 group-hover:opacity-10 transition-opacity"></div>
+                                <div class="text-6xl text-white opacity-80">🐍</div>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="text-2xl font-bold mb-3 text-gray-800 group-hover:text-blue-600 transition-colors">{{ course.name }}</h3>
+                                <p class="text-gray-600 mb-4 line-clamp-3">{{ course.description }}</p>
+                                <div class="flex items-center justify-between mb-4">
+                                    <span class="text-2xl font-bold text-blue-600">₹{{ course.price }}</span>
+                                    <span v-if="course.duration_hours" class="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
+                                        {{ course.duration_hours }}h
+                                    </span>
+                                </div>
+                                <router-link 
+                                    to="/courses"
+                                    class="block w-full text-center bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 transform hover:scale-105"
+                                >
+                                    View Details
+                                </router-link>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div v-if="!loading && courses.length === 0" class="text-center py-12">
+                    <p class="text-gray-600 text-lg">No courses available at the moment.</p>
+                </div>
+                <div v-if="!loading && courses.length > 0" class="text-center mt-12 fade-in-up">
+                    <router-link 
+                        to="/courses"
+                        class="inline-block px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg font-semibold text-lg hover:from-blue-700 hover:to-indigo-700 transform hover:scale-105 transition-all duration-300 shadow-lg"
+                    >
+                        View All Courses
+                    </router-link>
+                </div>
+            </div>
+        </section>
+
+        <!-- Why Choose Us Section -->
+        <section id="features" class="why-choose-section py-20 bg-gradient-to-b from-gray-50 to-white">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-16 fade-in-up">
+                    <h2 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
+                        Why Choose <span class="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">Us?</span>
+                    </h2>
+                    <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                        We provide the best learning experience with industry-leading features
+                    </p>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                     <div 
                         v-for="(feature, index) in features" 
                         :key="index"
-                        class="bg-white p-6 rounded-lg shadow-md"
+                        class="feature-card"
+                        :class="index % 3 === 0 ? 'fade-in-left' : index % 3 === 1 ? 'fade-in-up' : 'fade-in-right'"
                     >
-                        <div class="flex items-start">
-                            <div class="text-3xl mr-4">{{ feature.icon }}</div>
-                            <div>
-                                <h3 class="text-xl font-semibold mb-2">{{ feature.title }}</h3>
-                                <p class="text-gray-600">{{ feature.description }}</p>
+                        <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border-l-4 border-blue-600">
+                            <div class="flex items-start">
+                                <div class="text-4xl mr-4 flex-shrink-0">{{ feature.icon }}</div>
+                                <div>
+                                    <h3 class="text-xl font-bold mb-3 text-gray-800">{{ feature.title }}</h3>
+                                    <p class="text-gray-600 leading-relaxed">{{ feature.description }}</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -94,12 +184,41 @@
             </div>
         </section>
 
+        <!-- CTA Section -->
+        <section class="cta-section py-20 bg-gradient-to-r from-blue-600 via-indigo-700 to-purple-800 text-white relative overflow-hidden">
+            <div class="absolute inset-0 opacity-10">
+                <div class="absolute top-0 left-0 w-96 h-96 bg-white rounded-full mix-blend-multiply filter blur-3xl"></div>
+                <div class="absolute bottom-0 right-0 w-96 h-96 bg-white rounded-full mix-blend-multiply filter blur-3xl"></div>
+            </div>
+            <div class="container mx-auto px-4 text-center relative z-10 fade-in-up">
+                <h2 class="text-4xl md:text-5xl font-bold mb-6">Ready to Start Your Journey?</h2>
+                <p class="text-xl text-gray-200 mb-8 max-w-2xl mx-auto">
+                    Join thousands of students who have transformed their careers with our Python courses
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <router-link 
+                        to="/courses"
+                        class="px-8 py-4 bg-white text-blue-600 rounded-lg font-semibold text-lg hover:bg-gray-100 transform hover:scale-105 transition-all duration-300 shadow-xl"
+                    >
+                        Browse Courses
+                    </router-link>
+                    <router-link 
+                        to="/contact"
+                        class="px-8 py-4 border-2 border-white text-white rounded-lg font-semibold text-lg hover:bg-white hover:text-blue-600 transform hover:scale-105 transition-all duration-300"
+                    >
+                        Contact Us
+                    </router-link>
+                </div>
+            </div>
+        </section>
+        
         <Footer />
     </div>
 </template>
 
 <script>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
+import axios from 'axios';
 import Header from './Header.vue';
 import Footer from './Footer.vue';
 
@@ -110,42 +229,31 @@ export default {
         Footer
     },
     setup() {
-        const courses = ref([
+        const courses = ref([]);
+        const loading = ref(true);
+
+        const stats = ref([
+            { value: '1000+', label: 'Students Enrolled' },
+            { value: '50+', label: 'Expert Instructors' },
+            { value: '100+', label: 'Courses Available' },
+            { value: '95%', label: 'Success Rate' }
+        ]);
+
+        const aboutFeatures = ref([
             {
-                id: 1,
-                name: 'Python Basics',
-                description: 'Learn Python fundamentals, syntax, and basic programming concepts.',
-                price: 5000
+                icon: '📚',
+                title: 'Expert Instructors',
+                description: 'Learn from industry professionals with years of experience'
             },
             {
-                id: 2,
-                name: 'Python Advanced',
-                description: 'Master advanced Python concepts including OOP, decorators, and generators.',
-                price: 8000
+                icon: '💻',
+                title: 'Hands-on Projects',
+                description: 'Build real-world applications and enhance your portfolio'
             },
             {
-                id: 3,
-                name: 'Django Web Development',
-                description: 'Build web applications using Django framework.',
-                price: 10000
-            },
-            {
-                id: 4,
-                name: 'Data Science with Python',
-                description: 'Learn data analysis, visualization, and machine learning with Python.',
-                price: 12000
-            },
-            {
-                id: 5,
-                name: 'Python for Automation',
-                description: 'Automate tasks and workflows using Python scripts.',
-                price: 7000
-            },
-            {
-                id: 6,
-                name: 'Full Stack Python',
-                description: 'Complete full-stack development course with Python and modern frameworks.',
-                price: 15000
+                icon: '🎯',
+                title: 'Career Support',
+                description: 'Get placement assistance and career guidance'
             }
         ]);
 
@@ -182,8 +290,54 @@ export default {
             }
         ]);
 
+        const fetchCourses = async () => {
+            try {
+                loading.value = true;
+                const response = await axios.get('/api/courses');
+                if (response.data.success) {
+                    // Get only active courses and limit to 6 for home page
+                    courses.value = response.data.courses
+                        .filter(course => course.status === 'active')
+                        .slice(0, 6);
+                }
+            } catch (error) {
+                console.error('Error fetching courses:', error);
+            } finally {
+                loading.value = false;
+            }
+        };
+
+        const setupScrollAnimations = () => {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate');
+                    }
+                });
+            }, observerOptions);
+
+            // Observe all animated elements
+            const animatedElements = document.querySelectorAll('.fade-in-up, .fade-in-left, .fade-in-right, .stat-card, .feature-card, .course-card');
+            animatedElements.forEach(el => observer.observe(el));
+        };
+
+        onMounted(() => {
+            fetchCourses();
+            setTimeout(() => {
+                setupScrollAnimations();
+            }, 100);
+        });
+
         return {
             courses,
+            loading,
+            stats,
+            aboutFeatures,
             features
         };
     }
@@ -193,15 +347,120 @@ export default {
 <style scoped>
 .home-page {
     min-height: 100vh;
-}
-
-.hero-section {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    overflow-x: hidden;
 }
 
 .container {
-    max-width: 1200px;
+    max-width: 1280px;
     margin: 0 auto;
 }
-</style>
 
+/* Hero Animations */
+@keyframes blob {
+    0%, 100% {
+        transform: translate(0, 0) scale(1);
+    }
+    33% {
+        transform: translate(30px, -50px) scale(1.1);
+    }
+    66% {
+        transform: translate(-20px, 20px) scale(0.9);
+    }
+}
+
+.animate-blob {
+    animation: blob 7s infinite;
+}
+
+.animation-delay-2000 {
+    animation-delay: 2s;
+}
+
+.animation-delay-4000 {
+    animation-delay: 4s;
+}
+
+/* Scroll Animations */
+.fade-in-up,
+.fade-in-left,
+.fade-in-right {
+    opacity: 0;
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.fade-in-up {
+    transform: translateY(30px);
+}
+
+.fade-in-left {
+    transform: translateX(-50px);
+}
+
+.fade-in-right {
+    transform: translateX(50px);
+}
+
+.fade-in-up.animate,
+.fade-in-left.animate,
+.fade-in-right.animate {
+    opacity: 1;
+    transform: translate(0, 0);
+}
+
+.stat-card,
+.feature-card,
+.course-card {
+    opacity: 0;
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.stat-card.animate,
+.feature-card.animate,
+.course-card.animate {
+    opacity: 1;
+    transform: translate(0, 0);
+}
+
+/* Line clamp utility */
+.line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Hero section initial animation */
+.hero-section .fade-in-up {
+    animation: fadeInUp 1s ease-out forwards;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .hero-section {
+        padding-top: 120px;
+        padding-bottom: 80px;
+    }
+    
+    .stat-card,
+    .feature-card,
+    .course-card {
+        transform: translateY(20px);
+    }
+    
+    .fade-in-left,
+    .fade-in-right {
+        transform: translateY(20px);
+    }
+}
+</style>
