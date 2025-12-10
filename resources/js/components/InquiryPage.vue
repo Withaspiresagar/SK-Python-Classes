@@ -13,18 +13,22 @@
                         </svg>
                     </div>
                     <h1 class="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent mb-3 sm:mb-4 px-2">
-                        Get In Touch
+                        {{ course ? `Enroll in ${course.name}` : 'Get In Touch' }}
                     </h1>
                     <p class="text-sm sm:text-base lg:text-lg text-gray-600 max-w-2xl mx-auto px-2">
-                        Have a question? We'd love to hear from you. Send us a message and we'll respond as soon as possible.
+                        {{ course ? `Fill out the form below to enroll in ${course.name}` : "Have a question? We'd love to hear from you. Send us a message and we'll respond as soon as possible." }}
                     </p>
                 </div>
 
                 <!-- Inquiry Form Card -->
                 <div class="bg-white rounded-xl sm:rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
                     <div class="bg-gradient-to-r from-indigo-500 via-purple-500 to-indigo-500 p-4 sm:p-6 lg:p-8">
-                        <h2 class="text-xl sm:text-2xl lg:text-3xl font-bold text-white mb-1 sm:mb-2">Inquiry Form</h2>
-                        <p class="text-indigo-100 text-xs sm:text-sm lg:text-base">Fill out the form below and we'll get back to you</p>
+                        <h2 class="text-xl sm:text-2xl lg:text-3xl font-bold text-white mb-1 sm:mb-2">
+                            {{ course ? `Enrollment Form - ${course.name}` : 'Inquiry Form' }}
+                        </h2>
+                        <p class="text-indigo-100 text-xs sm:text-sm lg:text-base">
+                            {{ course ? 'Fill out the form below to enroll in this course' : "Fill out the form below and we'll get back to you" }}
+                        </p>
                     </div>
 
                     <div class="p-4 sm:p-6 lg:p-8 xl:p-10">
@@ -140,10 +144,10 @@
                                     </span>
                                 </button>
                                 <router-link 
-                                    to="/"
+                                    :to="course ? '/courses' : '/'"
                                     class="w-full px-5 sm:px-6 py-3 sm:py-3.5 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg sm:rounded-xl transition font-semibold text-sm sm:text-base text-center touch-manipulation"
                                 >
-                                    Back to Home
+                                    {{ course ? 'Back to Courses' : 'Back to Home' }}
                                 </router-link>
                             </div>
                         </form>
@@ -175,8 +179,8 @@
 </template>
 
 <script>
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { ref, onMounted, watch } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
 import axios from 'axios';
 import Header from './Header.vue';
 import Footer from './Footer.vue';
@@ -191,6 +195,7 @@ export default {
     },
     setup() {
         const router = useRouter();
+        const route = useRoute();
         const form = ref({
             name: '',
             email: '',
@@ -199,11 +204,52 @@ export default {
             message: ''
         });
 
+        const course = ref(null);
         const loading = ref(false);
         const showToast = ref(false);
         const toastType = ref('success');
         const toastTitle = ref('Success');
         const toastMessage = ref('');
+
+        // Fetch course details if course ID is in query params
+        const fetchCourseDetails = async (courseId) => {
+            try {
+                const response = await axios.get(`/api/courses/${courseId}`);
+                if (response.data.success && response.data.course) {
+                    course.value = response.data.course;
+                    // Pre-fill form with course information
+                    form.value.subject = `Enrollment Inquiry for ${course.value.name}`;
+                    form.value.message = `I am interested in enrolling in the "${course.value.name}" course.\n\nCourse Details:\n- Price: ₹${course.value.price || 'N/A'}\n${course.value.duration_hours ? `- Duration: ${course.value.duration_hours} hours\n` : ''}${course.value.level ? `- Level: ${course.value.level}\n` : ''}\n\nPlease provide me with more information about enrollment.`;
+                }
+            } catch (error) {
+                console.error('Error fetching course details:', error);
+            }
+        };
+
+        // Check for course ID in route query on mount
+        onMounted(() => {
+            const courseId = route.query.course;
+            if (courseId) {
+                fetchCourseDetails(courseId);
+            }
+        });
+
+        // Watch for route changes
+        watch(() => route.query.course, (newCourseId) => {
+            if (newCourseId) {
+                fetchCourseDetails(newCourseId);
+            } else {
+                course.value = null;
+                // Reset form if no course
+                form.value = {
+                    name: '',
+                    email: '',
+                    phone: '',
+                    subject: '',
+                    message: ''
+                };
+            }
+        });
 
         const submitInquiry = async () => {
             loading.value = true;
@@ -247,6 +293,7 @@ export default {
 
         return {
             form,
+            course,
             loading,
             showToast,
             toastType,

@@ -1,7 +1,7 @@
 <template>
     <div class="w-full overflow-hidden space-y-6">
         <!-- Stats Cards Section -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             <div class="stat-card bg-gradient-to-br from-indigo-500 to-purple-500 rounded-2xl shadow-xl p-6 text-white transform hover:scale-105 transition-all duration-300 border border-indigo-400/20">
                 <div class="flex items-center justify-between mb-4">
                     <div>
@@ -39,20 +39,6 @@
                     <div class="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
                         <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
-                        </svg>
-                    </div>
-                </div>
-            </div>
-
-            <div class="stat-card bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl shadow-xl p-6 text-white transform hover:scale-105 transition-all duration-300 border border-purple-400/20">
-                <div class="flex items-center justify-between mb-4">
-                    <div>
-                        <div class="text-3xl sm:text-4xl font-bold mb-1">₹{{ formatCurrency(stats.totalRevenue) }}</div>
-                        <div class="text-purple-100 text-sm sm:text-base font-medium">Total Revenue</div>
-                    </div>
-                    <div class="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
-                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                     </div>
                 </div>
@@ -641,8 +627,7 @@ export default {
         const stats = ref({
             totalCourses: 0,
             activeCourses: 0,
-            inactiveCourses: 0,
-            totalRevenue: 0
+            inactiveCourses: 0
         });
 
         const form = ref({
@@ -695,8 +680,7 @@ export default {
             stats.value = {
                 totalCourses: courses.value.length,
                 activeCourses: courses.value.filter(c => c.status === 'active').length,
-                inactiveCourses: courses.value.filter(c => c.status === 'inactive').length,
-                totalRevenue: courses.value.reduce((sum, c) => sum + (parseFloat(c.price) || 0), 0)
+                inactiveCourses: courses.value.filter(c => c.status === 'inactive').length
             };
         };
 

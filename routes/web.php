@@ -9,6 +9,8 @@ use App\Http\Controllers\StudentsController;
 use App\Http\Controllers\CoursesController;
 use App\Http\Controllers\LiveClassesController;
 use App\Http\Controllers\QueriesController;
+use App\Http\Controllers\ReportsController;
+use App\Http\Controllers\PaymentsController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -96,6 +98,19 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/api/queries/{id}', [QueriesController::class, 'show']);
     Route::put('/api/queries/{id}/status', [QueriesController::class, 'updateStatus']);
     Route::delete('/api/queries/{id}', [QueriesController::class, 'destroy']);
+    
+    // Reports Routes (Admin only)
+    Route::get('/api/reports', [ReportsController::class, 'index']);
+    Route::get('/api/dashboard', [ReportsController::class, 'dashboard']);
+    
+    // Payments Routes (Admin only)
+    Route::get('/api/payments', [PaymentsController::class, 'index']);
+    Route::get('/api/payments/stats', [PaymentsController::class, 'stats']);
+    Route::get('/api/payments/{id}', [PaymentsController::class, 'show']);
+    Route::post('/api/payments', [PaymentsController::class, 'store']);
+    Route::put('/api/payments/{id}', [PaymentsController::class, 'update']);
+    Route::put('/api/payments/{id}/status', [PaymentsController::class, 'updateStatus']);
+    Route::delete('/api/payments/{id}', [PaymentsController::class, 'destroy']);
 });
 
 Route::get('/admin-panel', function () {

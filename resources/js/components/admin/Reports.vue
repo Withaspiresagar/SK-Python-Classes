@@ -63,8 +63,13 @@
             </div>
         </div>
 
+        <!-- Loading State -->
+        <div v-if="loading" class="flex justify-center items-center py-20">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-violet-600"></div>
+        </div>
+
         <!-- Overview Stats Cards -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+        <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
             <!-- Total Students -->
             <div class="stat-card bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl shadow-xl p-6 text-white transform hover:scale-105 transition-all duration-300 border border-blue-400/20">
                 <div class="flex items-center justify-between mb-4">
@@ -145,7 +150,7 @@
         </div>
 
         <!-- Quick Stats Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div v-if="!loading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <!-- Completion Rate -->
             <div class="bg-gradient-to-br from-white to-gray-50 rounded-2xl shadow-xl p-6 border border-gray-100 hover:shadow-2xl transition-all">
                 <div class="flex items-center justify-between mb-4">
@@ -211,7 +216,7 @@
         </div>
 
         <!-- Top Performing Courses -->
-        <div class="bg-gradient-to-br from-white to-gray-50 rounded-2xl shadow-xl p-6 border border-gray-100">
+        <div v-if="!loading" class="bg-gradient-to-br from-white to-gray-50 rounded-2xl shadow-xl p-6 border border-gray-100">
             <div class="flex items-center justify-between mb-6">
                 <div class="flex items-center space-x-3">
                     <div class="w-12 h-12 bg-gradient-to-br from-violet-500 to-purple-500 rounded-xl flex items-center justify-center">
@@ -258,7 +263,7 @@
         </div>
 
         <!-- Revenue Analytics -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div v-if="!loading" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <!-- Monthly Revenue Trend -->
             <div class="bg-gradient-to-br from-white to-gray-50 rounded-2xl shadow-xl p-6 border border-gray-100">
                 <div class="flex items-center justify-between mb-6">
@@ -325,7 +330,7 @@
         </div>
 
         <!-- Recent Activities -->
-        <div class="bg-gradient-to-br from-white to-gray-50 rounded-2xl shadow-xl p-6 border border-gray-100">
+        <div v-if="!loading" class="bg-gradient-to-br from-white to-gray-50 rounded-2xl shadow-xl p-6 border border-gray-100">
             <div class="flex items-center justify-between mb-6">
                 <div class="flex items-center space-x-3">
                     <div class="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-500 rounded-xl flex items-center justify-center">
@@ -366,7 +371,7 @@
 </template>
 
 <script>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import axios from 'axios';
 
 export default {
@@ -383,114 +388,26 @@ export default {
         ];
 
         const stats = ref({
-            totalStudents: 245,
-            newStudentsThisMonth: 23,
-            totalCourses: 18,
-            activeCourses: 15,
-            totalRevenue: 1250000,
-            revenueThisMonth: 180000,
-            totalEnrollments: 892,
-            enrollmentsThisMonth: 67,
-            completionRate: 78,
-            averageRating: 4.5,
-            totalReviews: 342,
-            activeUsers: 89,
-            activeUsersToday: 156
+            totalStudents: 0,
+            newStudentsThisMonth: 0,
+            totalCourses: 0,
+            activeCourses: 0,
+            totalRevenue: 0,
+            revenueThisMonth: 0,
+            totalEnrollments: 0,
+            enrollmentsThisMonth: 0,
+            completionRate: 0,
+            averageRating: 0,
+            totalReviews: 0,
+            activeUsers: 0,
+            activeUsersToday: 0
         });
 
-        const topCourses = ref([
-            {
-                id: 1,
-                name: 'Python Programming Masterclass',
-                enrollments: 145,
-                rating: 4.8,
-                revenue: 285000
-            },
-            {
-                id: 2,
-                name: 'Web Development Bootcamp',
-                enrollments: 132,
-                rating: 4.7,
-                revenue: 264000
-            },
-            {
-                id: 3,
-                name: 'Data Science with Python',
-                enrollments: 98,
-                rating: 4.6,
-                revenue: 196000
-            },
-            {
-                id: 4,
-                name: 'Machine Learning Fundamentals',
-                enrollments: 87,
-                rating: 4.5,
-                revenue: 174000
-            },
-            {
-                id: 5,
-                name: 'React.js Complete Guide',
-                enrollments: 76,
-                rating: 4.7,
-                revenue: 152000
-            }
-        ]);
-
-        const revenueByMonth = ref([
-            { month: 'January', amount: 185000 },
-            { month: 'February', amount: 210000 },
-            { month: 'March', amount: 195000 },
-            { month: 'April', amount: 230000 },
-            { month: 'May', amount: 250000 },
-            { month: 'June', amount: 180000 }
-        ]);
-
-        const studentsByMonth = ref([
-            { month: 'January', count: 35 },
-            { month: 'February', count: 42 },
-            { month: 'March', count: 38 },
-            { month: 'April', count: 45 },
-            { month: 'May', count: 52 },
-            { month: 'June', count: 33 }
-        ]);
-
-        const recentActivities = ref([
-            {
-                id: 1,
-                type: 'enrollment',
-                title: 'New Enrollment',
-                description: 'John Doe enrolled in Python Programming Masterclass',
-                time: '2 minutes ago'
-            },
-            {
-                id: 2,
-                type: 'payment',
-                title: 'Payment Received',
-                description: 'Payment of ₹12,000 received from Jane Smith',
-                time: '15 minutes ago'
-            },
-            {
-                id: 3,
-                type: 'course',
-                title: 'Course Updated',
-                description: 'Web Development Bootcamp course content updated',
-                time: '1 hour ago'
-            },
-            {
-                id: 4,
-                type: 'enrollment',
-                title: 'New Enrollment',
-                description: 'Sarah Johnson enrolled in Data Science with Python',
-                time: '2 hours ago'
-            },
-            {
-                id: 5,
-                type: 'notification',
-                title: 'System Alert',
-                description: 'Weekly backup completed successfully',
-                time: '3 hours ago'
-            }
-        ]);
+        const topCourses = ref([]);
+        const revenueByMonth = ref([]);
+        const studentsByMonth = ref([]);
+        const recentActivities = ref([]);
+        const loading = ref(true);
 
         const formatCurrency = (amount) => {
             if (amount >= 1000000) {
@@ -522,14 +439,35 @@ export default {
 
         const fetchReportsData = async () => {
             try {
-                // TODO: Implement API call to fetch real report data
-                // const response = await axios.get(`/api/reports?period=${selectedPeriod.value}`);
-                // Update stats, topCourses, etc. with real data
-                console.log('Fetching reports data for period:', selectedPeriod.value);
+                loading.value = true;
+                const response = await axios.get(`/api/reports?period=${selectedPeriod.value}`);
+                if (response.data.success) {
+                    // Update stats
+                    stats.value = response.data.stats;
+                    
+                    // Update top courses
+                    topCourses.value = response.data.topCourses || [];
+                    
+                    // Update revenue by month
+                    revenueByMonth.value = response.data.revenueByMonth || [];
+                    
+                    // Update students by month
+                    studentsByMonth.value = response.data.studentsByMonth || [];
+                    
+                    // Update recent activities
+                    recentActivities.value = response.data.recentActivities || [];
+                }
             } catch (err) {
                 console.error('Error fetching reports data:', err);
+            } finally {
+                loading.value = false;
             }
         };
+
+        // Watch for period changes
+        watch(selectedPeriod, () => {
+            fetchReportsData();
+        });
 
         onMounted(() => {
             fetchReportsData();
@@ -543,6 +481,7 @@ export default {
             revenueByMonth,
             studentsByMonth,
             recentActivities,
+            loading,
             formatCurrency,
             getActivityIconBg,
             exportReport

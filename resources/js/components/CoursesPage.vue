@@ -108,6 +108,7 @@
 
 <script>
 import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 import axios from 'axios';
 import Header from './Header.vue';
 import Footer from './Footer.vue';
@@ -119,6 +120,7 @@ export default {
         Footer
     },
     setup() {
+        const router = useRouter();
         const courses = ref([]);
         const loading = ref(true);
 
@@ -138,8 +140,11 @@ export default {
         };
 
         const enrollCourse = (courseId) => {
-            // TODO: Implement enrollment logic
-            alert('Enrollment feature coming soon!');
+            // Navigate to inquiry page with course ID as query parameter
+            router.push({
+                path: '/inquiry',
+                query: { course: courseId }
+            });
         };
 
         onMounted(() => {

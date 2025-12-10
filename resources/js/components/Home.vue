@@ -6,9 +6,9 @@
         <section id="home" class="hero-section relative overflow-hidden">
             <div class="absolute inset-0 bg-gradient-to-br from-blue-600 via-indigo-700 to-purple-800"></div>
             <div class="absolute inset-0 opacity-20">
-                <div class="absolute top-20 left-10 w-72 h-72 bg-blue-400 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
-                <div class="absolute top-40 right-10 w-72 h-72 bg-purple-400 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
-                <div class="absolute -bottom-8 left-1/2 w-72 h-72 bg-pink-400 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
+                <div class="absolute top-20 left-10 w-72 h-72 bg-blue-400 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob" style="contain: layout style paint;"></div>
+                <div class="absolute top-40 right-10 w-72 h-72 bg-purple-400 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000" style="contain: layout style paint;"></div>
+                <div class="absolute -bottom-8 left-1/2 w-72 h-72 bg-pink-400 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000" style="contain: layout style paint;"></div>
             </div>
             
             <!-- Slider Container -->
@@ -987,6 +987,10 @@ export default {
 .home-page {
     min-height: 100vh;
     overflow-x: hidden;
+    /* Performance optimization */
+    transform: translateZ(0);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 .container {
@@ -1045,15 +1049,15 @@ export default {
 }
 
 .fade-in-up {
-    transform: translateY(40px);
+    transform: translateY(30px);
 }
 
 .fade-in-left {
-    transform: translateX(-60px);
+    transform: translateX(-40px);
 }
 
 .fade-in-right {
-    transform: translateX(60px);
+    transform: translateX(40px);
 }
 
 .fade-in-up.animate,
@@ -1207,7 +1211,7 @@ export default {
 @keyframes fadeInUp {
     from {
         opacity: 0;
-        transform: translateY(40px);
+        transform: translateY(30px);
     }
     to {
         opacity: 1;
@@ -1216,47 +1220,47 @@ export default {
 }
 
 /* Staggered animation delays */
-.lang-card:nth-child(1) { transition-delay: 0.1s; }
-.lang-card:nth-child(2) { transition-delay: 0.2s; }
-.lang-card:nth-child(3) { transition-delay: 0.3s; }
-.lang-card:nth-child(4) { transition-delay: 0.4s; }
-.lang-card:nth-child(5) { transition-delay: 0.5s; }
-.lang-card:nth-child(6) { transition-delay: 0.6s; }
-.lang-card:nth-child(7) { transition-delay: 0.7s; }
-.lang-card:nth-child(8) { transition-delay: 0.8s; }
+.lang-card:nth-child(1) { transition-delay: 0.05s; }
+.lang-card:nth-child(2) { transition-delay: 0.1s; }
+.lang-card:nth-child(3) { transition-delay: 0.15s; }
+.lang-card:nth-child(4) { transition-delay: 0.2s; }
+.lang-card:nth-child(5) { transition-delay: 0.25s; }
+.lang-card:nth-child(6) { transition-delay: 0.3s; }
+.lang-card:nth-child(7) { transition-delay: 0.35s; }
+.lang-card:nth-child(8) { transition-delay: 0.4s; }
 
-.tech-card:nth-child(1) { transition-delay: 0.1s; }
-.tech-card:nth-child(2) { transition-delay: 0.15s; }
-.tech-card:nth-child(3) { transition-delay: 0.2s; }
-.tech-card:nth-child(4) { transition-delay: 0.25s; }
-.tech-card:nth-child(5) { transition-delay: 0.3s; }
-.tech-card:nth-child(6) { transition-delay: 0.35s; }
-.tech-card:nth-child(7) { transition-delay: 0.4s; }
-.tech-card:nth-child(8) { transition-delay: 0.45s; }
-.tech-card:nth-child(9) { transition-delay: 0.5s; }
-.tech-card:nth-child(10) { transition-delay: 0.55s; }
-.tech-card:nth-child(11) { transition-delay: 0.6s; }
-.tech-card:nth-child(12) { transition-delay: 0.65s; }
+.tech-card:nth-child(1) { transition-delay: 0.05s; }
+.tech-card:nth-child(2) { transition-delay: 0.08s; }
+.tech-card:nth-child(3) { transition-delay: 0.11s; }
+.tech-card:nth-child(4) { transition-delay: 0.14s; }
+.tech-card:nth-child(5) { transition-delay: 0.17s; }
+.tech-card:nth-child(6) { transition-delay: 0.2s; }
+.tech-card:nth-child(7) { transition-delay: 0.23s; }
+.tech-card:nth-child(8) { transition-delay: 0.26s; }
+.tech-card:nth-child(9) { transition-delay: 0.29s; }
+.tech-card:nth-child(10) { transition-delay: 0.32s; }
+.tech-card:nth-child(11) { transition-delay: 0.35s; }
+.tech-card:nth-child(12) { transition-delay: 0.38s; }
 
-.devops-card:nth-child(1) { transition-delay: 0.1s; }
-.devops-card:nth-child(2) { transition-delay: 0.15s; }
-.devops-card:nth-child(3) { transition-delay: 0.2s; }
-.devops-card:nth-child(4) { transition-delay: 0.25s; }
-.devops-card:nth-child(5) { transition-delay: 0.3s; }
-.devops-card:nth-child(6) { transition-delay: 0.35s; }
-.devops-card:nth-child(7) { transition-delay: 0.4s; }
-.devops-card:nth-child(8) { transition-delay: 0.45s; }
-.devops-card:nth-child(9) { transition-delay: 0.5s; }
-.devops-card:nth-child(10) { transition-delay: 0.55s; }
-.devops-card:nth-child(11) { transition-delay: 0.6s; }
-.devops-card:nth-child(12) { transition-delay: 0.65s; }
+.devops-card:nth-child(1) { transition-delay: 0.05s; }
+.devops-card:nth-child(2) { transition-delay: 0.08s; }
+.devops-card:nth-child(3) { transition-delay: 0.11s; }
+.devops-card:nth-child(4) { transition-delay: 0.14s; }
+.devops-card:nth-child(5) { transition-delay: 0.17s; }
+.devops-card:nth-child(6) { transition-delay: 0.2s; }
+.devops-card:nth-child(7) { transition-delay: 0.23s; }
+.devops-card:nth-child(8) { transition-delay: 0.26s; }
+.devops-card:nth-child(9) { transition-delay: 0.29s; }
+.devops-card:nth-child(10) { transition-delay: 0.32s; }
+.devops-card:nth-child(11) { transition-delay: 0.35s; }
+.devops-card:nth-child(12) { transition-delay: 0.38s; }
 
-.aiml-card:nth-child(1) { transition-delay: 0.1s; }
-.aiml-card:nth-child(2) { transition-delay: 0.2s; }
-.aiml-card:nth-child(3) { transition-delay: 0.3s; }
-.aiml-card:nth-child(4) { transition-delay: 0.4s; }
-.aiml-card:nth-child(5) { transition-delay: 0.5s; }
-.aiml-card:nth-child(6) { transition-delay: 0.6s; }
+.aiml-card:nth-child(1) { transition-delay: 0.05s; }
+.aiml-card:nth-child(2) { transition-delay: 0.1s; }
+.aiml-card:nth-child(3) { transition-delay: 0.15s; }
+.aiml-card:nth-child(4) { transition-delay: 0.2s; }
+.aiml-card:nth-child(5) { transition-delay: 0.25s; }
+.aiml-card:nth-child(6) { transition-delay: 0.3s; }
 
 /* Additional Animations */
 @keyframes float {
@@ -1358,14 +1362,19 @@ export default {
 /* Floating Animation Classes */
 .float-animation {
     animation: float 3s ease-in-out infinite;
+    will-change: transform;
+    transform: translateZ(0);
 }
 
 .float-reverse {
     animation: floatReverse 3s ease-in-out infinite;
+    will-change: transform;
+    transform: translateZ(0);
 }
 
 .pulse-glow {
     animation: pulse-glow 2s ease-in-out infinite;
+    will-change: box-shadow;
 }
 
 .rotate-slow {
@@ -1434,16 +1443,19 @@ export default {
 .devops-card:hover,
 .aiml-card:hover,
 .course-card:hover {
-    transform: translateY(-10px) scale(1.02);
+    transform: translateY(-10px) scale(1.02) translateZ(0);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform;
 }
 
 .stat-card:hover {
-    transform: scale(1.05) rotate(1deg);
+    transform: scale(1.05) rotate(1deg) translateZ(0);
+    will-change: transform;
 }
 
 .feature-card:hover {
-    transform: translateY(-8px) rotate(1deg);
+    transform: translateY(-8px) rotate(1deg) translateZ(0);
+    will-change: transform;
 }
 
 /* Glow Effects */
@@ -1473,15 +1485,17 @@ export default {
 /* Staggered Fade In */
 .stagger-fade-in {
     opacity: 0;
-    animation: fadeInUp 0.8s ease-out forwards;
+    animation: fadeInUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    will-change: opacity, transform;
+    transform: translateZ(0);
 }
 
-.stagger-fade-in:nth-child(1) { animation-delay: 0.1s; }
-.stagger-fade-in:nth-child(2) { animation-delay: 0.2s; }
-.stagger-fade-in:nth-child(3) { animation-delay: 0.3s; }
-.stagger-fade-in:nth-child(4) { animation-delay: 0.4s; }
-.stagger-fade-in:nth-child(5) { animation-delay: 0.5s; }
-.stagger-fade-in:nth-child(6) { animation-delay: 0.6s; }
+.stagger-fade-in:nth-child(1) { animation-delay: 0.05s; }
+.stagger-fade-in:nth-child(2) { animation-delay: 0.1s; }
+.stagger-fade-in:nth-child(3) { animation-delay: 0.15s; }
+.stagger-fade-in:nth-child(4) { animation-delay: 0.2s; }
+.stagger-fade-in:nth-child(5) { animation-delay: 0.25s; }
+.stagger-fade-in:nth-child(6) { animation-delay: 0.3s; }
 
 /* Button Animations */
 .hero-section button,

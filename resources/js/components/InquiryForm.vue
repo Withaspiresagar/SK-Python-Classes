@@ -12,8 +12,12 @@
                             </svg>
                         </div>
                         <div class="min-w-0 flex-1">
-                            <h3 class="text-xl sm:text-2xl font-bold text-white truncate">Inquiry Form</h3>
-                            <p class="text-indigo-100 text-xs sm:text-sm mt-0.5 hidden sm:block">We'd love to hear from you!</p>
+                            <h3 class="text-xl sm:text-2xl font-bold text-white truncate">
+                                {{ course ? `Enroll in ${course.name}` : 'Inquiry Form' }}
+                            </h3>
+                            <p class="text-indigo-100 text-xs sm:text-sm mt-0.5 hidden sm:block">
+                                {{ course ? 'Fill out the form to enroll' : "We'd love to hear from you!" }}
+                            </p>
                         </div>
                     </div>
                     <button @click="closeModal" class="w-8 h-8 bg-white/20 hover:bg-white/30 rounded-lg flex items-center justify-center transition backdrop-blur-sm">
@@ -172,6 +176,10 @@ export default {
         show: {
             type: Boolean,
             default: false
+        },
+        course: {
+            type: Object,
+            default: null
         }
     },
     emits: ['close', 'submitted'],
@@ -240,9 +248,13 @@ export default {
             }
         };
 
-        // Watch for show prop changes to reset form
+        // Watch for show prop changes to reset or pre-fill form
         watch(() => props.show, (newVal) => {
-            if (!newVal) {
+            if (newVal && props.course) {
+                // Pre-fill subject with course name when modal opens with a course
+                form.value.subject = `Enrollment Inquiry for ${props.course.name}`;
+                form.value.message = `I am interested in enrolling in the "${props.course.name}" course.\n\nCourse Details:\n- Price: ₹${props.course.price || 'N/A'}\n${props.course.duration_hours ? `- Duration: ${props.course.duration_hours} hours\n` : ''}${props.course.level ? `- Level: ${props.course.level}\n` : ''}\n\nPlease provide me with more information about enrollment.`;
+            } else if (!newVal) {
                 form.value = {
                     name: '',
                     email: '',
@@ -253,6 +265,14 @@ export default {
                 message.value = '';
             }
         });
+
+        // Watch for course prop changes
+        watch(() => props.course, (newCourse) => {
+            if (newCourse && props.show) {
+                form.value.subject = `Enrollment Inquiry for ${newCourse.name}`;
+                form.value.message = `I am interested in enrolling in the "${newCourse.name}" course.\n\nCourse Details:\n- Price: ₹${newCourse.price || 'N/A'}\n${newCourse.duration_hours ? `- Duration: ${newCourse.duration_hours} hours\n` : ''}${newCourse.level ? `- Level: ${newCourse.level}\n` : ''}\n\nPlease provide me with more information about enrollment.`;
+            }
+        }, { immediate: true });
 
         return {
             form,

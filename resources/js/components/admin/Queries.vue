@@ -179,6 +179,19 @@
                                 </td>
                                 <td class="px-6 py-5">
                                     <div class="flex items-center space-x-2">
+                                        <select 
+                                            :value="query.status"
+                                            @change="updateStatus(query.id, $event.target.value)"
+                                            :disabled="query.status === 'resolved'"
+                                            class="px-3 py-1.5 text-xs font-semibold rounded-lg border-2 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1"
+                                            :class="[
+                                                getStatusSelectClass(query.status),
+                                                query.status === 'resolved' ? 'cursor-not-allowed opacity-75' : 'cursor-pointer'
+                                            ]"
+                                        >
+                                            <option value="pending">Pending</option>
+                                            <option value="resolved">Resolved</option>
+                                        </select>
                                         <button 
                                             @click="viewQuery(query.id)"
                                             class="inline-flex items-center justify-center w-9 h-9 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-lg hover:from-blue-600 hover:to-cyan-600 shadow-sm transition transform hover:scale-110 active:scale-95"
@@ -244,26 +257,41 @@
                             <div class="text-xs text-gray-500">{{ formatDate(query.created_at) }}</div>
                             <div class="text-xs text-gray-500">{{ query.phone }}</div>
                         </div>
-                        <div class="flex items-center justify-end space-x-2">
-                            <button 
-                                @click="viewQuery(query.id)"
-                                class="inline-flex items-center justify-center w-10 h-10 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-lg hover:from-blue-600 hover:to-cyan-600 shadow-sm transition transform hover:scale-110 active:scale-95"
-                                title="View"
+                        <div class="flex items-center justify-between mb-4">
+                            <select 
+                                :value="query.status"
+                                @change="updateStatus(query.id, $event.target.value)"
+                                :disabled="query.status === 'resolved'"
+                                class="px-3 py-2 text-xs font-semibold rounded-lg border-2 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1"
+                                :class="[
+                                    getStatusSelectClass(query.status),
+                                    query.status === 'resolved' ? 'cursor-not-allowed opacity-75' : 'cursor-pointer'
+                                ]"
                             >
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                </svg>
-                            </button>
-                            <button 
-                                @click="deleteQuery(query.id)"
-                                class="inline-flex items-center justify-center w-10 h-10 bg-gradient-to-r from-red-500 to-pink-500 text-white rounded-lg hover:from-red-600 hover:to-pink-600 shadow-sm transition transform hover:scale-110 active:scale-95"
-                                title="Delete"
-                            >
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                </svg>
-                            </button>
+                                <option value="pending">Pending</option>
+                                <option value="resolved">Resolved</option>
+                            </select>
+                            <div class="flex items-center space-x-2">
+                                <button 
+                                    @click="viewQuery(query.id)"
+                                    class="inline-flex items-center justify-center w-10 h-10 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-lg hover:from-blue-600 hover:to-cyan-600 shadow-sm transition transform hover:scale-110 active:scale-95"
+                                    title="View"
+                                >
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    </svg>
+                                </button>
+                                <button 
+                                    @click="deleteQuery(query.id)"
+                                    class="inline-flex items-center justify-center w-10 h-10 bg-gradient-to-r from-red-500 to-pink-500 text-white rounded-lg hover:from-red-600 hover:to-pink-600 shadow-sm transition transform hover:scale-110 active:scale-95"
+                                    title="Delete"
+                                >
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                    </svg>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -494,6 +522,29 @@ export default {
             }
         };
 
+        const updateStatus = async (id, newStatus) => {
+            try {
+                const response = await axios.put(`/api/queries/${id}/status`, {
+                    status: newStatus
+                });
+                if (response.data.success) {
+                    // Update the query in the local array
+                    const index = queries.value.findIndex(q => q.id === id);
+                    if (index !== -1) {
+                        queries.value[index].status = newStatus;
+                    }
+                } else {
+                    alert(response.data.message || 'Failed to update status');
+                    // Refresh queries to get correct status
+                    await fetchQueries();
+                }
+            } catch (err) {
+                alert(err.response?.data?.message || 'Failed to update status');
+                // Refresh queries to get correct status
+                await fetchQueries();
+            }
+        };
+
         const deleteQuery = async (id) => {
             if (!confirm('Are you sure you want to delete this query?')) {
                 return;
@@ -534,6 +585,14 @@ export default {
             return classes[status] || classes.pending;
         };
 
+        const getStatusSelectClass = (status) => {
+            const classes = {
+                pending: 'bg-blue-50 border-blue-300 text-blue-700 hover:bg-blue-100 focus:ring-blue-500',
+                resolved: 'bg-green-50 border-green-300 text-green-700 hover:bg-green-100 focus:ring-green-500'
+            };
+            return classes[status] || classes.pending;
+        };
+
         onMounted(() => {
             fetchQueries();
         });
@@ -546,10 +605,12 @@ export default {
             showViewModal,
             viewQueryData,
             viewQuery,
+            updateStatus,
             deleteQuery,
             closeViewModal,
             formatDate,
-            getStatusClass
+            getStatusClass,
+            getStatusSelectClass
         };
     }
 };
