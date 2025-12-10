@@ -16,7 +16,7 @@
                 <div 
                     v-for="(slide, index) in heroSlides" 
                     :key="index"
-                    class="hero-slide absolute inset-0 flex items-center justify-center transition-opacity duration-1000"
+                    class="hero-slide absolute inset-0 flex items-center justify-center transition-opacity duration-500"
                     :class="{ 'opacity-100 z-10': currentSlide === index, 'opacity-0 z-0': currentSlide !== index }"
                 >
                     <div class="container mx-auto px-4 py-16 md:py-20 relative z-10">
@@ -26,7 +26,7 @@
                                 class="text-5xl md:text-7xl font-bold mb-6 text-white leading-tight hero-title"
                                 :class="{ 'slide-in-up': currentSlide === index }"
                             >
-                                <span v-for="(word, wordIndex) in slide.title.split(' ')" :key="wordIndex" class="inline-block" :style="{ animationDelay: `${wordIndex * 0.2}s` }">
+                                <span v-for="(word, wordIndex) in slide.title.split(' ')" :key="wordIndex" class="inline-block" :style="{ animationDelay: `${wordIndex * 0.1}s` }">
                                     <span v-if="word.includes('Programming') || word.includes('Python') || word.includes('Development') || word.includes('Science') || word.includes('Intelligence') || word.includes('DevOps')" class="bg-gradient-to-r from-yellow-300 to-pink-300 bg-clip-text text-transparent">
                                         {{ word }}
                                     </span>
@@ -38,7 +38,7 @@
                             <p 
                                 class="text-xl md:text-2xl text-gray-200 mb-8 max-w-2xl mx-auto hero-description"
                                 :class="{ 'slide-in-up': currentSlide === index }"
-                                :style="{ animationDelay: '0.8s' }"
+                                :style="{ animationDelay: '0.4s' }"
                             >
                                 {{ slide.description }}
                             </p>
@@ -47,7 +47,7 @@
                             <div 
                                 class="flex flex-col sm:flex-row gap-4 justify-center items-center hero-buttons"
                                 :class="{ 'slide-in-up': currentSlide === index }"
-                                :style="{ animationDelay: '1.2s' }"
+                                :style="{ animationDelay: '0.6s' }"
                             >
                                 <router-link 
                                     to="/courses"
@@ -916,14 +916,16 @@ export default {
 
         const setupScrollAnimations = () => {
             const observerOptions = {
-                threshold: 0.1,
-                rootMargin: '0px 0px -50px 0px'
+                threshold: 0.05,
+                rootMargin: '0px 0px -30px 0px'
             };
 
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('animate');
+                        // Unobserve after animation to improve performance
+                        observer.unobserve(entry.target);
                     }
                 });
             }, observerOptions);
@@ -935,9 +937,10 @@ export default {
         onMounted(() => {
             fetchCourses();
             startSlider();
-            setTimeout(() => {
+            // Use requestAnimationFrame for better performance
+            requestAnimationFrame(() => {
                 setupScrollAnimations();
-            }, 100);
+            });
         });
 
         onUnmounted(() => {
@@ -1005,7 +1008,9 @@ export default {
 }
 
 .animate-blob {
-    animation: blob 7s infinite;
+    animation: blob 5s infinite;
+    will-change: transform;
+    transform: translateZ(0);
 }
 
 .animation-delay-2000 {
@@ -1034,7 +1039,9 @@ export default {
 .fade-in-left,
 .fade-in-right {
     opacity: 0;
-    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: opacity, transform;
+    transform: translateZ(0);
 }
 
 .fade-in-up {
@@ -1066,7 +1073,9 @@ export default {
 .devops-card,
 .aiml-card {
     opacity: 0;
-    transition: opacity 1s ease-out, transform 1s ease-out;
+    transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: opacity, transform;
+    transform: translateZ(0);
 }
 
 .stat-card.animate,
@@ -1095,7 +1104,9 @@ export default {
 }
 
 .counter-animate {
-    animation: countUp 1s ease-out;
+    animation: countUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: opacity, transform;
+    transform: translateZ(0);
 }
 
 /* Line clamp utility */
@@ -1114,7 +1125,9 @@ export default {
 }
 
 .hero-slide {
-    transition: opacity 1s ease-in-out;
+    transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: opacity;
+    transform: translateZ(0);
 }
 
 .hero-title {
@@ -1123,7 +1136,9 @@ export default {
 }
 
 .hero-title.slide-in-up {
-    animation: slideInUp 0.8s ease-out forwards;
+    animation: slideInUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    will-change: opacity, transform;
+    transform: translateZ(0);
 }
 
 .hero-description {
@@ -1132,7 +1147,9 @@ export default {
 }
 
 .hero-description.slide-in-up {
-    animation: slideInUp 0.8s ease-out forwards;
+    animation: slideInUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    will-change: opacity, transform;
+    transform: translateZ(0);
 }
 
 .hero-buttons {
@@ -1141,7 +1158,9 @@ export default {
 }
 
 .hero-buttons.slide-in-up {
-    animation: slideInUp 0.8s ease-out forwards;
+    animation: slideInUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    will-change: opacity, transform;
+    transform: translateZ(0);
 }
 
 @keyframes slideInUp {
@@ -1157,12 +1176,14 @@ export default {
 
 /* Word by word animation */
 .hero-title span {
-    animation: fadeInWord 0.6s ease-out forwards;
+    animation: fadeInWord 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
     opacity: 0;
+    will-change: opacity, transform;
+    transform: translateZ(0);
 }
 
 .hero-title.slide-in-up span {
-    animation: fadeInWord 0.6s ease-out forwards;
+    animation: fadeInWord 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 @keyframes fadeInWord {
@@ -1178,7 +1199,9 @@ export default {
 
 /* Hero section initial animation */
 .hero-section .fade-in-up {
-    animation: fadeInUp 1s ease-out forwards;
+    animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    will-change: opacity, transform;
+    transform: translateZ(0);
 }
 
 @keyframes fadeInUp {
@@ -1358,14 +1381,18 @@ export default {
 .tech-card .text-4xl,
 .devops-card .text-6xl,
 .aiml-card .text-6xl {
-    animation: float 4s ease-in-out infinite;
+    animation: float 3s ease-in-out infinite;
+    will-change: transform;
+    transform: translateZ(0);
 }
 
 .lang-card:nth-child(even) .text-6xl,
 .tech-card:nth-child(even) .text-4xl,
 .devops-card:nth-child(even) .text-6xl,
 .aiml-card:nth-child(even) .text-6xl {
-    animation: floatReverse 4s ease-in-out infinite;
+    animation: floatReverse 3s ease-in-out infinite;
+    will-change: transform;
+    transform: translateZ(0);
 }
 
 /* Card Hover Effects */
