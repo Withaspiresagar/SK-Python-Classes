@@ -1,42 +1,33 @@
 <template>
-    <div class="w-full overflow-hidden">
+    <div class="w-full overflow-hidden space-y-6">
         <!-- Main Header -->
-        <div class="bg-gradient-to-r from-red-500 via-pink-500 to-purple-600 rounded-2xl p-6 mb-6 shadow-xl">
-            <div class="flex items-center justify-between flex-col sm:flex-row gap-4">
-                <div class="flex items-center space-x-4">
-                    <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
-                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
-                        </svg>
-                    </div>
-                    <div>
-                        <h1 class="text-2xl sm:text-3xl font-bold text-white">UI Settings</h1>
-                        <p class="text-white/90 text-sm mt-1">Customize your website's appearance and design</p>
-                    </div>
+        <div class="bg-gradient-to-br from-white to-gray-50 rounded-2xl shadow-xl p-4 sm:p-6 border border-gray-100">
+            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+                <div class="flex-1">
+                    <h2 class="text-xl sm:text-2xl font-bold text-gray-800 mb-2">UI Settings</h2>
+                    <p class="text-gray-600 text-sm">Customize your website's appearance and design</p>
                 </div>
-                <div class="flex items-center space-x-3 w-full sm:w-auto">
-                    <button
-                        @click="isEditing = !isEditing"
-                        :disabled="loading"
-                        class="bg-white text-purple-600 hover:bg-gray-50 px-4 sm:px-5 py-2.5 rounded-xl font-medium transition flex items-center space-x-2 disabled:opacity-50 w-full sm:w-auto justify-center"
-                    >
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                        </svg>
-                        <span>{{ isEditing ? 'Cancel Editing' : 'Edit UI Settings' }}</span>
-                    </button>
-                </div>
+                <button
+                    @click="isEditing = !isEditing"
+                    :disabled="loading"
+                    class="bg-gradient-to-r from-indigo-500 to-purple-500 text-white px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl hover:from-indigo-600 hover:to-purple-600 transition font-medium shadow-lg shadow-indigo-500/30 transform hover:scale-105 text-sm sm:text-base whitespace-nowrap flex items-center justify-center disabled:opacity-50"
+                >
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                    </svg>
+                    <span>{{ isEditing ? 'Cancel Editing' : 'Edit UI Settings' }}</span>
+                </button>
             </div>
         </div>
 
         <!-- Success/Error Messages -->
-        <div v-if="message" :class="messageType === 'success' ? 'bg-green-50 border-green-200 text-green-800' : 'bg-red-50 border-red-200 text-red-800'" class="border rounded-xl p-4 mb-6">
+        <div v-if="message" :class="messageType === 'success' ? 'bg-green-50 border-green-200 text-green-800' : 'bg-red-50 border-red-200 text-red-800'" class="border rounded-xl p-4">
             {{ message }}
         </div>
 
         <!-- Color Scheme Section -->
-        <div class="bg-white rounded-2xl shadow-lg overflow-hidden mb-6">
-            <div class="bg-gradient-to-r from-red-500 via-pink-500 to-purple-600 p-5">
+        <div class="bg-gradient-to-br from-white to-gray-50 rounded-2xl shadow-xl overflow-hidden border border-gray-100">
+            <div class="bg-gradient-to-r from-indigo-500 to-purple-500 p-5">
                 <div class="flex items-center space-x-3">
                     <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
                         <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -64,7 +55,7 @@
                                 type="text" 
                                 v-model="uiSettings.primary_color" 
                                 :disabled="!isEditing"
-                                class="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent disabled:bg-gray-100"
+                                class="flex-1 px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none transition-all duration-300 bg-white disabled:bg-gray-100"
                                 placeholder="#3B82F6"
                             />
                         </div>
@@ -82,7 +73,7 @@
                                 type="text" 
                                 v-model="uiSettings.secondary_color" 
                                 :disabled="!isEditing"
-                                class="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent disabled:bg-gray-100"
+                                class="flex-1 px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none transition-all duration-300 bg-white disabled:bg-gray-100"
                                 placeholder="#8B5CF6"
                             />
                         </div>
@@ -100,7 +91,7 @@
                                 type="text" 
                                 v-model="uiSettings.accent_color" 
                                 :disabled="!isEditing"
-                                class="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent disabled:bg-gray-100"
+                                class="flex-1 px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none transition-all duration-300 bg-white disabled:bg-gray-100"
                                 placeholder="#EC4899"
                             />
                         </div>
@@ -118,7 +109,7 @@
                                 type="text" 
                                 v-model="uiSettings.background_color" 
                                 :disabled="!isEditing"
-                                class="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent disabled:bg-gray-100"
+                                class="flex-1 px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none transition-all duration-300 bg-white disabled:bg-gray-100"
                                 placeholder="#F9FAFB"
                             />
                         </div>
@@ -128,8 +119,8 @@
         </div>
 
         <!-- Typography Section -->
-        <div class="bg-white rounded-2xl shadow-lg overflow-hidden mb-6">
-            <div class="bg-gradient-to-r from-red-500 via-pink-500 to-purple-600 p-5">
+        <div class="bg-gradient-to-br from-white to-gray-50 rounded-2xl shadow-xl overflow-hidden border border-gray-100">
+            <div class="bg-gradient-to-r from-indigo-500 to-purple-500 p-5">
                 <div class="flex items-center space-x-3">
                     <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
                         <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -149,7 +140,7 @@
                         <select 
                             v-model="uiSettings.font_family" 
                             :disabled="!isEditing"
-                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent disabled:bg-gray-100 appearance-none bg-white"
+                            class="w-full px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none transition-all duration-300 bg-white disabled:bg-gray-100 appearance-none"
                         >
                             <option value="Inter">Inter</option>
                             <option value="Roboto">Roboto</option>
@@ -163,7 +154,7 @@
                         <select 
                             v-model="uiSettings.heading_font_family" 
                             :disabled="!isEditing"
-                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent disabled:bg-gray-100 appearance-none bg-white"
+                            class="w-full px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none transition-all duration-300 bg-white disabled:bg-gray-100 appearance-none"
                         >
                             <option value="Inter">Inter</option>
                             <option value="Roboto">Roboto</option>
@@ -180,7 +171,7 @@
                             :disabled="!isEditing"
                             min="10"
                             max="24"
-                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent disabled:bg-gray-100"
+                            class="w-full px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none transition-all duration-300 bg-white disabled:bg-gray-100"
                         />
                     </div>
                     <div>
@@ -192,7 +183,7 @@
                             min="1"
                             max="3"
                             step="0.1"
-                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent disabled:bg-gray-100"
+                            class="w-full px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none transition-all duration-300 bg-white disabled:bg-gray-100"
                         />
                     </div>
                     <div>
@@ -204,7 +195,7 @@
                             min="1"
                             max="3"
                             step="0.1"
-                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent disabled:bg-gray-100"
+                            class="w-full px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none transition-all duration-300 bg-white disabled:bg-gray-100"
                         />
                     </div>
                 </div>
@@ -212,8 +203,8 @@
         </div>
 
         <!-- Button Styles Section -->
-        <div class="bg-white rounded-2xl shadow-lg overflow-hidden mb-6">
-            <div class="bg-gradient-to-r from-red-500 via-pink-500 to-purple-600 p-5">
+        <div class="bg-gradient-to-br from-white to-gray-50 rounded-2xl shadow-xl overflow-hidden border border-gray-100">
+            <div class="bg-gradient-to-r from-indigo-500 to-purple-500 p-5">
                 <div class="flex items-center space-x-3">
                     <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
                         <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -236,7 +227,7 @@
                             :disabled="!isEditing"
                             min="0"
                             max="50"
-                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent disabled:bg-gray-100"
+                            class="w-full px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none transition-all duration-300 bg-white disabled:bg-gray-100"
                         />
                     </div>
                     <div>
@@ -247,7 +238,7 @@
                             :disabled="!isEditing"
                             min="4"
                             max="32"
-                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent disabled:bg-gray-100"
+                            class="w-full px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none transition-all duration-300 bg-white disabled:bg-gray-100"
                         />
                     </div>
                     <div>
@@ -255,7 +246,7 @@
                         <select 
                             v-model="uiSettings.button_style" 
                             :disabled="!isEditing"
-                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent disabled:bg-gray-100 appearance-none bg-white"
+                            class="w-full px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none transition-all duration-300 bg-white disabled:bg-gray-100 appearance-none"
                         >
                             <option value="solid">Solid</option>
                             <option value="outline">Outline</option>
@@ -267,8 +258,8 @@
         </div>
 
         <!-- Layout Settings Section -->
-        <div class="bg-white rounded-2xl shadow-lg overflow-hidden mb-6">
-            <div class="bg-gradient-to-r from-red-500 via-pink-500 to-purple-600 p-5">
+        <div class="bg-gradient-to-br from-white to-gray-50 rounded-2xl shadow-xl overflow-hidden border border-gray-100">
+            <div class="bg-gradient-to-r from-indigo-500 to-purple-500 p-5">
                 <div class="flex items-center space-x-3">
                     <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
                         <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -291,7 +282,7 @@
                             :disabled="!isEditing"
                             min="320"
                             max="1920"
-                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent disabled:bg-gray-100"
+                            class="w-full px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none transition-all duration-300 bg-white disabled:bg-gray-100"
                         />
                     </div>
                     <div>
@@ -302,7 +293,7 @@
                             :disabled="!isEditing"
                             min="0"
                             max="200"
-                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent disabled:bg-gray-100"
+                            class="w-full px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none transition-all duration-300 bg-white disabled:bg-gray-100"
                         />
                     </div>
                     <div class="md:col-span-2">
@@ -312,7 +303,7 @@
                                     type="checkbox" 
                                     v-model="uiSettings.enable_shadows" 
                                     :disabled="!isEditing"
-                                    class="w-5 h-5 text-purple-600 border-gray-300 rounded focus:ring-purple-500 disabled:opacity-50"
+                                    class="w-5 h-5 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500 disabled:opacity-50"
                                 />
                                 <span class="text-sm font-semibold text-gray-700">Enable Box Shadows</span>
                             </label>
@@ -321,7 +312,7 @@
                                     type="checkbox" 
                                     v-model="uiSettings.enable_animations" 
                                     :disabled="!isEditing"
-                                    class="w-5 h-5 text-purple-600 border-gray-300 rounded focus:ring-purple-500 disabled:opacity-50"
+                                    class="w-5 h-5 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500 disabled:opacity-50"
                                 />
                                 <span class="text-sm font-semibold text-gray-700">Enable Animations</span>
                             </label>
@@ -340,7 +331,7 @@
                 <button
                     @click="saveSettings"
                     :disabled="loading || !isEditing"
-                    class="bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700 text-white px-6 py-2.5 rounded-xl font-medium transition flex items-center space-x-2 disabled:opacity-50"
+                    class="bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white px-6 py-2.5 rounded-xl font-medium transition flex items-center space-x-2 disabled:opacity-50 shadow-lg shadow-indigo-500/30"
                 >
                     <svg v-if="!loading" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />

@@ -1,43 +1,33 @@
 <template>
-    <div class="w-full overflow-hidden">
+    <div class="w-full overflow-hidden space-y-6">
         <!-- Main Header -->
-        <div class="bg-gradient-to-r from-red-500 via-pink-500 to-purple-600 rounded-2xl p-6 mb-6 shadow-xl">
-            <div class="flex items-center justify-between flex-col sm:flex-row gap-4">
-                <div class="flex items-center space-x-4">
-                    <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
-                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                        </svg>
-                    </div>
-                    <div>
-                        <h1 class="text-2xl sm:text-3xl font-bold text-white">Settings</h1>
-                        <p class="text-white/90 text-sm mt-1">Configure all settings</p>
-                    </div>
+        <div class="bg-gradient-to-br from-white to-gray-50 rounded-2xl shadow-xl p-4 sm:p-6 border border-gray-100">
+            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+                <div class="flex-1">
+                    <h2 class="text-xl sm:text-2xl font-bold text-gray-800 mb-2">Settings</h2>
+                    <p class="text-gray-600 text-sm">Configure all settings</p>
                 </div>
-                <div class="flex items-center space-x-3 w-full sm:w-auto">
-                    <button
-                        @click="isEditing = !isEditing"
-                        :disabled="brandSettingsLoading"
-                        class="bg-white text-purple-600 hover:bg-gray-50 px-4 sm:px-5 py-2.5 rounded-xl font-medium transition flex items-center space-x-2 disabled:opacity-50 w-full sm:w-auto justify-center"
-                    >
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                        </svg>
-                        <span>{{ isEditing ? 'Cancel Editing' : 'Edit Settings' }}</span>
-                    </button>
-                </div>
+                <button
+                    @click="isEditing = !isEditing"
+                    :disabled="brandSettingsLoading"
+                    class="bg-gradient-to-r from-indigo-500 to-purple-500 text-white px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl hover:from-indigo-600 hover:to-purple-600 transition font-medium shadow-lg shadow-indigo-500/30 transform hover:scale-105 text-sm sm:text-base whitespace-nowrap flex items-center justify-center disabled:opacity-50"
+                >
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                    </svg>
+                    <span>{{ isEditing ? 'Cancel Editing' : 'Edit Settings' }}</span>
+                </button>
             </div>
         </div>
 
         <!-- Success/Error Messages -->
-        <div v-if="brandSettingsMessage" :class="brandSettingsMessageType === 'success' ? 'bg-green-50 border-green-200 text-green-800' : 'bg-red-50 border-red-200 text-red-800'" class="border rounded-xl p-4 mb-6">
+        <div v-if="brandSettingsMessage" :class="brandSettingsMessageType === 'success' ? 'bg-green-50 border-green-200 text-green-800' : 'bg-red-50 border-red-200 text-red-800'" class="border rounded-xl p-4">
             {{ brandSettingsMessage }}
         </div>
 
         <!-- Brand Identity Section -->
-        <div class="bg-white rounded-2xl shadow-lg overflow-hidden mb-6">
-            <div class="bg-gradient-to-r from-red-500 via-pink-500 to-purple-600 p-5">
+        <div class="bg-gradient-to-br from-white to-gray-50 rounded-2xl shadow-xl overflow-hidden border border-gray-100">
+            <div class="bg-gradient-to-r from-indigo-500 to-purple-500 p-5">
                 <div class="flex items-center space-x-3">
                     <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
                         <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -59,7 +49,7 @@
                             type="text" 
                             v-model="brandSettings.brand_name" 
                             :disabled="!isEditing"
-                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent disabled:bg-gray-100"
+                            class="w-full px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none transition-all duration-300 bg-white disabled:bg-gray-100"
                             placeholder="Enter brand name"
                             required
                         />
@@ -73,17 +63,17 @@
                             type="text" 
                             v-model="brandSettings.tagline" 
                             :disabled="!isEditing"
-                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent disabled:bg-gray-100"
+                            class="w-full px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none transition-all duration-300 bg-white disabled:bg-gray-100"
                             placeholder="Enter tagline"
                         />
                         <p class="text-xs text-gray-500 mt-2">A short description or tagline for your brand</p>
                     </div>
 
                     <!-- Brand Logo -->
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-3">Brand Logo</label>
-                        <div class="flex flex-col sm:flex-row gap-4 items-start">
-                            <div class="flex-1">
+                    <div class="space-y-3">
+                        <label class="block text-sm font-semibold text-gray-700">Brand Logo</label>
+                        <div class="flex flex-col lg:flex-row gap-4 items-start">
+                            <div class="flex-1 w-full">
                                 <input 
                                     type="file" 
                                     @change="handleLogoUpload"
@@ -94,30 +84,33 @@
                                 />
                                 <label 
                                     for="logo-upload" 
-                                    :class="['w-full px-4 py-8 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer transition text-center', isEditing ? 'hover:border-purple-500 hover:bg-purple-50' : 'opacity-50 cursor-not-allowed']"
+                                    :class="['block w-full px-4 py-8 border-2 border-dashed border-gray-200 rounded-xl cursor-pointer transition-all duration-300 text-center bg-gray-50', isEditing ? 'hover:border-indigo-500 hover:bg-indigo-50/30' : 'opacity-50 cursor-not-allowed']"
                                 >
-                                    <svg class="w-8 h-8 mx-auto mb-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg class="w-10 h-10 mx-auto mb-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                                     </svg>
-                                    <span class="text-sm font-medium text-gray-600">Choose Logo</span>
-                                    <p class="text-xs text-gray-500 mt-1">Recommended: 200x50px, Max: 2MB</p>
+                                    <div class="text-sm font-medium text-gray-700 mb-1">Click to upload logo</div>
+                                    <p class="text-xs text-gray-500">Recommended: 200x50px, Max: 2MB</p>
                                 </label>
                             </div>
-                            <div v-if="brandSettings.brand_logo_preview || brandSettings.brand_logo_url" class="flex-shrink-0">
-                                <img 
-                                    :src="brandSettings.brand_logo_preview || brandSettings.brand_logo_url" 
-                                    alt="Brand Logo" 
-                                    class="h-20 w-auto rounded-lg border border-gray-200 shadow-sm"
-                                />
+                            <div v-if="brandSettings.brand_logo_preview || brandSettings.brand_logo_url" class="flex-shrink-0 lg:mt-0 mt-2">
+                                <div class="bg-white p-3 rounded-xl border-2 border-gray-200 shadow-sm">
+                                    <p class="text-xs font-semibold text-gray-600 mb-2">Current Logo:</p>
+                                    <img 
+                                        :src="brandSettings.brand_logo_preview || brandSettings.brand_logo_url" 
+                                        alt="Brand Logo Preview" 
+                                        class="h-16 w-auto max-w-xs rounded-lg object-contain"
+                                    />
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     <!-- Favicon -->
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-3">Favicon</label>
-                        <div class="flex flex-col sm:flex-row gap-4 items-start">
-                            <div class="flex-1">
+                    <div class="space-y-3">
+                        <label class="block text-sm font-semibold text-gray-700">Favicon</label>
+                        <div class="flex flex-col lg:flex-row gap-4 items-start">
+                            <div class="flex-1 w-full">
                                 <input 
                                     type="file" 
                                     @change="handleFaviconUpload"
@@ -128,21 +121,24 @@
                                 />
                                 <label 
                                     for="favicon-upload" 
-                                    :class="['w-full px-4 py-8 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer transition text-center', isEditing ? 'hover:border-purple-500 hover:bg-purple-50' : 'opacity-50 cursor-not-allowed']"
+                                    :class="['block w-full px-4 py-8 border-2 border-dashed border-gray-200 rounded-xl cursor-pointer transition-all duration-300 text-center bg-gray-50', isEditing ? 'hover:border-indigo-500 hover:bg-indigo-50/30' : 'opacity-50 cursor-not-allowed']"
                                 >
-                                    <svg class="w-8 h-8 mx-auto mb-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg class="w-10 h-10 mx-auto mb-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                                     </svg>
-                                    <span class="text-sm font-medium text-gray-600">Choose Favicon</span>
-                                    <p class="text-xs text-gray-500 mt-1">Recommended: 32x32px, Max: 512KB</p>
+                                    <div class="text-sm font-medium text-gray-700 mb-1">Click to upload favicon</div>
+                                    <p class="text-xs text-gray-500">Recommended: 32x32px, Max: 512KB</p>
                                 </label>
                             </div>
-                            <div v-if="brandSettings.favicon_preview || brandSettings.favicon_url" class="flex-shrink-0">
-                                <img 
-                                    :src="brandSettings.favicon_preview || brandSettings.favicon_url" 
-                                    alt="Favicon" 
-                                    class="h-12 w-12 rounded-lg border border-gray-200 shadow-sm"
-                                />
+                            <div v-if="brandSettings.favicon_preview || brandSettings.favicon_url" class="flex-shrink-0 lg:mt-0 mt-2">
+                                <div class="bg-white p-3 rounded-xl border-2 border-gray-200 shadow-sm">
+                                    <p class="text-xs font-semibold text-gray-600 mb-2">Current Favicon:</p>
+                                    <img 
+                                        :src="brandSettings.favicon_preview || brandSettings.favicon_url" 
+                                        alt="Favicon Preview" 
+                                        class="h-12 w-12 rounded-lg object-contain"
+                                    />
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -151,8 +147,8 @@
         </div>
 
         <!-- Contact Information Section -->
-        <div class="bg-white rounded-2xl shadow-lg overflow-hidden mb-6">
-            <div class="bg-gradient-to-r from-red-500 via-pink-500 to-purple-600 p-5">
+        <div class="bg-gradient-to-br from-white to-gray-50 rounded-2xl shadow-xl overflow-hidden border border-gray-100">
+            <div class="bg-gradient-to-r from-indigo-500 to-purple-500 p-5">
                 <div class="flex items-center space-x-3">
                     <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
                         <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -174,7 +170,7 @@
                             v-model="brandSettings.address" 
                             rows="3" 
                             :disabled="!isEditing"
-                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent disabled:bg-gray-100 resize-vertical"
+                            class="w-full px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none transition-all duration-300 bg-white disabled:bg-gray-100 resize-vertical"
                             placeholder="Enter institute address"
                         ></textarea>
                     </div>
@@ -187,7 +183,7 @@
                                 type="email" 
                                 v-model="brandSettings.email" 
                                 :disabled="!isEditing"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent disabled:bg-gray-100"
+                                class="w-full px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none transition-all duration-300 bg-white disabled:bg-gray-100"
                                 placeholder="info@skpythonclasses.com"
                             />
                         </div>
@@ -199,7 +195,7 @@
                                 type="tel" 
                                 v-model="brandSettings.phone" 
                                 :disabled="!isEditing"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent disabled:bg-gray-100"
+                                class="w-full px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none transition-all duration-300 bg-white disabled:bg-gray-100"
                                 placeholder="+91 98765 43210"
                             />
                         </div>
@@ -212,7 +208,7 @@
                             type="tel" 
                             v-model="brandSettings.whatsapp" 
                             :disabled="!isEditing"
-                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent disabled:bg-gray-100"
+                            class="w-full px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none transition-all duration-300 bg-white disabled:bg-gray-100"
                             placeholder="+91 98765 43210"
                         />
                     </div>
@@ -221,8 +217,8 @@
         </div>
 
         <!-- Social Media Links Section -->
-        <div class="bg-white rounded-2xl shadow-lg overflow-hidden mb-6">
-            <div class="bg-gradient-to-r from-red-500 via-pink-500 to-purple-600 p-5">
+        <div class="bg-gradient-to-br from-white to-gray-50 rounded-2xl shadow-xl overflow-hidden border border-gray-100">
+            <div class="bg-gradient-to-r from-indigo-500 to-purple-500 p-5">
                 <div class="flex items-center space-x-3">
                     <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
                         <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -256,7 +252,7 @@
                                     type="url" 
                                     v-model="brandSettings.instagram" 
                                     :disabled="!isEditing"
-                                    class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent disabled:bg-gray-100"
+                                    class="w-full pl-10 pr-4 py-2.5 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none transition-all duration-300 bg-white disabled:bg-gray-100"
                                     placeholder="https://instagram.com/yourpage"
                                 />
                             </div>
@@ -280,7 +276,7 @@
                                     type="url" 
                                     v-model="brandSettings.facebook" 
                                     :disabled="!isEditing"
-                                    class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent disabled:bg-gray-100"
+                                    class="w-full pl-10 pr-4 py-2.5 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none transition-all duration-300 bg-white disabled:bg-gray-100"
                                     placeholder="https://facebook.com/yourpage"
                                 />
                             </div>
@@ -304,7 +300,7 @@
                                     type="url" 
                                     v-model="brandSettings.youtube" 
                                     :disabled="!isEditing"
-                                    class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent disabled:bg-gray-100"
+                                    class="w-full pl-10 pr-4 py-2.5 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none transition-all duration-300 bg-white disabled:bg-gray-100"
                                     placeholder="https://youtube.com/@yourchannel"
                                 />
                             </div>
@@ -328,7 +324,7 @@
                                     type="url" 
                                     v-model="brandSettings.twitter" 
                                     :disabled="!isEditing"
-                                    class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent disabled:bg-gray-100"
+                                    class="w-full pl-10 pr-4 py-2.5 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none transition-all duration-300 bg-white disabled:bg-gray-100"
                                     placeholder="https://twitter.com/yourhandle"
                                 />
                             </div>
@@ -347,7 +343,7 @@
                 <button
                     @click="saveBrandSettings"
                     :disabled="brandSettingsLoading || !isEditing"
-                    class="bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700 text-white px-6 py-2.5 rounded-xl font-medium transition flex items-center space-x-2 disabled:opacity-50"
+                    class="bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white px-6 py-2.5 rounded-xl font-medium transition flex items-center space-x-2 disabled:opacity-50 shadow-lg shadow-indigo-500/30"
                 >
                     <svg v-if="!brandSettingsLoading" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
