@@ -107,6 +107,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/api/payments', [PaymentsController::class, 'index']);
     Route::get('/api/payments/stats', [PaymentsController::class, 'stats']);
     Route::get('/api/payments/{id}', [PaymentsController::class, 'show']);
+    Route::get('/api/payments/{id}/receipt', [PaymentsController::class, 'generateReceipt']);
+    Route::post('/api/payments/{id}/send-receipt', [PaymentsController::class, 'sendReceipt']);
     Route::post('/api/payments', [PaymentsController::class, 'store']);
     Route::put('/api/payments/{id}', [PaymentsController::class, 'update']);
     Route::put('/api/payments/{id}/status', [PaymentsController::class, 'updateStatus']);

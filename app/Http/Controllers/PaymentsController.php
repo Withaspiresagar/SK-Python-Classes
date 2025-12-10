@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 use App\Models\Payment;
 use App\Models\User;
 use App\Models\Course;
+use App\Models\BrandSetting;
+use App\Mail\PaymentReceiptMail;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\View;
 
 class PaymentsController extends Controller
 {
@@ -172,8 +176,19 @@ class PaymentsController extends Controller
             'status' => 'required|in:pending,paid,failed,refunded',
         ]);
 
+        $oldStatus = $payment->status;
         $payment->status = $request->status;
         $payment->save();
+
+        // Send receipt email when status changes to paid
+        if ($request->status === 'paid' && $oldStatus !== 'paid' && $payment->user && $payment->user->email) {
+            try {
+                Mail::to($payment->user->email)->send(new PaymentReceiptMail($payment));
+            } catch (\Exception $e) {
+                // Log error but don't fail the request
+                \Log::error('Failed to send receipt email: ' . $e->getMessage());
+            }
+        }
 
         return response()->json([
             'success' => true,
@@ -227,5 +242,69 @@ class PaymentsController extends Controller
                 'refundedPayments' => $refundedPayments,
             ]
         ]);
+    }
+
+    /**
+     * Generate receipt (Admin only)
+     */
+    public function generateReceipt($id)
+    {
+        $payment = Payment::with(['user', 'course'])->find($id);
+
+        if (!$payment) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Payment not found'
+            ], 404);
+        }
+
+        $brandSettings = BrandSetting::first();
+
+        $html = View::make('emails.payment-receipt', [
+            'payment' => $payment,
+            'brandSettings' => $brandSettings
+        ])->render();
+
+        return response()->json([
+            'success' => true,
+            'html' => $html,
+            'payment' => $payment
+        ]);
+    }
+
+    /**
+     * Send receipt email (Admin only)
+     */
+    public function sendReceipt($id)
+    {
+        $payment = Payment::with(['user', 'course'])->find($id);
+
+        if (!$payment) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Payment not found'
+            ], 404);
+        }
+
+        if (!$payment->user || !$payment->user->email) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Student email not found'
+            ], 400);
+        }
+
+        try {
+            Mail::to($payment->user->email)->send(new PaymentReceiptMail($payment));
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Receipt sent successfully to ' . $payment->user->email
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to send receipt: ' . $e->getMessage()
+            ], 500);
+        }
     }
 }
