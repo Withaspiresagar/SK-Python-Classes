@@ -10,19 +10,19 @@ class LiveClass extends Model
         'class_name',
         'date',
         'time',
+        'duration_minutes',
         'meeting_link',
-        'course_id',
+        'batch_id',
         'status',
         'description',
     ];
 
     protected $casts = [
         'date' => 'date',
-        'time' => 'datetime',
     ];
 
-    public function course()
+    public function batch()
     {
-        return $this->belongsTo(Course::class);
+        return $this->belongsTo(Batch::class);
     }
 }

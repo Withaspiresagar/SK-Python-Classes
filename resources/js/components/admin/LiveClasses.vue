@@ -87,7 +87,7 @@
                         <input
                             v-model="filters.search"
                             type="text"
-                            placeholder="Search by class name or course..."
+                            placeholder="Search by class name or batch..."
                             class="w-full px-4 py-2.5 pl-11 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500/50 focus:border-red-500 outline-none transition-all duration-300 bg-white"
                         />
                         <svg class="absolute left-3.5 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -169,7 +169,7 @@
                         <thead class="bg-gradient-to-r from-red-50 via-orange-50 to-red-50">
                             <tr>
                                 <th class="px-6 py-4 text-left text-sm font-bold text-gray-700 uppercase tracking-wider">Class Name</th>
-                                <th class="px-6 py-4 text-left text-sm font-bold text-gray-700 uppercase tracking-wider">Course</th>
+                                <th class="px-6 py-4 text-left text-sm font-bold text-gray-700 uppercase tracking-wider">Batch</th>
                                 <th class="px-6 py-4 text-left text-sm font-bold text-gray-700 uppercase tracking-wider">Date & Time</th>
                                 <th class="px-6 py-4 text-left text-sm font-bold text-gray-700 uppercase tracking-wider">Status</th>
                                 <th class="px-6 py-4 text-left text-sm font-bold text-gray-700 uppercase tracking-wider">Actions</th>
@@ -192,9 +192,12 @@
                                 <td class="px-6 py-5">
                                     <div class="flex items-center space-x-2">
                                         <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                                         </svg>
-                                        <span class="text-sm font-medium text-gray-700">{{ liveClass.course?.name || 'No Course' }}</span>
+                                        <div>
+                                            <span class="text-sm font-medium text-gray-700">{{ liveClass.batch?.name || 'No Batch' }}</span>
+                                            <span v-if="liveClass.batch?.course" class="text-xs text-gray-500 block">{{ liveClass.batch.course.name }}</span>
+                                        </div>
                                     </div>
                                 </td>
                                 <td class="px-6 py-5">
@@ -211,6 +214,14 @@
                                                 <span>{{ formatTime(liveClass.time) }}</span>
                                             </div>
                                         </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-5">
+                                    <div class="flex items-center space-x-2">
+                                        <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                        <span class="text-sm font-medium text-gray-700">{{ liveClass.duration_minutes || 60 }} min</span>
                                     </div>
                                 </td>
                                 <td class="px-6 py-5">
@@ -360,8 +371,8 @@
         </div>
 
         <!-- Add/Edit Modal -->
-        <div v-if="showModal" class="fixed inset-0 bg-black bg-opacity-60 backdrop-blur-sm flex items-center justify-center z-50 p-3 sm:p-4 overflow-y-auto" @click.self="closeModal" style="min-height: 100vh;">
-            <div class="bg-gradient-to-br from-white via-red-50/30 to-orange-50/30 rounded-2xl shadow-2xl w-full max-w-lg border border-red-100 transform transition-all my-auto max-w-[calc(100vw-1.5rem)]">
+        <div v-if="showModal" class="fixed inset-0 bg-black/70 backdrop-blur-md flex items-start justify-center z-[9999] overflow-y-auto pt-16 sm:pt-20 pb-4 sm:pb-8 px-3 sm:px-4" @click.self="closeModal" style="top: 0; left: 0; right: 0; bottom: 0;">
+            <div class="bg-gradient-to-br from-white via-red-50/30 to-orange-50/30 rounded-2xl shadow-2xl w-full max-w-lg border border-red-100 transform transition-all my-auto max-w-[calc(100vw-1.5rem)] flex flex-col max-h-[calc(100vh-5rem)]">
                 <!-- Header -->
                 <div class="relative bg-gradient-to-r from-red-500 via-orange-500 to-red-500 rounded-t-2xl p-4 sm:p-6">
                     <div class="flex items-center justify-between">
@@ -392,7 +403,7 @@
                 </div>
 
                 <!-- Form Content -->
-                <div class="p-4 sm:p-6">
+                <div class="p-4 sm:p-6 overflow-y-auto flex-1">
                     <form @submit.prevent="saveLiveClass">
                         <div class="space-y-5">
                             <!-- Class Name Field -->
@@ -412,23 +423,25 @@
                                 >
                             </div>
 
-                            <!-- Course Selection -->
+                            <!-- Batch Selection -->
                             <div class="form-field-group">
                                 <label class="form-label">
                                     <svg class="w-5 h-5 inline mr-2 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                                     </svg>
-                                    Course (Optional)
+                                    Batch <span class="text-red-500">*</span>
                                 </label>
                                 <select 
-                                    v-model="form.course_id" 
+                                    v-model="form.batch_id" 
                                     class="form-input-modern"
+                                    required
                                 >
-                                    <option value="">Select a course (optional)</option>
-                                    <option v-for="course in courses" :key="course.id" :value="course.id">
-                                        {{ course.name }}
+                                    <option value="">Select a batch</option>
+                                    <option v-for="batch in batches" :key="batch.id" :value="batch.id">
+                                        {{ batch.name }} {{ batch.course ? `(${batch.course.name})` : '' }}
                                     </option>
                                 </select>
+                                <p class="form-hint-text">Select the batch for this live class. All students in this batch will see this class.</p>
                             </div>
 
                             <!-- Date Field -->
@@ -453,7 +466,7 @@
                                     <svg class="w-5 h-5 inline mr-2 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                     </svg>
-                                    Time
+                                    Start Time
                                 </label>
                                 <input 
                                     type="time" 
@@ -461,6 +474,26 @@
                                     class="form-input-modern"
                                     required
                                 >
+                            </div>
+
+                            <!-- Duration Field -->
+                            <div class="form-field-group">
+                                <label class="form-label">
+                                    <svg class="w-5 h-5 inline mr-2 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    Duration (Minutes) <span class="text-red-500">*</span>
+                                </label>
+                                <input 
+                                    type="number" 
+                                    v-model="form.duration_minutes" 
+                                    placeholder="e.g., 60 for 1 hour"
+                                    class="form-input-modern"
+                                    min="1"
+                                    max="480"
+                                    required
+                                >
+                                <p class="form-hint-text">Enter duration in minutes (e.g., 60 for 1 hour, 90 for 1.5 hours)</p>
                             </div>
 
                             <!-- Meeting Link Field -->
@@ -480,8 +513,8 @@
                                 >
                             </div>
 
-                            <!-- Status Field -->
-                            <div class="form-field-group">
+                            <!-- Status Field (Read-only, auto-managed) -->
+                            <div class="form-field-group" v-if="modalMode === 'edit'">
                                 <label class="form-label">
                                     <svg class="w-5 h-5 inline mr-2 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -491,12 +524,14 @@
                                 <select 
                                     v-model="form.status" 
                                     class="form-input-modern"
+                                    :disabled="form.status !== 'cancelled'"
                                 >
                                     <option value="scheduled">Scheduled</option>
                                     <option value="ongoing">Ongoing</option>
                                     <option value="completed">Completed</option>
                                     <option value="cancelled">Cancelled</option>
                                 </select>
+                                <p class="form-hint-text" v-if="form.status !== 'cancelled'">Status is automatically managed based on time. Only cancelled status can be set manually.</p>
                             </div>
 
                             <!-- Description Field -->
@@ -527,7 +562,7 @@
                         </div>
 
                         <!-- Action Buttons -->
-                        <div class="flex flex-col sm:flex-row justify-end gap-2 sm:gap-3 sm:space-x-3 mt-6 sm:mt-8 pt-4 sm:pt-6 border-t border-gray-200">
+                        <div class="flex flex-col sm:flex-row justify-end gap-2 sm:gap-3 sm:space-x-3 mt-6 sm:mt-8 pt-4 sm:pt-6 border-t border-gray-200 flex-shrink-0">
                             <button 
                                 type="button" 
                                 @click="closeModal"
@@ -564,8 +599,8 @@
         </div>
 
         <!-- View Modal -->
-        <div v-if="showViewModal" class="fixed inset-0 bg-black bg-opacity-60 backdrop-blur-sm flex items-center justify-center z-50 p-3 sm:p-4 overflow-y-auto" @click.self="closeViewModal" style="min-height: 100vh;">
-            <div class="bg-gradient-to-br from-white via-blue-50/30 to-cyan-50/30 rounded-2xl shadow-2xl w-full max-w-lg border border-blue-100 transform transition-all my-auto max-w-[calc(100vw-1.5rem)]">
+        <div v-if="showViewModal" class="fixed inset-0 bg-black/70 backdrop-blur-md flex items-start justify-center z-[9999] overflow-y-auto pt-16 sm:pt-20 pb-4 sm:pb-8 px-3 sm:px-4" @click.self="closeViewModal" style="top: 0; left: 0; right: 0; bottom: 0;">
+            <div class="bg-gradient-to-br from-white via-blue-50/30 to-cyan-50/30 rounded-2xl shadow-2xl w-full max-w-lg border border-blue-100 transform transition-all my-auto max-w-[calc(100vw-1.5rem)] flex flex-col max-h-[calc(100vh-5rem)]">
                 <!-- Header -->
                 <div class="relative bg-gradient-to-r from-blue-500 via-cyan-500 to-blue-500 rounded-t-2xl p-4 sm:p-6">
                     <div class="flex items-center justify-between">
@@ -589,7 +624,7 @@
                 </div>
 
                 <!-- Content -->
-                <div class="p-4 sm:p-6">
+                <div class="p-4 sm:p-6 overflow-y-auto flex-1">
                     <div v-if="viewLiveClassData" class="space-y-5">
                         <!-- Class Header -->
                         <div class="flex items-center space-x-4 p-5 bg-gradient-to-r from-blue-50 via-cyan-50 to-blue-50 rounded-xl border border-blue-100">
@@ -598,7 +633,8 @@
                             </div>
                             <div class="flex-1 min-w-0">
                                 <p class="text-xl font-bold text-gray-900 truncate">{{ viewLiveClassData.class_name }}</p>
-                                <p class="text-sm text-gray-600 truncate">{{ viewLiveClassData.course?.name || 'No Course' }}</p>
+                                <p class="text-sm text-gray-600 truncate">{{ viewLiveClassData.batch?.name || 'No Batch' }}</p>
+                                <p v-if="viewLiveClassData.batch?.course" class="text-xs text-gray-500 truncate">{{ viewLiveClassData.batch.course.name }}</p>
                             </div>
                         </div>
 
@@ -620,12 +656,15 @@
                                 <div class="flex items-center space-x-3">
                                     <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
                                         <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                                         </svg>
                                     </div>
-                                    <span class="text-gray-600 font-medium">Course</span>
+                                    <span class="text-gray-600 font-medium">Batch</span>
                                 </div>
-                                <span class="text-gray-900 font-semibold">{{ viewLiveClassData.course?.name || 'No Course' }}</span>
+                                <div class="text-right">
+                                    <span class="text-gray-900 font-semibold block">{{ viewLiveClassData.batch?.name || 'No Batch' }}</span>
+                                    <span v-if="viewLiveClassData.batch?.course" class="text-xs text-gray-500">{{ viewLiveClassData.batch.course.name }}</span>
+                                </div>
                             </div>
 
                             <div class="flex items-center justify-between p-4 bg-white rounded-xl border border-gray-200 hover:border-red-300 transition">
@@ -647,9 +686,21 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                         </svg>
                                     </div>
-                                    <span class="text-gray-600 font-medium">Time</span>
+                                    <span class="text-gray-600 font-medium">Start Time</span>
                                 </div>
                                 <span class="text-gray-900 font-semibold text-sm">{{ formatTime(viewLiveClassData.time) }}</span>
+                            </div>
+
+                            <div class="flex items-center justify-between p-4 bg-white rounded-xl border border-gray-200 hover:border-red-300 transition">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-10 h-10 bg-indigo-100 rounded-lg flex items-center justify-center">
+                                        <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                    </div>
+                                    <span class="text-gray-600 font-medium">Duration</span>
+                                </div>
+                                <span class="text-gray-900 font-semibold text-sm">{{ viewLiveClassData.duration_minutes || 60 }} minutes</span>
                             </div>
 
                             <div class="flex items-center justify-between p-4 bg-white rounded-xl border border-gray-200 hover:border-red-300 transition">
@@ -696,7 +747,7 @@
                     </div>
 
                     <!-- Action Buttons -->
-                    <div class="flex flex-col sm:flex-row justify-end gap-3 mt-6 pt-6 border-t border-gray-200">
+                    <div class="flex flex-col sm:flex-row justify-end gap-3 mt-6 pt-6 border-t border-gray-200 flex-shrink-0">
                         <button 
                             @click="closeViewModal"
                             class="px-4 sm:px-6 py-2.5 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-xl hover:from-blue-600 hover:to-cyan-600 transition font-medium shadow-lg shadow-blue-500/30 transform hover:scale-105 w-full sm:w-auto"
@@ -711,14 +762,14 @@
 </template>
 
 <script>
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, onUnmounted, computed } from 'vue';
 import axios from 'axios';
 
 export default {
     name: 'LiveClasses',
     setup() {
         const liveClasses = ref([]);
-        const courses = ref([]);
+        const batches = ref([]);
         const showModal = ref(false);
         const showViewModal = ref(false);
         const modalMode = ref('add'); // 'add' or 'edit'
@@ -737,8 +788,9 @@ export default {
             class_name: '',
             date: '',
             time: '',
+            duration_minutes: 60,
             meeting_link: '',
-            course_id: '',
+            batch_id: '',
             status: 'scheduled',
             description: ''
         });
@@ -767,7 +819,8 @@ export default {
                 const searchLower = filters.value.search.toLowerCase();
                 result = result.filter(liveClass => 
                     liveClass.class_name.toLowerCase().includes(searchLower) ||
-                    (liveClass.course?.name && liveClass.course.name.toLowerCase().includes(searchLower))
+                    (liveClass.batch?.name && liveClass.batch.name.toLowerCase().includes(searchLower)) ||
+                    (liveClass.batch?.course?.name && liveClass.batch.course.name.toLowerCase().includes(searchLower))
                 );
             }
 
@@ -794,6 +847,17 @@ export default {
             return result;
         });
 
+        const fetchBatches = async () => {
+            try {
+                const response = await axios.get('/api/live-classes/active-batches');
+                if (response.data.success) {
+                    batches.value = response.data.batches;
+                }
+            } catch (err) {
+                console.error('Error fetching batches:', err);
+            }
+        };
+
         const fetchLiveClasses = async () => {
             try {
                 const response = await axios.get('/api/live-classes');
@@ -806,25 +870,15 @@ export default {
             }
         };
 
-        const fetchCourses = async () => {
-            try {
-                const response = await axios.get('/api/courses');
-                if (response.data.success) {
-                    courses.value = response.data.courses;
-                }
-            } catch (err) {
-                console.error('Error fetching courses:', err);
-            }
-        };
-
         const openAddModal = () => {
             modalMode.value = 'add';
             form.value = {
                 class_name: '',
                 date: '',
                 time: '',
+                duration_minutes: 60,
                 meeting_link: '',
-                course_id: '',
+                batch_id: '',
                 status: 'scheduled',
                 description: ''
             };
@@ -839,10 +893,11 @@ export default {
                     const liveClass = response.data.live_class;
                     form.value = {
                         class_name: liveClass.class_name,
-                        date: liveClass.date,
-                        time: liveClass.time,
+                        date: liveClass.date ? liveClass.date.split('T')[0] : '',
+                        time: liveClass.time ? liveClass.time.substring(0, 5) : '',
+                        duration_minutes: liveClass.duration_minutes || 60,
                         meeting_link: liveClass.meeting_link,
-                        course_id: liveClass.course_id || '',
+                        batch_id: liveClass.batch_id || '',
                         status: liveClass.status,
                         description: liveClass.description || ''
                     };
@@ -877,7 +932,7 @@ export default {
             try {
                 const formData = {
                     ...form.value,
-                    course_id: form.value.course_id || null
+                    batch_id: form.value.batch_id || null
                 };
 
                 if (modalMode.value === 'add') {
@@ -972,14 +1027,27 @@ export default {
             return classes[status] || classes.scheduled;
         };
 
+        let refreshInterval = null;
+
         onMounted(() => {
             fetchLiveClasses();
-            fetchCourses();
+            fetchBatches();
+            
+            // Auto-refresh status every 10 seconds to update ongoing/completed status
+            refreshInterval = setInterval(() => {
+                fetchLiveClasses();
+            }, 10000); // 10 seconds for faster status updates
+        });
+
+        onUnmounted(() => {
+            if (refreshInterval) {
+                clearInterval(refreshInterval);
+            }
         });
 
         return {
             liveClasses,
-            courses,
+            batches,
             stats,
             filters,
             filteredLiveClasses,

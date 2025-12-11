@@ -206,23 +206,36 @@
                                     </span>
                                 </td>
                                 <td class="px-4 py-3">
-                                    <div class="flex flex-wrap gap-2">
+                                    <div class="flex items-center gap-1.5 flex-wrap">
                                         <button 
                                             @click="viewBatch(batch.id)"
-                                            class="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-3 py-1 rounded-lg hover:from-blue-600 hover:to-cyan-600 text-sm font-medium shadow-sm transition"
+                                            class="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-2.5 py-1.5 rounded-lg hover:from-blue-600 hover:to-cyan-600 text-xs font-medium shadow-sm transition transform hover:scale-105 active:scale-95 flex items-center gap-1"
+                                            title="View Details"
                                         >
+                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                            </svg>
                                             View
                                         </button>
                                         <button 
                                             @click="editBatch(batch.id)"
-                                            class="bg-gradient-to-r from-green-500 to-emerald-500 text-white px-3 py-1 rounded-lg hover:from-green-600 hover:to-emerald-600 text-sm font-medium shadow-sm transition"
+                                            class="bg-gradient-to-r from-green-500 to-emerald-500 text-white px-2.5 py-1.5 rounded-lg hover:from-green-600 hover:to-emerald-600 text-xs font-medium shadow-sm transition transform hover:scale-105 active:scale-95 flex items-center gap-1"
+                                            title="Edit Batch"
                                         >
+                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                            </svg>
                                             Edit
                                         </button>
                                         <button 
                                             @click="assignStudents(batch.id)"
-                                            class="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-3 py-1 rounded-lg hover:from-purple-600 hover:to-pink-600 text-sm font-medium shadow-sm transition"
+                                            class="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-2.5 py-1.5 rounded-lg hover:from-purple-600 hover:to-pink-600 text-xs font-medium shadow-sm transition transform hover:scale-105 active:scale-95 flex items-center gap-1"
+                                            title="Assign Students"
                                         >
+                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                                            </svg>
                                             Students
                                         </button>
                                         <button 
@@ -230,14 +243,25 @@
                                             :class="batch.status === 'active'
                                                 ? 'bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600'
                                                 : 'bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600'"
-                                            class="text-white px-3 py-1 rounded-lg text-sm font-medium shadow-sm transition"
+                                            class="text-white px-2.5 py-1.5 rounded-lg text-xs font-medium shadow-sm transition transform hover:scale-105 active:scale-95 flex items-center gap-1"
+                                            :title="batch.status === 'active' ? 'Deactivate Batch' : 'Activate Batch'"
                                         >
+                                            <svg v-if="batch.status === 'active'" class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+                                            </svg>
+                                            <svg v-else class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
                                             {{ batch.status === 'active' ? 'Deactivate' : 'Activate' }}
                                         </button>
                                         <button 
                                             @click="deleteBatch(batch.id)"
-                                            class="bg-gradient-to-r from-red-500 to-pink-500 text-white px-3 py-1 rounded-lg hover:from-red-600 hover:to-pink-600 text-sm font-medium shadow-sm transition"
+                                            class="bg-gradient-to-r from-red-500 to-pink-500 text-white px-2.5 py-1.5 rounded-lg hover:from-red-600 hover:to-pink-600 text-xs font-medium shadow-sm transition transform hover:scale-105 active:scale-95 flex items-center gap-1"
+                                            title="Delete Batch"
                                         >
+                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                            </svg>
                                             Delete
                                         </button>
                                     </div>
@@ -268,8 +292,8 @@
         </div>
 
         <!-- Add/Edit Modal -->
-        <div v-if="showModal" class="fixed inset-0 bg-black/70 backdrop-blur-md flex items-start justify-center z-50 p-3 sm:p-4 overflow-y-auto" @click.self="closeModal" style="min-height: 100vh;">
-            <div class="bg-gradient-to-br from-white via-orange-50/30 to-red-50/30 rounded-2xl shadow-2xl w-full max-w-lg border border-orange-100 transform transition-all my-4 sm:my-8 max-w-[calc(100vw-1.5rem)] flex flex-col max-h-[calc(100vh-2rem)]">
+        <div v-if="showModal" class="fixed inset-0 bg-black/70 backdrop-blur-md flex items-start justify-center z-[9999] overflow-y-auto pt-16 sm:pt-20 pb-4 sm:pb-8 px-3 sm:px-4" @click.self="closeModal" style="top: 0; left: 0; right: 0; bottom: 0;">
+            <div class="bg-gradient-to-br from-white via-orange-50/30 to-red-50/30 rounded-2xl shadow-2xl w-full max-w-lg border border-orange-100 transform transition-all my-auto max-w-[calc(100vw-1.5rem)] flex flex-col max-h-[calc(100vh-5rem)]">
                 <!-- Header -->
                 <div class="relative bg-gradient-to-r from-orange-500 via-red-500 to-orange-500 rounded-t-2xl p-4 sm:p-6 flex-shrink-0">
                     <div class="flex items-center justify-between">
@@ -445,9 +469,170 @@
             </div>
         </div>
 
+        <!-- View Batch Modal -->
+        <div v-if="showViewModal" class="fixed inset-0 bg-black/70 backdrop-blur-md flex items-start justify-center z-[9999] overflow-y-auto pt-16 sm:pt-20 pb-4 sm:pb-8 px-3 sm:px-4" @click.self="closeViewModal" style="top: 0; left: 0; right: 0; bottom: 0;">
+            <div class="bg-gradient-to-br from-white via-blue-50/30 to-cyan-50/30 rounded-2xl shadow-2xl w-full max-w-3xl border border-blue-100 transform transition-all my-auto max-w-[calc(100vw-1.5rem)] flex flex-col max-h-[calc(100vh-5rem)]">
+                <!-- Header -->
+                <div class="relative bg-gradient-to-r from-blue-500 via-cyan-500 to-blue-500 rounded-t-2xl p-4 sm:p-6">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-3 flex-1 min-w-0">
+                            <div class="w-12 h-12 sm:w-14 sm:h-14 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center flex-shrink-0">
+                                <svg class="w-6 h-6 sm:w-7 sm:h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                                </svg>
+                            </div>
+                            <div class="min-w-0 flex-1">
+                                <h3 class="text-lg sm:text-2xl font-bold text-white truncate">Batch Details</h3>
+                                <p class="text-blue-100 text-xs sm:text-sm mt-0.5 hidden sm:block">View complete batch information</p>
+                            </div>
+                        </div>
+                        <button @click="closeViewModal" class="w-8 h-8 sm:w-10 sm:h-10 bg-white/20 hover:bg-white/30 rounded-lg flex items-center justify-center transition backdrop-blur-sm flex-shrink-0">
+                            <svg class="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Content -->
+                <div v-if="viewBatchData" class="p-4 sm:p-6 space-y-6 overflow-y-auto flex-1 custom-scrollbar">
+                    <!-- Batch Header -->
+                    <div class="flex items-center space-x-4 p-5 bg-gradient-to-r from-blue-50 via-cyan-50 to-blue-50 rounded-xl border border-blue-100 shadow-sm">
+                        <div class="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-full flex items-center justify-center text-white font-bold text-2xl sm:text-3xl shadow-lg">
+                            {{ viewBatchData.name.charAt(0).toUpperCase() }}
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <h4 class="text-lg sm:text-xl font-bold text-gray-900 truncate">{{ viewBatchData.name }}</h4>
+                            <p class="text-sm sm:text-base text-gray-600 truncate mt-1" v-if="viewBatchData.course">{{ viewBatchData.course.name }}</p>
+                            <div class="flex items-center gap-2 mt-2">
+                                <span 
+                                    :class="viewBatchData.status === 'active' 
+                                        ? 'bg-gradient-to-r from-green-400 to-emerald-400 text-white' 
+                                        : 'bg-gradient-to-r from-gray-400 to-gray-500 text-white'"
+                                    class="px-3 py-1 rounded-full text-xs font-medium shadow-sm"
+                                >
+                                    {{ viewBatchData.status === 'active' ? 'Active' : 'Inactive' }}
+                                </span>
+                                <span class="bg-gradient-to-r from-blue-400 to-cyan-400 text-white px-3 py-1 rounded-full text-xs font-medium shadow-sm">
+                                    {{ viewBatchData.students ? viewBatchData.students.length : 0 }} Students
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Details Grid -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="bg-white rounded-xl p-4 border border-gray-200 shadow-sm hover:shadow-md transition">
+                            <div class="flex items-center space-x-2 mb-2">
+                                <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                                </svg>
+                                <span class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Batch ID</span>
+                            </div>
+                            <p class="text-lg font-bold text-gray-900">{{ viewBatchData.id }}</p>
+                        </div>
+
+                        <div class="bg-white rounded-xl p-4 border border-gray-200 shadow-sm hover:shadow-md transition">
+                            <div class="flex items-center space-x-2 mb-2">
+                                <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                </svg>
+                                <span class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Course</span>
+                            </div>
+                            <p class="text-lg font-bold text-gray-900">{{ viewBatchData.course ? viewBatchData.course.name : 'Not Assigned' }}</p>
+                        </div>
+
+                        <div class="bg-white rounded-xl p-4 border border-gray-200 shadow-sm hover:shadow-md transition">
+                            <div class="flex items-center space-x-2 mb-2">
+                                <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                                <span class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Start Date</span>
+                            </div>
+                            <p class="text-lg font-bold text-gray-900">{{ formatDate(viewBatchData.start_date) || 'Not Set' }}</p>
+                        </div>
+
+                        <div class="bg-white rounded-xl p-4 border border-gray-200 shadow-sm hover:shadow-md transition">
+                            <div class="flex items-center space-x-2 mb-2">
+                                <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                                <span class="text-xs font-semibold text-gray-500 uppercase tracking-wide">End Date</span>
+                            </div>
+                            <p class="text-lg font-bold text-gray-900">{{ formatDate(viewBatchData.end_date) || 'Not Set' }}</p>
+                        </div>
+                    </div>
+
+                    <!-- Description -->
+                    <div v-if="viewBatchData.description" class="bg-white rounded-xl p-4 border border-gray-200 shadow-sm">
+                        <div class="flex items-center space-x-2 mb-3">
+                            <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" />
+                            </svg>
+                            <span class="text-sm font-semibold text-gray-700">Description</span>
+                        </div>
+                        <p class="text-base text-gray-900 whitespace-pre-wrap">{{ viewBatchData.description }}</p>
+                    </div>
+
+                    <!-- Students List -->
+                    <div v-if="viewBatchData.students && viewBatchData.students.length > 0" class="bg-white rounded-xl p-4 border border-gray-200 shadow-sm">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center space-x-2">
+                                <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                                </svg>
+                                <span class="text-sm font-semibold text-gray-700">Students ({{ viewBatchData.students.length }})</span>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-64 overflow-y-auto custom-scrollbar">
+                            <div v-for="student in viewBatchData.students" :key="student.id" class="flex items-center space-x-3 p-3 bg-gradient-to-r from-gray-50 to-blue-50 rounded-lg border border-gray-200 hover:border-blue-300 transition">
+                                <div class="w-10 h-10 bg-gradient-to-br from-blue-400 to-cyan-400 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-sm">
+                                    {{ student.name.charAt(0).toUpperCase() }}
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <p class="font-medium text-gray-900 truncate">{{ student.name }}</p>
+                                    <p class="text-xs text-gray-500 truncate">{{ student.email }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div v-else class="bg-white rounded-xl p-8 border border-gray-200 shadow-sm text-center">
+                        <svg class="w-12 h-12 text-gray-300 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                        </svg>
+                        <p class="text-gray-500 font-medium">No students assigned to this batch</p>
+                    </div>
+
+                    <!-- Additional Info -->
+                    <div class="bg-white rounded-xl p-4 border border-gray-200 shadow-sm">
+                        <div class="flex items-center space-x-2 mb-3">
+                            <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <span class="text-sm font-semibold text-gray-700">Created</span>
+                        </div>
+                        <p class="text-base text-gray-900">{{ formatDate(viewBatchData.created_at) }}</p>
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <div class="flex justify-end space-x-3 p-4 sm:p-6 pt-0 border-t border-gray-200 flex-shrink-0">
+                    <button 
+                        @click="closeViewModal"
+                        class="px-6 py-2.5 bg-gradient-to-r from-blue-500 via-cyan-500 to-blue-500 text-white rounded-xl hover:from-blue-600 hover:via-cyan-600 hover:to-blue-600 transition font-medium shadow-lg shadow-blue-500/30 transform hover:scale-105 active:scale-95 flex items-center space-x-2"
+                    >
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                        <span>Close</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
         <!-- Assign Students Modal -->
-        <div v-if="showAssignModal" class="fixed inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center z-50 p-3 sm:p-4 overflow-y-auto" @click.self="closeAssignModal">
-            <div class="bg-gradient-to-br from-white via-purple-50/30 to-pink-50/30 rounded-2xl shadow-2xl w-full max-w-2xl border border-purple-100 transform transition-all my-4 sm:my-8 max-w-[calc(100vw-1.5rem)]">
+        <div v-if="showAssignModal" class="fixed inset-0 bg-black/70 backdrop-blur-md flex items-start justify-center z-[9999] overflow-y-auto pt-16 sm:pt-20 pb-4 sm:pb-8 px-3 sm:px-4" @click.self="closeAssignModal" style="top: 0; left: 0; right: 0; bottom: 0;">
+            <div class="bg-gradient-to-br from-white via-purple-50/30 to-pink-50/30 rounded-2xl shadow-2xl w-full max-w-2xl border border-purple-100 transform transition-all my-auto max-w-[calc(100vw-1.5rem)] flex flex-col max-h-[calc(100vh-5rem)]">
                 <!-- Header -->
                 <div class="relative bg-gradient-to-r from-purple-500 via-pink-500 to-purple-500 rounded-t-2xl p-4 sm:p-6">
                     <div class="flex items-center justify-between">
@@ -471,47 +656,74 @@
                 </div>
 
                 <!-- Content -->
-                <div class="p-4 sm:p-6">
+                <div class="p-4 sm:p-6 overflow-y-auto flex-1">
                     <div class="mb-4">
-                        <input
-                            v-model="studentSearch"
-                            type="text"
-                            placeholder="Search students..."
-                            class="w-full px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500 outline-none transition-all duration-300 bg-white"
-                        />
+                        <div class="relative">
+                            <input
+                                v-model="studentSearch"
+                                type="text"
+                                placeholder="Search students by name or email..."
+                                class="w-full px-4 py-2.5 pl-11 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500 outline-none transition-all duration-300 bg-white"
+                            />
+                            <svg class="absolute left-3.5 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-2">
+                            {{ selectedStudents.length }} student(s) selected
+                        </p>
                     </div>
-                    <div class="max-h-96 overflow-y-auto space-y-2">
-                        <label v-for="student in filteredStudents" :key="student.id" class="flex items-center space-x-3 p-3 bg-white rounded-lg border border-gray-200 hover:border-purple-300 hover:bg-purple-50 transition cursor-pointer">
+                    <div class="max-h-96 overflow-y-auto space-y-2 custom-scrollbar">
+                        <label v-for="student in filteredStudents" :key="student.id" class="flex items-center space-x-3 p-3 bg-white rounded-lg border-2 transition cursor-pointer hover:shadow-md"
+                            :class="selectedStudents.includes(student.id) 
+                                ? 'border-purple-400 bg-purple-50 shadow-sm' 
+                                : 'border-gray-200 hover:border-purple-300 hover:bg-purple-50'">
                             <input
                                 type="checkbox"
                                 :value="student.id"
                                 v-model="selectedStudents"
-                                class="w-5 h-5 text-purple-600 border-gray-300 rounded focus:ring-purple-500"
+                                class="w-5 h-5 text-purple-600 border-gray-300 rounded focus:ring-purple-500 cursor-pointer"
                             />
-                            <div class="flex-1">
-                                <p class="font-medium text-gray-900">{{ student.name }}</p>
-                                <p class="text-sm text-gray-500">{{ student.email }}</p>
+                            <div class="flex items-center space-x-3 flex-1 min-w-0">
+                                <div class="w-10 h-10 bg-gradient-to-br from-purple-400 to-pink-400 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-sm flex-shrink-0">
+                                    {{ student.name.charAt(0).toUpperCase() }}
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <p class="font-medium text-gray-900 truncate">{{ student.name }}</p>
+                                    <p class="text-sm text-gray-500 truncate">{{ student.email }}</p>
+                                </div>
                             </div>
                         </label>
-                        <p v-if="filteredStudents.length === 0" class="text-center text-gray-500 py-8">No students found</p>
+                        <p v-if="filteredStudents.length === 0" class="text-center text-gray-500 py-12">
+                            <svg class="w-12 h-12 text-gray-300 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                            </svg>
+                            No students found
+                        </p>
                     </div>
                 </div>
 
                 <!-- Footer -->
-                <div class="flex justify-end space-x-3 p-4 sm:p-6 pt-0 border-t border-gray-200">
+                <div class="flex justify-end space-x-3 p-4 sm:p-6 pt-0 border-t border-gray-200 flex-shrink-0">
                     <button 
                         @click="closeAssignModal"
-                        class="px-6 py-2.5 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-xl transition font-medium shadow-sm"
+                        class="px-6 py-2.5 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-xl transition font-medium shadow-sm transform hover:scale-105 active:scale-95"
                     >
                         Cancel
                     </button>
                     <button 
                         @click="saveStudentAssignment"
-                        :disabled="loading"
-                        class="px-6 py-2.5 bg-gradient-to-r from-purple-500 via-pink-500 to-purple-500 text-white rounded-xl hover:from-purple-600 hover:via-pink-600 hover:to-purple-600 transition font-medium shadow-lg shadow-purple-500/30 disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105 active:scale-95"
+                        :disabled="loading || selectedStudents.length === 0"
+                        class="px-6 py-2.5 bg-gradient-to-r from-purple-500 via-pink-500 to-purple-500 text-white rounded-xl hover:from-purple-600 hover:via-pink-600 hover:to-purple-600 transition font-medium shadow-lg shadow-purple-500/30 disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105 active:scale-95 flex items-center space-x-2"
                     >
-                        <span v-if="!loading">Assign Students</span>
-                        <span v-else>Saving...</span>
+                        <svg v-if="!loading" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                        <svg v-else class="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        <span>{{ loading ? 'Saving...' : `Assign ${selectedStudents.length} Student(s)` }}</span>
                     </button>
                 </div>
             </div>
@@ -531,6 +743,7 @@ export default {
         const activeCourses = ref([]);
         const showModal = ref(false);
         const showAssignModal = ref(false);
+        const showViewModal = ref(false);
         const modalMode = ref('add');
         const loading = ref(false);
         const error = ref('');
@@ -539,6 +752,7 @@ export default {
         const currentBatchName = ref('');
         const selectedStudents = ref([]);
         const studentSearch = ref('');
+        const viewBatchData = ref(null);
 
         const filters = ref({
             search: '',
@@ -702,7 +916,8 @@ export default {
             try {
                 const response = await axios.get(`/api/batches/${id}`);
                 if (response.data.success) {
-                    alert(`Batch: ${response.data.batch.name}\nCourse: ${response.data.batch.course?.name || 'N/A'}\nStudents: ${response.data.batch.students?.length || 0}`);
+                    viewBatchData.value = response.data.batch;
+                    showViewModal.value = true;
                 }
             } catch (err) {
                 console.error('Error fetching batch:', err);
@@ -846,6 +1061,11 @@ export default {
             studentSearch.value = '';
         };
 
+        const closeViewModal = () => {
+            showViewModal.value = false;
+            viewBatchData.value = null;
+        };
+
         const formatDate = (dateString) => {
             if (!dateString) return '';
             const date = new Date(dateString);
@@ -890,6 +1110,9 @@ export default {
             saveStudentAssignment,
             closeModal,
             closeAssignModal,
+            closeViewModal,
+            viewBatchData,
+            showViewModal,
             clearFilters,
             formatDate
         };
@@ -955,6 +1178,30 @@ export default {
 
 .fixed.inset-0 {
     animation: modalFadeIn 0.2s ease-out;
+}
+
+/* Custom Scrollbar */
+.custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(147, 51, 234, 0.3) rgba(147, 51, 234, 0.1);
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+    width: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: rgba(147, 51, 234, 0.1);
+    border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(147, 51, 234, 0.3);
+    border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(147, 51, 234, 0.5);
 }
 </style>
 

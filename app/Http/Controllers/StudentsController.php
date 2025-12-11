@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
+use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Carbon\Carbon;
@@ -261,13 +262,20 @@ class StudentsController extends Controller
         // Get total payments count
         $totalPayments = Payment::where('user_id', $user->id)->count();
 
-        // Get upcoming live classes (next 7 days)
-        $upcomingClasses = LiveClass::where('scheduled_date', '>=', Carbon::today())
-            ->where('scheduled_date', '<=', Carbon::today()->addDays(7))
-            ->where('status', 'active')
-            ->with('course')
-            ->orderBy('scheduled_date', 'asc')
-            ->orderBy('start_time', 'asc')
+        // Update live class statuses before fetching
+        $this->updateLiveClassStatuses();
+        
+        // Get student's batch IDs
+        $batchIds = $user->batches()->pluck('batches.id');
+        
+        // Get upcoming live classes for student's batches (next 7 days)
+        $upcomingClasses = LiveClass::whereIn('batch_id', $batchIds)
+            ->where('date', '>=', Carbon::today())
+            ->where('date', '<=', Carbon::today()->addDays(7))
+            ->where('status', '!=', 'cancelled')
+            ->with(['batch', 'batch.course'])
+            ->orderBy('date', 'asc')
+            ->orderBy('time', 'asc')
             ->limit(6)
             ->get();
 
@@ -298,18 +306,88 @@ class StudentsController extends Controller
     {
         $user = Auth::user();
         
-        // Get all upcoming live classes
-        $liveClasses = LiveClass::where('scheduled_date', '>=', Carbon::today())
-            ->where('status', 'active')
-            ->with('course')
-            ->orderBy('scheduled_date', 'asc')
-            ->orderBy('start_time', 'asc')
+        // Update live class statuses before fetching
+        $this->updateLiveClassStatuses();
+        
+        // Get student's batch IDs
+        $batchIds = $user->batches()->pluck('batches.id');
+        
+        // Get all live classes for student's batches
+        $liveClasses = LiveClass::whereIn('batch_id', $batchIds)
+            ->where('date', '>=', Carbon::today())
+            ->where('status', '!=', 'cancelled')
+            ->with(['batch', 'batch.course'])
+            ->orderBy('date', 'asc')
+            ->orderBy('time', 'asc')
             ->get();
 
         return response()->json([
             'success' => true,
             'liveClasses' => $liveClasses
         ]);
+    }
+
+    /**
+     * Update live class statuses based on current time
+     */
+    private function updateLiveClassStatuses()
+    {
+        $now = Carbon::now();
+        
+        // Update all non-cancelled live classes
+        $liveClasses = LiveClass::where('status', '!=', 'cancelled')
+            ->get();
+
+        foreach ($liveClasses as $liveClass) {
+            try {
+                // Get time as string (HH:MM format)
+                // Time is stored as TIME type in database, so it should be a string like "21:20:00"
+                $timeString = $liveClass->getRawOriginal('time') ?? $liveClass->time;
+                
+                // If it's still a datetime object, format it
+                if ($timeString instanceof \DateTime || $timeString instanceof \Carbon\Carbon) {
+                    $timeString = $timeString->format('H:i:s');
+                }
+                
+                // Ensure we have just the time part (HH:MM:SS or HH:MM)
+                if (strlen($timeString) > 8) {
+                    $timeString = substr($timeString, 0, 8);
+                }
+                
+                $scheduledDateTime = Carbon::parse($liveClass->date->format('Y-m-d') . ' ' . $timeString);
+                $endDateTime = $scheduledDateTime->copy()->addMinutes($liveClass->duration_minutes ?? 60);
+            } catch (\Exception $e) {
+                // Skip this live class if there's a parsing error
+                \Log::warning('Error parsing live class time', [
+                    'live_class_id' => $liveClass->id,
+                    'date' => $liveClass->date,
+                    'time' => $liveClass->time,
+                    'error' => $e->getMessage()
+                ]);
+                continue;
+            }
+
+            // Update status based on current time
+            if ($now->lt($scheduledDateTime)) {
+                // Before scheduled time - should be scheduled
+                if ($liveClass->status !== 'scheduled') {
+                    $liveClass->status = 'scheduled';
+                    $liveClass->save();
+                }
+            } elseif ($now->gte($scheduledDateTime) && $now->lt($endDateTime)) {
+                // Between scheduled time and end time - should be ongoing
+                if ($liveClass->status !== 'ongoing') {
+                    $liveClass->status = 'ongoing';
+                    $liveClass->save();
+                }
+            } elseif ($now->gte($endDateTime)) {
+                // After end time - should be completed
+                if ($liveClass->status !== 'completed') {
+                    $liveClass->status = 'completed';
+                    $liveClass->save();
+                }
+            }
+        }
     }
 
     /**

@@ -89,6 +89,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     
     // Live Classes Management Routes
     Route::get('/api/live-classes', [LiveClassesController::class, 'index']);
+    Route::get('/api/live-classes/active-batches', [LiveClassesController::class, 'getActiveBatches']);
     Route::get('/api/live-classes/{id}', [LiveClassesController::class, 'show']);
     Route::post('/api/live-classes', [LiveClassesController::class, 'store']);
     Route::put('/api/live-classes/{id}', [LiveClassesController::class, 'update']);

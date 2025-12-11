@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Batch;
 use App\Models\Course;
+use App\Models\User;
 
 class BatchController extends Controller
 {
@@ -175,7 +176,13 @@ class BatchController extends Controller
             'student_ids.*' => 'exists:users,id'
         ]);
 
-        $batch->students()->sync($request->student_ids);
+        // Verify all IDs are students
+        $studentIds = User::whereIn('id', $request->student_ids)
+            ->where('role', 'student')
+            ->pluck('id')
+            ->toArray();
+
+        $batch->users()->sync($studentIds);
 
         return response()->json([
             'success' => true,
