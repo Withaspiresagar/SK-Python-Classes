@@ -161,108 +161,108 @@
         </div>
 
         <!-- Live Classes Table Section -->
-        <div class="bg-gradient-to-br from-white to-gray-50 rounded-2xl shadow-xl p-4 sm:p-6 border border-gray-100 overflow-hidden">
-            <!-- Desktop Table View -->
-            <div class="hidden lg:block overflow-x-auto -mx-4 sm:mx-0 w-full">
-                <div class="inline-block w-full align-middle">
-                    <table class="w-full divide-y divide-gray-200 table-auto">
-                        <thead class="bg-gradient-to-r from-red-50 via-orange-50 to-red-50">
-                            <tr>
-                                <th class="px-6 py-4 text-left text-sm font-bold text-gray-700 uppercase tracking-wider">Class Name</th>
-                                <th class="px-6 py-4 text-left text-sm font-bold text-gray-700 uppercase tracking-wider">Batch</th>
-                                <th class="px-6 py-4 text-left text-sm font-bold text-gray-700 uppercase tracking-wider">Date & Time</th>
-                                <th class="px-6 py-4 text-left text-sm font-bold text-gray-700 uppercase tracking-wider">Status</th>
-                                <th class="px-6 py-4 text-left text-sm font-bold text-gray-700 uppercase tracking-wider">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
-                            <tr v-for="liveClass in filteredLiveClasses" :key="liveClass.id" class="hover:bg-gradient-to-r hover:from-red-50/50 hover:to-orange-50/50 transition-all duration-200">
-                                <td class="px-6 py-5">
-                                    <div class="flex items-center space-x-3">
-                                        <div class="w-10 h-10 bg-gradient-to-br from-red-400 to-orange-400 rounded-lg flex items-center justify-center flex-shrink-0">
-                                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                                            </svg>
-                                        </div>
-                                        <div>
-                                            <div class="text-sm font-bold text-gray-900">{{ liveClass.class_name }}</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-5">
-                                    <div class="flex items-center space-x-2">
-                                        <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                                        </svg>
-                                        <div>
-                                            <span class="text-sm font-medium text-gray-700">{{ liveClass.batch?.name || 'No Batch' }}</span>
-                                            <span v-if="liveClass.batch?.course" class="text-xs text-gray-500 block">{{ liveClass.batch.course.name }}</span>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-5">
-                                    <div class="flex items-center space-x-2">
-                                        <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                        </svg>
-                                        <div>
-                                            <div class="text-sm font-semibold text-gray-900">{{ formatDate(liveClass.date) }}</div>
-                                            <div class="text-xs text-gray-500 flex items-center space-x-1 mt-0.5">
-                                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+        <div class="bg-gradient-to-br from-white via-red-50/20 to-orange-50/20 rounded-2xl shadow-xl p-4 sm:p-6 border-2 border-red-100 overflow-hidden relative">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-red-100/30 to-orange-100/30 rounded-full -mr-32 -mt-32"></div>
+            <div class="relative z-10">
+                <!-- Desktop Table View -->
+                <div class="hidden lg:block overflow-x-auto -mx-4 sm:mx-0 w-full">
+                    <div class="inline-block w-full align-middle">
+                        <table class="w-full table-auto">
+                            <thead>
+                                <tr class="bg-gradient-to-r from-red-500 via-orange-500 to-red-500">
+                                    <th class="px-6 py-4 text-left text-sm font-bold text-white uppercase tracking-wider">Class Name</th>
+                                    <th class="px-6 py-4 text-left text-sm font-bold text-white uppercase tracking-wider">Batch</th>
+                                    <th class="px-6 py-4 text-left text-sm font-bold text-white uppercase tracking-wider">Date & Time</th>
+                                    <th class="px-6 py-4 text-left text-sm font-bold text-white uppercase tracking-wider">Status</th>
+                                    <th class="px-6 py-4 text-left text-sm font-bold text-white uppercase tracking-wider">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-100">
+                                <tr v-for="liveClass in filteredLiveClasses" :key="liveClass.id" class="hover:bg-gradient-to-r hover:from-red-50/60 hover:via-orange-50/60 hover:to-red-50/60 transition-all duration-300 group border-b border-gray-100">
+                                    <td class="px-6 py-5">
+                                        <div class="flex items-center space-x-3">
+                                            <div class="w-12 h-12 bg-gradient-to-br from-red-500 via-orange-500 to-red-500 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg group-hover:scale-110 transition-transform duration-300">
+                                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
                                                 </svg>
-                                                <span>{{ formatTime(liveClass.time) }}</span>
+                                            </div>
+                                            <div>
+                                                <div class="text-sm font-bold text-gray-900 group-hover:text-red-600 transition-colors">{{ liveClass.class_name }}</div>
                                             </div>
                                         </div>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-5">
-                                    <div class="flex items-center space-x-2">
-                                        <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                        </svg>
-                                        <span class="text-sm font-medium text-gray-700">{{ liveClass.duration_minutes || 60 }} min</span>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-5">
-                                    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-bold shadow-sm capitalize"
-                                        :class="getStatusClass(liveClass.status)">
-                                        {{ liveClass.status }}
-                                    </span>
-                                </td>
-                                <td class="px-6 py-5">
-                                    <div class="flex items-center space-x-2">
-                                        <button 
-                                            @click="viewLiveClass(liveClass.id)"
-                                            class="inline-flex items-center justify-center w-9 h-9 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-lg hover:from-blue-600 hover:to-cyan-600 shadow-sm transition transform hover:scale-110 active:scale-95"
-                                            title="View"
-                                        >
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                            </svg>
-                                        </button>
-                                        <button 
-                                            @click="editLiveClass(liveClass.id)"
-                                            class="inline-flex items-center justify-center w-9 h-9 bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-lg hover:from-green-600 hover:to-emerald-600 shadow-sm transition transform hover:scale-110 active:scale-95"
-                                            title="Edit"
-                                        >
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                            </svg>
-                                        </button>
-                                        <button 
-                                            @click="deleteLiveClass(liveClass.id)"
-                                            class="inline-flex items-center justify-center w-9 h-9 bg-gradient-to-r from-red-500 to-pink-500 text-white rounded-lg hover:from-red-600 hover:to-pink-600 shadow-sm transition transform hover:scale-110 active:scale-95"
-                                            title="Delete"
-                                        >
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                            </svg>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
+                                    </td>
+                                    <td class="px-6 py-5">
+                                        <div class="flex items-center space-x-3">
+                                            <div class="w-10 h-10 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-lg flex items-center justify-center flex-shrink-0 border-2 border-indigo-200">
+                                                <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <span class="text-sm font-bold text-gray-900">{{ liveClass.batch?.name || 'No Batch' }}</span>
+                                                <span v-if="liveClass.batch?.course" class="text-xs text-indigo-600 font-medium block mt-0.5 bg-indigo-50 px-2 py-0.5 rounded-md inline-block">{{ liveClass.batch.course.name }}</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-5">
+                                        <div class="flex items-center space-x-3">
+                                            <div class="w-10 h-10 bg-gradient-to-br from-blue-100 to-cyan-100 rounded-lg flex items-center justify-center flex-shrink-0 border-2 border-blue-200">
+                                                <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <div class="text-sm font-bold text-gray-900">{{ formatDate(liveClass.date) }}</div>
+                                                <div class="text-xs text-blue-600 font-medium flex items-center space-x-1 mt-1 bg-blue-50 px-2 py-1 rounded-md inline-flex">
+                                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                    </svg>
+                                                    <span>{{ formatTime(liveClass.time) }}</span>
+                                                    <span class="ml-1 text-gray-500">•</span>
+                                                    <span class="text-gray-600 font-semibold">{{ liveClass.duration_minutes || 60 }} min</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-5">
+                                        <span class="inline-flex items-center px-4 py-2 rounded-full text-xs font-bold shadow-md capitalize"
+                                            :class="getStatusClass(liveClass.status)">
+                                            {{ liveClass.status }}
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-5">
+                                        <div class="flex items-center space-x-2">
+                                            <button 
+                                                @click="viewLiveClass(liveClass.id)"
+                                                class="inline-flex items-center justify-center w-10 h-10 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-xl hover:from-blue-600 hover:to-cyan-600 shadow-lg hover:shadow-xl transition-all transform hover:scale-110 active:scale-95 border-2 border-blue-400/30"
+                                                title="View"
+                                            >
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                                </svg>
+                                            </button>
+                                            <button 
+                                                @click="editLiveClass(liveClass.id)"
+                                                class="inline-flex items-center justify-center w-10 h-10 bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-xl hover:from-green-600 hover:to-emerald-600 shadow-lg hover:shadow-xl transition-all transform hover:scale-110 active:scale-95 border-2 border-green-400/30"
+                                                title="Edit"
+                                            >
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                                </svg>
+                                            </button>
+                                            <button 
+                                                @click="deleteLiveClass(liveClass.id)"
+                                                class="inline-flex items-center justify-center w-10 h-10 bg-gradient-to-r from-red-500 to-pink-500 text-white rounded-xl hover:from-red-600 hover:to-pink-600 shadow-lg hover:shadow-xl transition-all transform hover:scale-110 active:scale-95 border-2 border-red-400/30"
+                                                title="Delete"
+                                            >
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
                             <tr v-if="filteredLiveClasses.length === 0">
                                 <td colspan="5" class="px-6 py-12 text-center">
                                     <div class="flex flex-col items-center justify-center">
@@ -276,6 +276,7 @@
                             </tr>
                         </tbody>
                     </table>
+                </div>
                 </div>
             </div>
 
@@ -1029,6 +1030,17 @@ export default {
 
         let refreshInterval = null;
 
+        // ESC key handler for closing modals
+        const handleEscKey = (event) => {
+            if (event.key === 'Escape') {
+                if (showViewModal.value) {
+                    closeViewModal();
+                } else if (showModal.value) {
+                    closeModal();
+                }
+            }
+        };
+
         onMounted(() => {
             fetchLiveClasses();
             fetchBatches();
@@ -1037,12 +1049,15 @@ export default {
             refreshInterval = setInterval(() => {
                 fetchLiveClasses();
             }, 10000); // 10 seconds for faster status updates
+            
+            window.addEventListener('keydown', handleEscKey);
         });
 
         onUnmounted(() => {
             if (refreshInterval) {
                 clearInterval(refreshInterval);
             }
+            window.removeEventListener('keydown', handleEscKey);
         });
 
         return {

@@ -630,7 +630,7 @@
 </template>
 
 <script>
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, onUnmounted, computed } from 'vue';
 import axios from 'axios';
 
 export default {
@@ -907,8 +907,26 @@ export default {
             // After edit modal closes, we can add password change option
         };
 
+        // ESC key handler for closing modals
+        const handleEscKey = (event) => {
+            if (event.key === 'Escape') {
+                if (showPasswordModal.value) {
+                    closePasswordModal();
+                } else if (showViewModal.value) {
+                    closeViewModal();
+                } else if (showModal.value) {
+                    closeModal();
+                }
+            }
+        };
+
         onMounted(() => {
             fetchAdmins();
+            window.addEventListener('keydown', handleEscKey);
+        });
+
+        onUnmounted(() => {
+            window.removeEventListener('keydown', handleEscKey);
         });
 
         return {

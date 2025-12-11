@@ -169,107 +169,123 @@
         </div>
 
         <!-- Payments Table Section -->
-        <div class="bg-gradient-to-br from-white to-gray-50 rounded-2xl shadow-xl p-4 sm:p-6 border border-gray-100 overflow-hidden">
-            <div class="flex items-center justify-between mb-4">
-                <div class="text-sm text-gray-600">
-                    Showing <span class="font-semibold text-gray-900">{{ filteredPayments.length }}</span> of <span class="font-semibold text-gray-900">{{ payments.length }}</span> payments
+        <div class="bg-gradient-to-br from-white via-indigo-50/20 to-purple-50/20 rounded-2xl shadow-xl p-4 sm:p-6 border-2 border-indigo-100 overflow-hidden relative">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-indigo-100/30 to-purple-100/30 rounded-full -mr-32 -mt-32"></div>
+            <div class="relative z-10">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="text-sm text-gray-700 font-medium">
+                        Showing <span class="font-bold text-indigo-600">{{ filteredPayments.length }}</span> of <span class="font-bold text-indigo-600">{{ payments.length }}</span> payments
+                    </div>
                 </div>
-            </div>
-            
-            <!-- Desktop Table View -->
-            <div class="hidden lg:block overflow-x-auto">
-                <table class="w-full divide-y divide-gray-200">
-                    <thead class="bg-gradient-to-r from-indigo-50 via-purple-50 to-indigo-50">
-                        <tr>
-                            <th class="px-6 py-4 text-left text-sm font-bold text-gray-700 uppercase tracking-wider">Student</th>
-                            <th class="px-6 py-4 text-left text-sm font-bold text-gray-700 uppercase tracking-wider">Course</th>
-                            <th class="px-6 py-4 text-left text-sm font-bold text-gray-700 uppercase tracking-wider">Amount</th>
-                            <th class="px-6 py-4 text-left text-sm font-bold text-gray-700 uppercase tracking-wider">Payment Date</th>
-                            <th class="px-6 py-4 text-left text-sm font-bold text-gray-700 uppercase tracking-wider">Method</th>
-                            <th class="px-6 py-4 text-left text-sm font-bold text-gray-700 uppercase tracking-wider">Status</th>
-                            <th class="px-6 py-4 text-left text-sm font-bold text-gray-700 uppercase tracking-wider">Transaction ID</th>
-                            <th class="px-6 py-4 text-left text-sm font-bold text-gray-700 uppercase tracking-wider">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody class="bg-white divide-y divide-gray-200">
-                        <tr v-for="payment in filteredPayments" :key="payment.id" class="hover:bg-gradient-to-r hover:from-indigo-50/50 hover:to-purple-50/50 transition-all duration-200">
-                            <td class="px-6 py-5">
-                                <div class="flex items-center space-x-3">
-                                    <div class="w-10 h-10 bg-gradient-to-br from-indigo-400 to-purple-400 rounded-lg flex items-center justify-center flex-shrink-0">
-                                        <span class="text-white font-bold text-sm">{{ payment.user?.name?.charAt(0).toUpperCase() || 'N' }}</span>
-                                    </div>
-                                    <div>
-                                        <div class="text-sm font-bold text-gray-900">{{ payment.user?.name || 'N/A' }}</div>
-                                        <div class="text-xs text-gray-500">{{ payment.user?.email || 'N/A' }}</div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="px-6 py-5">
-                                <div class="text-sm font-semibold text-gray-900">{{ payment.course?.name || 'N/A' }}</div>
-                            </td>
-                            <td class="px-6 py-5">
-                                <div class="text-sm font-bold text-indigo-600">₹{{ payment.amount || 0 }}</div>
-                            </td>
-                            <td class="px-6 py-5">
-                                <div class="text-sm text-gray-900">{{ formatDate(payment.payment_date) }}</div>
-                            </td>
-                            <td class="px-6 py-5">
-                                <div class="text-sm text-gray-700 capitalize">{{ payment.payment_method || 'N/A' }}</div>
-                            </td>
-                            <td class="px-6 py-5">
-                                <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-bold shadow-sm capitalize"
-                                    :class="getStatusClass(payment.status)">
-                                    {{ payment.status }}
-                                </span>
-                            </td>
-                            <td class="px-6 py-5">
-                                <div class="text-xs text-gray-600 font-mono">{{ payment.transaction_id || 'N/A' }}</div>
-                            </td>
-                            <td class="px-6 py-5">
-                                <div class="flex items-center space-x-2">
-                                    <select 
-                                        :value="payment.status"
-                                        @change="updateStatus(payment.id, $event.target.value)"
-                                        class="px-3 py-1.5 text-xs font-semibold rounded-lg border-2 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 cursor-pointer"
-                                        :class="getStatusSelectClass(payment.status)"
-                                    >
-                                        <option value="pending">Pending</option>
-                                        <option value="paid">Paid</option>
-                                        <option value="failed">Failed</option>
-                                        <option value="refunded">Refunded</option>
-                                    </select>
-                                    <button 
-                                        @click="generateReceipt(payment.id)"
-                                        class="inline-flex items-center justify-center w-9 h-9 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg hover:from-purple-600 hover:to-pink-600 shadow-sm transition transform hover:scale-110 active:scale-95"
-                                        title="Generate Receipt"
-                                    >
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                        </svg>
-                                    </button>
-                                    <button 
-                                        @click="editPayment(payment.id)"
-                                        class="inline-flex items-center justify-center w-9 h-9 bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-lg hover:from-green-600 hover:to-emerald-600 shadow-sm transition transform hover:scale-110 active:scale-95"
-                                        title="Edit"
-                                    >
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                        </svg>
-                                    </button>
-                                    <button 
-                                        @click="deletePayment(payment.id)"
-                                        class="inline-flex items-center justify-center w-9 h-9 bg-gradient-to-r from-red-500 to-pink-500 text-white rounded-lg hover:from-red-600 hover:to-pink-600 shadow-sm transition transform hover:scale-110 active:scale-95"
-                                        title="Delete"
-                                    >
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                        </svg>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                
+                <!-- Desktop Table View -->
+                <div class="hidden lg:block w-full overflow-hidden">
+                    <div class="w-full overflow-x-auto" style="max-width: 100%;">
+                        <table class="w-full table-auto min-w-full">
+                            <thead>
+                                <tr class="bg-gradient-to-r from-indigo-500 via-purple-500 to-indigo-500">
+                                    <th class="px-4 py-4 text-left text-sm font-bold text-white uppercase tracking-wider whitespace-nowrap">Student</th>
+                                    <th class="px-4 py-4 text-left text-sm font-bold text-white uppercase tracking-wider whitespace-nowrap">Course</th>
+                                    <th class="px-4 py-4 text-left text-sm font-bold text-white uppercase tracking-wider whitespace-nowrap">Amount</th>
+                                    <th class="px-4 py-4 text-left text-sm font-bold text-white uppercase tracking-wider whitespace-nowrap">Date</th>
+                                    <th class="px-4 py-4 text-left text-sm font-bold text-white uppercase tracking-wider whitespace-nowrap">Method</th>
+                                    <th class="px-4 py-4 text-left text-sm font-bold text-white uppercase tracking-wider whitespace-nowrap">Status</th>
+                                    <th class="px-4 py-4 text-left text-sm font-bold text-white uppercase tracking-wider whitespace-nowrap">Txn ID</th>
+                                    <th class="px-4 py-4 text-left text-sm font-bold text-white uppercase tracking-wider whitespace-nowrap">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-100">
+                                <tr v-for="payment in filteredPayments" :key="payment.id" class="hover:bg-gradient-to-r hover:from-indigo-50/60 hover:via-purple-50/60 hover:to-indigo-50/60 transition-all duration-300 group border-b border-gray-100">
+                                    <td class="px-4 py-4">
+                                        <div class="flex items-center space-x-2 min-w-[180px]">
+                                            <div class="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg group-hover:scale-110 transition-transform duration-300">
+                                                <span class="text-white font-bold text-sm">{{ payment.user?.name?.charAt(0).toUpperCase() || 'N' }}</span>
+                                            </div>
+                                            <div class="min-w-0 flex-1">
+                                                <div class="text-sm font-bold text-gray-900 truncate group-hover:text-indigo-600 transition-colors">{{ payment.user?.name || 'N/A' }}</div>
+                                                <div class="text-xs text-gray-500 truncate">{{ payment.user?.email || 'N/A' }}</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-4 py-4">
+                                        <div class="text-sm font-semibold text-gray-900 truncate max-w-[150px]" :title="payment.course?.name || 'N/A'">{{ payment.course?.name || 'N/A' }}</div>
+                                    </td>
+                                    <td class="px-4 py-4">
+                                        <div class="text-sm font-bold text-indigo-600 whitespace-nowrap">₹{{ payment.amount || 0 }}</div>
+                                    </td>
+                                    <td class="px-4 py-4">
+                                        <div class="text-sm text-gray-900 whitespace-nowrap">{{ formatDate(payment.payment_date) }}</div>
+                                    </td>
+                                    <td class="px-4 py-4">
+                                        <div class="text-xs text-gray-700 capitalize whitespace-nowrap bg-gray-50 px-2 py-1 rounded-md inline-block">{{ payment.payment_method || 'N/A' }}</div>
+                                    </td>
+                                    <td class="px-4 py-4">
+                                        <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-bold shadow-md capitalize whitespace-nowrap"
+                                            :class="getStatusClass(payment.status)">
+                                            {{ payment.status }}
+                                        </span>
+                                    </td>
+                                    <td class="px-4 py-4">
+                                        <div class="text-xs text-gray-600 font-mono truncate max-w-[120px]" :title="payment.transaction_id || 'N/A'">{{ payment.transaction_id || 'N/A' }}</div>
+                                    </td>
+                                    <td class="px-4 py-4">
+                                        <div class="flex items-center space-x-1.5">
+                                            <select 
+                                                :value="payment.status"
+                                                @change="updateStatus(payment.id, $event.target.value)"
+                                                class="px-2 py-1.5 text-xs font-semibold rounded-lg border-2 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 cursor-pointer whitespace-nowrap"
+                                                :class="getStatusSelectClass(payment.status)"
+                                            >
+                                                <option value="pending">Pending</option>
+                                                <option value="paid">Paid</option>
+                                                <option value="failed">Failed</option>
+                                                <option value="refunded">Refunded</option>
+                                            </select>
+                                            <button 
+                                                @click="generateReceipt(payment.id)"
+                                                class="inline-flex items-center justify-center w-9 h-9 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl hover:from-purple-600 hover:to-pink-600 shadow-lg hover:shadow-xl transition-all transform hover:scale-110 active:scale-95 border-2 border-purple-400/30"
+                                                title="Generate Receipt"
+                                            >
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                                </svg>
+                                            </button>
+                                            <button 
+                                                @click="editPayment(payment.id)"
+                                                class="inline-flex items-center justify-center w-9 h-9 bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-xl hover:from-green-600 hover:to-emerald-600 shadow-lg hover:shadow-xl transition-all transform hover:scale-110 active:scale-95 border-2 border-green-400/30"
+                                                title="Edit"
+                                            >
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                                </svg>
+                                            </button>
+                                            <button 
+                                                @click="deletePayment(payment.id)"
+                                                class="inline-flex items-center justify-center w-9 h-9 bg-gradient-to-r from-red-500 to-pink-500 text-white rounded-xl hover:from-red-600 hover:to-pink-600 shadow-lg hover:shadow-xl transition-all transform hover:scale-110 active:scale-95 border-2 border-red-400/30"
+                                                title="Delete"
+                                            >
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr v-if="filteredPayments.length === 0">
+                                    <td colspan="8" class="px-6 py-12 text-center">
+                                        <div class="flex flex-col items-center justify-center">
+                                            <svg class="w-16 h-16 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+                                            </svg>
+                                            <p class="text-gray-500 text-lg font-medium">No payments found</p>
+                                            <p class="text-gray-400 text-sm mt-1">Try adjusting your search or filters</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
 
             <!-- Mobile Card View -->
@@ -665,7 +681,7 @@
 </template>
 
 <script>
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, onUnmounted, computed } from 'vue';
 import axios from 'axios';
 
 export default {
@@ -1022,11 +1038,27 @@ export default {
             return classes[status] || 'border-gray-300 bg-white text-gray-700';
         };
 
+        // ESC key handler for closing modals
+        const handleEscKey = (event) => {
+            if (event.key === 'Escape') {
+                if (showReceiptModal.value) {
+                    closeReceiptModal();
+                } else if (showModal.value) {
+                    closeModal();
+                }
+            }
+        };
+
         onMounted(() => {
             fetchPayments();
             fetchStats();
             fetchStudents();
             fetchCourses();
+            window.addEventListener('keydown', handleEscKey);
+        });
+
+        onUnmounted(() => {
+            window.removeEventListener('keydown', handleEscKey);
         });
 
         return {

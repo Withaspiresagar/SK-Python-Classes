@@ -123,6 +123,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/api/certificates/{id}', [CertificatesController::class, 'show']);
     Route::get('/api/certificates/{id}/download', [CertificatesController::class, 'download']);
     Route::post('/api/certificates', [CertificatesController::class, 'store']);
+    Route::post('/api/certificates/bulk-generate', [CertificatesController::class, 'bulkGenerate']);
     Route::put('/api/certificates/{id}', [CertificatesController::class, 'update']);
     Route::delete('/api/certificates/{id}', [CertificatesController::class, 'destroy']);
     

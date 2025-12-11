@@ -596,7 +596,7 @@
 </template>
 
 <script>
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, onUnmounted, computed } from 'vue';
 import axios from 'axios';
 
 export default {
@@ -850,19 +850,24 @@ export default {
         };
 
         const deleteStudent = async (id) => {
-            if (!confirm('Are you sure you want to delete this student?')) {
+            if (!confirm('Are you sure you want to delete this student? This action cannot be undone.')) {
                 return;
             }
 
             try {
                 const response = await axios.delete(`/api/students/${id}`);
                 if (response.data.success) {
+                    // Show success message
+                    alert('Student deleted successfully');
+                    // Refresh the list
                     await fetchStudents();
                 } else {
                     alert(response.data.message || 'Failed to delete student');
                 }
             } catch (err) {
-                alert(err.response?.data?.message || 'Failed to delete student');
+                console.error('Delete error:', err);
+                const errorMessage = err.response?.data?.message || err.message || 'Failed to delete student';
+                alert(errorMessage);
             }
         };
 
@@ -907,8 +912,24 @@ export default {
             return index + 1;
         };
 
+        // ESC key handler for closing modals
+        const handleEscKey = (event) => {
+            if (event.key === 'Escape') {
+                if (showViewModal.value) {
+                    closeViewModal();
+                } else if (showModal.value) {
+                    closeModal();
+                }
+            }
+        };
+
         onMounted(() => {
             fetchStudents();
+            window.addEventListener('keydown', handleEscKey);
+        });
+
+        onUnmounted(() => {
+            window.removeEventListener('keydown', handleEscKey);
         });
 
         return {

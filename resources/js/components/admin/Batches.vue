@@ -732,7 +732,7 @@
 </template>
 
 <script>
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, onUnmounted, computed } from 'vue';
 import axios from 'axios';
 
 export default {
@@ -1076,10 +1076,28 @@ export default {
             });
         };
 
+        // ESC key handler for closing modals
+        const handleEscKey = (event) => {
+            if (event.key === 'Escape') {
+                if (showAssignModal.value) {
+                    closeAssignModal();
+                } else if (showViewModal.value) {
+                    closeViewModal();
+                } else if (showModal.value) {
+                    closeModal();
+                }
+            }
+        };
+
         onMounted(() => {
             fetchBatches();
             fetchStudents();
             fetchActiveCourses();
+            window.addEventListener('keydown', handleEscKey);
+        });
+
+        onUnmounted(() => {
+            window.removeEventListener('keydown', handleEscKey);
         });
 
         return {

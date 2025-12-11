@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Certificate;
 use App\Models\User;
 use App\Models\Course;
+use App\Models\Batch;
 use App\Models\BrandSetting;
 use Illuminate\Support\Facades\Storage;
 use Barryvdh\DomPDF\Facade\Pdf as PDF;
@@ -274,5 +275,87 @@ class CertificatesController extends Controller
                 'thisMonthCertificates' => $thisMonthCertificates,
             ]
         ]);
+    }
+
+    /**
+     * Bulk generate certificates for all students in a batch
+     */
+    public function bulkGenerate(Request $request)
+    {
+        $request->validate([
+            'batch_id' => 'required|exists:batches,id',
+            'issue_date' => 'required|date',
+            'expiry_date' => 'nullable|date|after:issue_date',
+            'notes' => 'nullable|string',
+        ]);
+
+        $batch = Batch::with(['course'])->find($request->batch_id);
+
+        if (!$batch) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Batch not found'
+            ], 404);
+        }
+
+        if (!$batch->course_id) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Batch does not have an associated course'
+            ], 400);
+        }
+
+        // Get students from batch (only students, not admins)
+        $students = $batch->users()->where('role', 'student')->get();
+
+        if ($students->isEmpty()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No students found in this batch'
+            ], 400);
+        }
+
+        $generated = 0;
+        $skipped = 0;
+        $errors = [];
+
+        foreach ($students as $student) {
+            // Check if certificate already exists
+            $existing = Certificate::where('user_id', $student->id)
+                ->where('course_id', $batch->course_id)
+                ->where('status', 'active')
+                ->first();
+
+            if ($existing) {
+                $skipped++;
+                continue;
+            }
+
+            try {
+                $certificate = Certificate::create([
+                    'user_id' => $student->id,
+                    'course_id' => $batch->course_id,
+                    'certificate_number' => Certificate::generateCertificateNumber(),
+                    'issue_date' => $request->issue_date,
+                    'expiry_date' => $request->expiry_date,
+                    'status' => 'active',
+                    'notes' => $request->notes,
+                ]);
+
+                // Generate PDF
+                $this->generateCertificatePDF($certificate);
+                $generated++;
+            } catch (\Exception $e) {
+                $errors[] = "Failed to generate certificate for {$student->name}: " . $e->getMessage();
+            }
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => "Certificates generated successfully. Generated: {$generated}, Skipped: {$skipped}",
+            'generated' => $generated,
+            'skipped' => $skipped,
+            'errors' => $errors
+        ], 201);
     }
 }

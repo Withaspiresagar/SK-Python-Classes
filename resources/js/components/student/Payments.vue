@@ -1,14 +1,16 @@
 <template>
     <div class="w-full overflow-hidden space-y-4 sm:space-y-6">
         <!-- Header -->
-        <div class="bg-gradient-to-br from-white to-gray-50 rounded-2xl shadow-xl p-4 sm:p-6 border border-gray-100">
-            <div class="flex items-center justify-between">
+        <div class="bg-gradient-to-br from-green-500 via-emerald-500 to-teal-500 rounded-2xl shadow-2xl p-4 sm:p-6 text-white relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-32 -mt-32"></div>
+            <div class="absolute bottom-0 left-0 w-48 h-48 bg-white/10 rounded-full -ml-24 -mb-24"></div>
+            <div class="relative z-10 flex items-center justify-between">
                 <div>
-                    <h2 class="text-xl sm:text-2xl font-bold text-gray-800 mb-1">My Payments</h2>
-                    <p class="text-xs sm:text-sm text-gray-600">View your payment history and receipts</p>
+                    <h2 class="text-xl sm:text-2xl font-bold mb-1">My Payments</h2>
+                    <p class="text-xs sm:text-sm text-green-100">View your payment history and receipts</p>
                 </div>
                 <div class="hidden sm:flex items-center space-x-2">
-                    <div class="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-xl flex items-center justify-center shadow-lg">
+                    <div class="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center shadow-lg">
                         <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
                         </svg>
@@ -19,8 +21,9 @@
 
         <!-- Stats Cards -->
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
-            <div class="bg-gradient-to-br from-green-500 to-emerald-500 rounded-2xl shadow-xl p-5 sm:p-6 text-white transform hover:scale-105 transition-all duration-300 border border-green-400/20">
-                <div class="flex items-center justify-between mb-4">
+            <div class="bg-gradient-to-br from-green-500 to-emerald-500 rounded-2xl shadow-xl p-5 sm:p-6 text-white transform hover:scale-105 transition-all duration-300 border border-green-400/20 relative overflow-hidden group">
+                <div class="absolute top-0 right-0 w-24 h-24 bg-white/10 rounded-full -mr-12 -mt-12 group-hover:scale-150 transition-transform duration-500"></div>
+                <div class="relative z-10 flex items-center justify-between">
                     <div>
                         <div class="text-2xl sm:text-3xl font-bold mb-1">₹{{ formatCurrency(stats.totalPaid) }}</div>
                         <div class="text-green-100 text-xs sm:text-sm font-medium">Total Paid</div>
@@ -32,8 +35,9 @@
                     </div>
                 </div>
             </div>
-            <div class="bg-gradient-to-br from-yellow-500 to-orange-500 rounded-2xl shadow-xl p-5 sm:p-6 text-white transform hover:scale-105 transition-all duration-300 border border-yellow-400/20">
-                <div class="flex items-center justify-between mb-4">
+            <div class="bg-gradient-to-br from-yellow-500 to-orange-500 rounded-2xl shadow-xl p-5 sm:p-6 text-white transform hover:scale-105 transition-all duration-300 border border-yellow-400/20 relative overflow-hidden group">
+                <div class="absolute top-0 right-0 w-24 h-24 bg-white/10 rounded-full -mr-12 -mt-12 group-hover:scale-150 transition-transform duration-500"></div>
+                <div class="relative z-10 flex items-center justify-between">
                     <div>
                         <div class="text-2xl sm:text-3xl font-bold mb-1">₹{{ formatCurrency(stats.pendingAmount) }}</div>
                         <div class="text-yellow-100 text-xs sm:text-sm font-medium">Pending</div>
@@ -45,8 +49,9 @@
                     </div>
                 </div>
             </div>
-            <div class="bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl shadow-xl p-5 sm:p-6 text-white transform hover:scale-105 transition-all duration-300 border border-blue-400/20">
-                <div class="flex items-center justify-between mb-4">
+            <div class="bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl shadow-xl p-5 sm:p-6 text-white transform hover:scale-105 transition-all duration-300 border border-blue-400/20 relative overflow-hidden group">
+                <div class="absolute top-0 right-0 w-24 h-24 bg-white/10 rounded-full -mr-12 -mt-12 group-hover:scale-150 transition-transform duration-500"></div>
+                <div class="relative z-10 flex items-center justify-between">
                     <div>
                         <div class="text-2xl sm:text-3xl font-bold mb-1">{{ stats.totalPayments }}</div>
                         <div class="text-blue-100 text-xs sm:text-sm font-medium">Total Payments</div>
@@ -61,11 +66,14 @@
         </div>
 
         <!-- Payments Table -->
-        <div class="bg-gradient-to-br from-white to-gray-50 rounded-2xl shadow-xl p-4 sm:p-6 border border-gray-100">
+        <div class="bg-gradient-to-br from-white via-indigo-50/20 to-purple-50/20 rounded-2xl shadow-xl p-4 sm:p-6 border-2 border-indigo-100">
             <div class="flex items-center justify-between mb-4 sm:mb-6">
-                <div>
-                    <h3 class="text-lg sm:text-xl font-bold text-gray-800 mb-1">Payment History</h3>
-                    <p class="text-xs sm:text-sm text-gray-600 hidden sm:block">All your payment transactions</p>
+                <div class="flex items-center space-x-3">
+                    <div class="w-1 h-10 bg-gradient-to-b from-indigo-500 to-purple-500 rounded-full"></div>
+                    <div>
+                        <h3 class="text-lg sm:text-xl font-bold text-gray-800 mb-1">Payment History</h3>
+                        <p class="text-xs sm:text-sm text-gray-600 hidden sm:block">All your payment transactions</p>
+                    </div>
                 </div>
             </div>
             <div v-if="loading" class="text-center py-12">
@@ -86,13 +94,13 @@
                 <div class="hidden lg:block overflow-x-auto">
                     <table class="w-full">
                         <thead>
-                            <tr class="border-b-2 border-gray-200 bg-gray-50">
-                                <th class="text-left py-4 px-6 text-sm font-bold text-gray-700">Course</th>
-                                <th class="text-left py-4 px-6 text-sm font-bold text-gray-700">Amount</th>
-                                <th class="text-left py-4 px-6 text-sm font-bold text-gray-700">Payment Method</th>
-                                <th class="text-left py-4 px-6 text-sm font-bold text-gray-700">Status</th>
-                                <th class="text-left py-4 px-6 text-sm font-bold text-gray-700">Date</th>
-                                <th class="text-left py-4 px-6 text-sm font-bold text-gray-700">Actions</th>
+                            <tr class="border-b-2 border-indigo-200 bg-gradient-to-r from-indigo-50 via-purple-50 to-pink-50">
+                                <th class="text-left py-4 px-6 text-sm font-bold text-indigo-700">Course</th>
+                                <th class="text-left py-4 px-6 text-sm font-bold text-indigo-700">Amount</th>
+                                <th class="text-left py-4 px-6 text-sm font-bold text-indigo-700">Payment Method</th>
+                                <th class="text-left py-4 px-6 text-sm font-bold text-indigo-700">Status</th>
+                                <th class="text-left py-4 px-6 text-sm font-bold text-indigo-700">Date</th>
+                                <th class="text-left py-4 px-6 text-sm font-bold text-indigo-700">Actions</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-100">
@@ -152,27 +160,29 @@
 
                 <!-- Mobile Card View -->
                 <div class="lg:hidden space-y-4">
-                    <div v-for="payment in payments" :key="payment.id" class="bg-white rounded-xl shadow-lg p-4 border border-gray-200 hover:shadow-xl transition-all">
-                        <div class="flex items-start justify-between mb-3">
-                            <div class="flex-1">
-                                <h3 class="font-bold text-gray-900 mb-1">{{ payment.course?.name || 'N/A' }}</h3>
-                                <p class="text-xs text-gray-500">{{ formatDate(payment.payment_date) }}</p>
+                    <div v-for="payment in payments" :key="payment.id" class="bg-gradient-to-br from-white via-indigo-50/30 to-purple-50/30 rounded-xl shadow-lg p-4 border-2 border-indigo-100 hover:border-indigo-300 hover:shadow-xl transition-all relative overflow-hidden group">
+                        <div class="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-indigo-100/40 to-purple-100/40 rounded-full -mr-12 -mt-12 group-hover:scale-150 transition-transform duration-500"></div>
+                        <div class="relative z-10">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="flex-1">
+                                    <h3 class="font-bold text-gray-900 mb-1">{{ payment.course?.name || 'N/A' }}</h3>
+                                    <p class="text-xs text-indigo-600 font-medium">{{ formatDate(payment.payment_date) }}</p>
+                                </div>
+                                <span :class="getStatusClass(payment.status)" class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold shadow-sm capitalize">
+                                    {{ payment.status }}
+                                </span>
                             </div>
-                            <span :class="getStatusClass(payment.status)" class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold shadow-sm capitalize">
-                                {{ payment.status }}
-                            </span>
-                        </div>
-                        <div class="space-y-2 mb-3">
-                            <div class="flex justify-between items-center">
-                                <span class="text-sm text-gray-600">Amount:</span>
-                                <span class="text-sm font-bold text-indigo-600">₹{{ payment.amount }}</span>
+                            <div class="space-y-2 mb-3">
+                                <div class="flex justify-between items-center p-2 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-lg border border-indigo-100">
+                                    <span class="text-sm text-indigo-700 font-semibold">Amount:</span>
+                                    <span class="text-sm font-bold text-indigo-600">₹{{ payment.amount }}</span>
+                                </div>
+                                <div class="flex justify-between items-center p-2 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-lg border border-blue-100">
+                                    <span class="text-sm text-blue-700 font-semibold">Payment Method:</span>
+                                    <span class="text-sm text-blue-800 font-medium capitalize">{{ formatPaymentMethod(payment.payment_method) }}</span>
+                                </div>
                             </div>
-                            <div class="flex justify-between items-center">
-                                <span class="text-sm text-gray-600">Payment Method:</span>
-                                <span class="text-sm text-gray-700 capitalize">{{ formatPaymentMethod(payment.payment_method) }}</span>
-                            </div>
-                        </div>
-                        <div v-if="payment.status === 'paid'" class="pt-3 border-t border-gray-100 flex gap-2">
+                            <div v-if="payment.status === 'paid'" class="pt-3 border-t border-indigo-200 flex gap-2">
                             <button 
                                 @click="viewReceipt(payment.id)"
                                 class="flex-1 inline-flex items-center justify-center px-4 py-2 bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-lg text-sm font-medium hover:from-indigo-600 hover:to-purple-600 transition shadow-sm"
@@ -197,6 +207,7 @@
                                 </svg>
                                 {{ downloadingId === payment.id ? 'Downloading...' : 'Download' }}
                             </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -309,10 +320,10 @@ export default {
 
         const getStatusClass = (status) => {
             const classes = {
-                'paid': 'bg-green-100 text-green-800',
-                'pending': 'bg-yellow-100 text-yellow-800',
-                'failed': 'bg-red-100 text-red-800',
-                'refunded': 'bg-gray-100 text-gray-800'
+                'paid': 'bg-gradient-to-r from-green-400 to-emerald-400 text-white',
+                'pending': 'bg-gradient-to-r from-yellow-400 to-orange-400 text-white',
+                'failed': 'bg-gradient-to-r from-red-400 to-pink-400 text-white',
+                'refunded': 'bg-gradient-to-r from-gray-400 to-gray-500 text-white'
             };
             return classes[status] || 'bg-gray-100 text-gray-800';
         };

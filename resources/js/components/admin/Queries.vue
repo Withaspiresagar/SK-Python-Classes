@@ -133,100 +133,107 @@
         </div>
 
         <!-- Queries Table Section -->
-        <div class="bg-gradient-to-br from-white to-gray-50 rounded-2xl shadow-xl p-4 sm:p-6 border border-gray-100 overflow-hidden">
-            <!-- Desktop Table View -->
-            <div class="hidden lg:block overflow-x-auto -mx-4 sm:mx-0 w-full">
-                <div class="inline-block w-full align-middle">
-                    <table class="w-full divide-y divide-gray-200 table-auto">
-                        <thead class="bg-gradient-to-r from-indigo-50 via-purple-50 to-indigo-50">
-                            <tr>
-                                <th class="px-6 py-4 text-left text-sm font-bold text-gray-700 uppercase tracking-wider">Name</th>
-                                <th class="px-6 py-4 text-left text-sm font-bold text-gray-700 uppercase tracking-wider">Contact</th>
-                                <th class="px-6 py-4 text-left text-sm font-bold text-gray-700 uppercase tracking-wider">Subject</th>
-                                <th class="px-6 py-4 text-left text-sm font-bold text-gray-700 uppercase tracking-wider">Date</th>
-                                <th class="px-6 py-4 text-left text-sm font-bold text-gray-700 uppercase tracking-wider">Status</th>
-                                <th class="px-6 py-4 text-left text-sm font-bold text-gray-700 uppercase tracking-wider">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
-                            <tr v-for="query in filteredQueries" :key="query.id" class="hover:bg-gradient-to-r hover:from-indigo-50/50 hover:to-purple-50/50 transition-all duration-200">
-                                <td class="px-6 py-5">
-                                    <div class="flex items-center space-x-3">
-                                        <div class="w-10 h-10 bg-gradient-to-br from-indigo-400 to-purple-400 rounded-lg flex items-center justify-center flex-shrink-0">
-                                            <span class="text-white font-bold text-sm">{{ query.name.charAt(0).toUpperCase() }}</span>
+        <div class="bg-gradient-to-br from-white via-indigo-50/20 to-purple-50/20 rounded-2xl shadow-xl p-4 sm:p-6 border-2 border-indigo-100 overflow-hidden relative">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-indigo-100/30 to-purple-100/30 rounded-full -mr-32 -mt-32"></div>
+            <div class="relative z-10">
+                <!-- Desktop Table View -->
+                <div class="hidden lg:block w-full overflow-hidden">
+                    <div class="w-full overflow-x-auto" style="max-width: 100%;">
+                        <table class="w-full table-auto min-w-full">
+                            <thead>
+                                <tr class="bg-gradient-to-r from-indigo-500 via-purple-500 to-indigo-500">
+                                    <th class="px-4 py-4 text-left text-sm font-bold text-white uppercase tracking-wider whitespace-nowrap">Name</th>
+                                    <th class="px-4 py-4 text-left text-sm font-bold text-white uppercase tracking-wider whitespace-nowrap">Contact</th>
+                                    <th class="px-4 py-4 text-left text-sm font-bold text-white uppercase tracking-wider whitespace-nowrap">Subject</th>
+                                    <th class="px-4 py-4 text-left text-sm font-bold text-white uppercase tracking-wider whitespace-nowrap">Date</th>
+                                    <th class="px-4 py-4 text-left text-sm font-bold text-white uppercase tracking-wider whitespace-nowrap">Status</th>
+                                    <th class="px-4 py-4 text-left text-sm font-bold text-white uppercase tracking-wider whitespace-nowrap">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-100">
+                                <tr v-for="query in filteredQueries" :key="query.id" class="hover:bg-gradient-to-r hover:from-indigo-50/60 hover:via-purple-50/60 hover:to-indigo-50/60 transition-all duration-300 group border-b border-gray-100">
+                                    <td class="px-4 py-4">
+                                        <div class="flex items-center space-x-2 min-w-[180px]">
+                                            <div class="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg group-hover:scale-110 transition-transform duration-300">
+                                                <span class="text-white font-bold text-sm">{{ query.name.charAt(0).toUpperCase() }}</span>
+                                            </div>
+                                            <div class="min-w-0 flex-1">
+                                                <div class="text-sm font-bold text-gray-900 truncate group-hover:text-indigo-600 transition-colors">{{ query.name }}</div>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <div class="text-sm font-bold text-gray-900">{{ query.name }}</div>
+                                    </td>
+                                    <td class="px-4 py-4">
+                                        <div class="min-w-0">
+                                            <div class="text-sm text-gray-900 font-medium truncate">{{ query.email }}</div>
+                                            <div class="text-xs text-gray-500 truncate">{{ query.phone }}</div>
                                         </div>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-5">
-                                    <div class="text-sm text-gray-900 font-medium">{{ query.email }}</div>
-                                    <div class="text-xs text-gray-500">{{ query.phone }}</div>
-                                </td>
-                                <td class="px-6 py-5">
-                                    <div class="text-sm font-semibold text-gray-900">{{ query.subject }}</div>
-                                    <div class="text-xs text-gray-500 truncate max-w-xs">{{ query.message.substring(0, 50) }}...</div>
-                                </td>
-                                <td class="px-6 py-5">
-                                    <div class="text-sm text-gray-900">{{ formatDate(query.created_at) }}</div>
-                                </td>
-                                <td class="px-6 py-5">
-                                    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-bold shadow-sm capitalize"
-                                        :class="getStatusClass(query.status)">
-                                        {{ query.status }}
-                                    </span>
-                                </td>
-                                <td class="px-6 py-5">
-                                    <div class="flex items-center space-x-2">
-                                        <select 
-                                            :value="query.status"
-                                            @change="updateStatus(query.id, $event.target.value)"
-                                            :disabled="query.status === 'resolved'"
-                                            class="px-3 py-1.5 text-xs font-semibold rounded-lg border-2 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1"
-                                            :class="[
-                                                getStatusSelectClass(query.status),
-                                                query.status === 'resolved' ? 'cursor-not-allowed opacity-75' : 'cursor-pointer'
-                                            ]"
-                                        >
-                                            <option value="pending">Pending</option>
-                                            <option value="resolved">Resolved</option>
-                                        </select>
-                                        <button 
-                                            @click="viewQuery(query.id)"
-                                            class="inline-flex items-center justify-center w-9 h-9 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-lg hover:from-blue-600 hover:to-cyan-600 shadow-sm transition transform hover:scale-110 active:scale-95"
-                                            title="View"
-                                        >
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    </td>
+                                    <td class="px-4 py-4">
+                                        <div class="min-w-0 max-w-[250px]">
+                                            <div class="text-sm font-semibold text-gray-900 truncate" :title="query.subject">{{ query.subject }}</div>
+                                            <div class="text-xs text-gray-500 truncate" :title="query.message">{{ query.message.substring(0, 50) }}...</div>
+                                        </div>
+                                    </td>
+                                    <td class="px-4 py-4">
+                                        <div class="text-sm text-gray-900 whitespace-nowrap">{{ formatDate(query.created_at) }}</div>
+                                    </td>
+                                    <td class="px-4 py-4">
+                                        <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-bold shadow-md capitalize whitespace-nowrap"
+                                            :class="getStatusClass(query.status)">
+                                            {{ query.status }}
+                                        </span>
+                                    </td>
+                                    <td class="px-4 py-4">
+                                        <div class="flex items-center space-x-1.5">
+                                            <select 
+                                                :value="query.status"
+                                                @change="updateStatus(query.id, $event.target.value)"
+                                                :disabled="query.status === 'resolved'"
+                                                class="px-2 py-1.5 text-xs font-semibold rounded-lg border-2 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 whitespace-nowrap"
+                                                :class="[
+                                                    getStatusSelectClass(query.status),
+                                                    query.status === 'resolved' ? 'cursor-not-allowed opacity-75' : 'cursor-pointer'
+                                                ]"
+                                            >
+                                                <option value="pending">Pending</option>
+                                                <option value="resolved">Resolved</option>
+                                            </select>
+                                            <button 
+                                                @click="viewQuery(query.id)"
+                                                class="inline-flex items-center justify-center w-9 h-9 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-xl hover:from-blue-600 hover:to-cyan-600 shadow-lg hover:shadow-xl transition-all transform hover:scale-110 active:scale-95 border-2 border-blue-400/30"
+                                                title="View"
+                                            >
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                                </svg>
+                                            </button>
+                                            <button 
+                                                @click="deleteQuery(query.id)"
+                                                class="inline-flex items-center justify-center w-9 h-9 bg-gradient-to-r from-red-500 to-pink-500 text-white rounded-xl hover:from-red-600 hover:to-pink-600 shadow-lg hover:shadow-xl transition-all transform hover:scale-110 active:scale-95 border-2 border-red-400/30"
+                                                title="Delete"
+                                            >
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr v-if="filteredQueries.length === 0">
+                                    <td colspan="6" class="px-6 py-12 text-center">
+                                        <div class="flex flex-col items-center justify-center">
+                                            <svg class="w-16 h-16 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                             </svg>
-                                        </button>
-                                        <button 
-                                            @click="deleteQuery(query.id)"
-                                            class="inline-flex items-center justify-center w-9 h-9 bg-gradient-to-r from-red-500 to-pink-500 text-white rounded-lg hover:from-red-600 hover:to-pink-600 shadow-sm transition transform hover:scale-110 active:scale-95"
-                                            title="Delete"
-                                        >
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                            </svg>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr v-if="filteredQueries.length === 0">
-                                <td colspan="6" class="px-6 py-12 text-center">
-                                    <div class="flex flex-col items-center justify-center">
-                                        <svg class="w-16 h-16 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                        </svg>
-                                        <p class="text-gray-500 text-lg font-medium">No queries found</p>
-                                        <p class="text-gray-400 text-sm mt-1">Try adjusting your search or filters</p>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                                            <p class="text-gray-500 text-lg font-medium">No queries found</p>
+                                            <p class="text-gray-400 text-sm mt-1">Try adjusting your search or filters</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 
@@ -429,7 +436,7 @@
 </template>
 
 <script>
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, onUnmounted, computed } from 'vue';
 import axios from 'axios';
 
 export default {
@@ -593,8 +600,22 @@ export default {
             return classes[status] || classes.pending;
         };
 
+        // ESC key handler for closing modals
+        const handleEscKey = (event) => {
+            if (event.key === 'Escape') {
+                if (showViewModal.value) {
+                    closeViewModal();
+                }
+            }
+        };
+
         onMounted(() => {
             fetchQueries();
+            window.addEventListener('keydown', handleEscKey);
+        });
+
+        onUnmounted(() => {
+            window.removeEventListener('keydown', handleEscKey);
         });
 
         return {

@@ -66,15 +66,26 @@
                     <h2 class="text-xl sm:text-2xl font-bold text-gray-800 mb-2">Certificates Management</h2>
                     <p class="text-gray-600 text-sm">Generate and manage student certificates</p>
                 </div>
-                <button 
-                    @click="openAddModal"
-                    class="bg-gradient-to-r from-teal-500 to-cyan-500 text-white px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl hover:from-teal-600 hover:to-cyan-600 transition font-medium shadow-lg shadow-teal-500/30 transform hover:scale-105 text-sm sm:text-base whitespace-nowrap flex items-center justify-center"
-                >
-                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                    </svg>
-                    Generate Certificate
-                </button>
+                <div class="flex flex-col sm:flex-row gap-2 sm:gap-3">
+                    <button 
+                        @click="openBulkGenerateModal"
+                        class="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl hover:from-purple-600 hover:to-pink-600 transition font-medium shadow-lg shadow-purple-500/30 transform hover:scale-105 text-sm sm:text-base whitespace-nowrap flex items-center justify-center"
+                    >
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                        </svg>
+                        Bulk Generate
+                    </button>
+                    <button 
+                        @click="openAddModal"
+                        class="bg-gradient-to-r from-teal-500 to-cyan-500 text-white px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl hover:from-teal-600 hover:to-cyan-600 transition font-medium shadow-lg shadow-teal-500/30 transform hover:scale-105 text-sm sm:text-base whitespace-nowrap flex items-center justify-center"
+                    >
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                        </svg>
+                        Generate Certificate
+                    </button>
+                </div>
             </div>
 
             <!-- Search and Filters -->
@@ -533,11 +544,181 @@
                 </div>
             </div>
         </div>
+
+        <!-- Bulk Generate Modal -->
+        <div v-if="showBulkModal" class="fixed inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center z-[9999] p-3 sm:p-4 overflow-y-auto" @click.self="closeBulkModal">
+            <div class="bg-gradient-to-br from-white via-purple-50/30 to-pink-50/30 rounded-2xl shadow-2xl w-full max-w-2xl border-2 border-purple-100 transform transition-all flex flex-col max-h-[calc(100vh-2rem)] lg:max-h-[90vh] mx-auto">
+                <!-- Header -->
+                <div class="relative bg-gradient-to-r from-purple-500 via-pink-500 to-purple-500 rounded-t-2xl p-4 sm:p-6 flex-shrink-0">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-2 sm:space-x-3 flex-1 min-w-0">
+                            <div class="w-10 h-10 sm:w-12 sm:h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center flex-shrink-0">
+                                <svg class="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                                </svg>
+                            </div>
+                            <div class="min-w-0 flex-1">
+                                <h3 class="text-lg sm:text-xl font-bold text-white truncate">Bulk Generate Certificates</h3>
+                                <p class="text-purple-100 text-xs sm:text-sm mt-0.5 hidden sm:block">Generate certificates for all students in a batch</p>
+                            </div>
+                        </div>
+                        <button @click="closeBulkModal" class="w-8 h-8 sm:w-10 sm:h-10 bg-white/20 hover:bg-white/30 rounded-lg flex items-center justify-center transition backdrop-blur-sm ml-2 sm:ml-3 flex-shrink-0">
+                            <svg class="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Content -->
+                <div class="flex-1 overflow-y-auto p-4 sm:p-6">
+                    <div class="space-y-5">
+                        <!-- Batch Selection -->
+                        <div class="form-field-group">
+                            <label class="form-label">
+                                <svg class="w-5 h-5 inline mr-2 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                                </svg>
+                                Batch *
+                            </label>
+                            <select 
+                                v-model="bulkForm.batch_id" 
+                                @change="onBatchChange"
+                                class="form-input-modern"
+                                required
+                            >
+                                <option value="">Select Batch</option>
+                                <option v-for="batch in batches" :key="batch.id" :value="batch.id">
+                                    {{ batch.name }} - {{ batch.course?.name || 'No Course' }}
+                                </option>
+                            </select>
+                        </div>
+
+                        <!-- Course (Auto-filled from batch) -->
+                        <div class="form-field-group">
+                            <label class="form-label">
+                                <svg class="w-5 h-5 inline mr-2 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                </svg>
+                                Course (from Batch)
+                            </label>
+                            <input 
+                                type="text" 
+                                :value="selectedBatchCourse" 
+                                class="form-input-modern bg-gray-50"
+                                disabled
+                                readonly
+                            >
+                        </div>
+
+                        <!-- Students Count -->
+                        <div v-if="selectedBatchStudentsCount > 0" class="p-4 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl border-2 border-indigo-200">
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm font-semibold text-indigo-700">Students in Batch:</span>
+                                <span class="text-lg font-bold text-indigo-900">{{ selectedBatchStudentsCount }}</span>
+                            </div>
+                        </div>
+
+                        <!-- Issue Date and Expiry Date -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="form-field-group">
+                                <label class="form-label">
+                                    <svg class="w-5 h-5 inline mr-2 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                    </svg>
+                                    Issue Date *
+                                </label>
+                                <input 
+                                    type="date" 
+                                    v-model="bulkForm.issue_date" 
+                                    class="form-input-modern"
+                                    required
+                                >
+                            </div>
+
+                            <div class="form-field-group">
+                                <label class="form-label">
+                                    <svg class="w-5 h-5 inline mr-2 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                    </svg>
+                                    Expiry Date (Optional)
+                                </label>
+                                <input 
+                                    type="date" 
+                                    v-model="bulkForm.expiry_date" 
+                                    class="form-input-modern"
+                                    :min="bulkForm.issue_date"
+                                >
+                            </div>
+                        </div>
+
+                        <!-- Notes -->
+                        <div class="form-field-group">
+                            <label class="form-label">
+                                <svg class="w-5 h-5 inline mr-2 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" />
+                                </svg>
+                                Notes
+                            </label>
+                            <textarea 
+                                v-model="bulkForm.notes" 
+                                placeholder="Add any additional notes..."
+                                rows="3"
+                                class="form-input-modern"
+                            ></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Error Message -->
+                    <div v-if="error" class="mt-5 p-4 bg-gradient-to-r from-red-50 to-pink-50 border-l-4 border-red-500 rounded-lg">
+                        <div class="flex items-center">
+                            <svg class="w-5 h-5 text-red-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <p class="text-red-700 text-sm font-medium">{{ error }}</p>
+                        </div>
+                    </div>
+
+                    <!-- Success Message -->
+                    <div v-if="successMessage" class="mt-5 p-4 bg-gradient-to-r from-green-50 to-emerald-50 border-l-4 border-green-500 rounded-lg">
+                        <div class="flex items-center">
+                            <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <p class="text-green-700 text-sm font-medium">{{ successMessage }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <div class="p-4 sm:p-6 border-t border-purple-100 bg-gradient-to-r from-purple-50/50 to-pink-50/50 rounded-b-2xl flex-shrink-0">
+                    <div class="flex flex-col sm:flex-row gap-3 sm:justify-end">
+                        <button 
+                            @click="closeBulkModal"
+                            class="px-6 py-2.5 bg-white border-2 border-purple-300 text-purple-700 rounded-xl hover:bg-purple-50 transition font-medium"
+                        >
+                            Cancel
+                        </button>
+                        <button 
+                            @click="handleBulkGenerate"
+                            :disabled="loading || !bulkForm.batch_id || !bulkForm.issue_date"
+                            class="px-6 py-2.5 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl hover:from-purple-600 hover:to-pink-600 transition font-medium shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+                        >
+                            <svg v-if="loading" class="w-5 h-5 mr-2 animate-spin" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            <span>{{ loading ? 'Generating...' : 'Generate Certificates' }}</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, onUnmounted, computed } from 'vue';
 import axios from 'axios';
 
 export default {
@@ -546,7 +727,9 @@ export default {
         const certificates = ref([]);
         const students = ref([]);
         const courses = ref([]);
+        const batches = ref([]);
         const showModal = ref(false);
+        const showBulkModal = ref(false);
         const modalMode = ref('add');
         const loading = ref(false);
         const error = ref('');
@@ -573,6 +756,15 @@ export default {
             status: 'active',
             notes: ''
         });
+
+        const bulkForm = ref({
+            batch_id: '',
+            issue_date: new Date().toISOString().split('T')[0],
+            expiry_date: '',
+            notes: ''
+        });
+
+        const selectedBatch = ref(null);
 
         // Computed filtered certificates
         const filteredCertificates = computed(() => {
@@ -642,6 +834,17 @@ export default {
             }
         };
 
+        const fetchBatches = async () => {
+            try {
+                const response = await axios.get('/api/batches');
+                if (response.data.success) {
+                    batches.value = response.data.batches || [];
+                }
+            } catch (err) {
+                console.error('Error fetching batches:', err);
+            }
+        };
+
         const openAddModal = () => {
             modalMode.value = 'add';
             form.value = {
@@ -655,6 +858,75 @@ export default {
             error.value = '';
             successMessage.value = '';
             showModal.value = true;
+        };
+
+        const openBulkGenerateModal = () => {
+            bulkForm.value = {
+                batch_id: '',
+                issue_date: new Date().toISOString().split('T')[0],
+                expiry_date: '',
+                notes: ''
+            };
+            selectedBatch.value = null;
+            error.value = '';
+            successMessage.value = '';
+            showBulkModal.value = true;
+        };
+
+        const onBatchChange = () => {
+            if (bulkForm.value.batch_id) {
+                selectedBatch.value = batches.value.find(b => b.id == bulkForm.value.batch_id);
+            } else {
+                selectedBatch.value = null;
+            }
+        };
+
+        const selectedBatchCourse = computed(() => {
+            return selectedBatch.value?.course?.name || 'No course assigned';
+        });
+
+        const selectedBatchStudentsCount = computed(() => {
+            return selectedBatch.value?.students?.length || 0;
+        });
+
+        const handleBulkGenerate = async () => {
+            loading.value = true;
+            error.value = '';
+            successMessage.value = '';
+
+            try {
+                const response = await axios.post('/api/certificates/bulk-generate', bulkForm.value);
+                
+                if (response.data.success) {
+                    successMessage.value = response.data.message;
+                    await fetchCertificates();
+                    await fetchStats();
+                    
+                    setTimeout(() => {
+                        closeBulkModal();
+                    }, 2000);
+                } else {
+                    error.value = response.data.message || 'Failed to generate certificates';
+                }
+            } catch (err) {
+                console.error('Error bulk generating certificates:', err);
+                error.value = err.response?.data?.message || 'Failed to generate certificates';
+            } finally {
+                loading.value = false;
+            }
+        };
+
+        const closeBulkModal = () => {
+            showBulkModal.value = false;
+            bulkForm.value = {
+                batch_id: '',
+                issue_date: new Date().toISOString().split('T')[0],
+                expiry_date: '',
+                notes: ''
+            };
+            selectedBatch.value = null;
+            error.value = '';
+            successMessage.value = '';
         };
 
         const editCertificate = async (id) => {
@@ -797,27 +1069,55 @@ export default {
             return classes[status] || 'border-gray-300 bg-white text-gray-700';
         };
 
+        // ESC key handler for closing modals
+        const handleEscKey = (event) => {
+            if (event.key === 'Escape') {
+                if (showModal.value) {
+                    closeModal();
+                }
+                if (showBulkModal.value) {
+                    closeBulkModal();
+                }
+            }
+        };
+
         onMounted(() => {
             fetchCertificates();
             fetchStats();
             fetchStudents();
             fetchCourses();
+            fetchBatches();
+            window.addEventListener('keydown', handleEscKey);
+        });
+
+        onUnmounted(() => {
+            window.removeEventListener('keydown', handleEscKey);
         });
 
         return {
             certificates,
             students,
             courses,
+            batches,
             stats,
             filters,
             filteredCertificates,
             showModal,
+            showBulkModal,
             modalMode,
             loading,
             error,
             successMessage,
             form,
+            bulkForm,
+            selectedBatch,
+            selectedBatchCourse,
+            selectedBatchStudentsCount,
             openAddModal,
+            openBulkGenerateModal,
+            onBatchChange,
+            handleBulkGenerate,
+            closeBulkModal,
             editCertificate,
             saveCertificate,
             updateStatus,
